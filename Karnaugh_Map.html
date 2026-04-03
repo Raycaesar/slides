@@ -1,0 +1,566 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/sky.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h2> 从真值表到卡诺图 </h2>
+                    <h5> 命题逻辑公式的直观化简法</h5>
+					
+					<p class="title">
+						祝瑞 
+							
+						<br/>
+					
+	
+						 </p>
+			<!--		 <container class="align_just">
+					
+							<div class="col-c50">
+							<img class="logo" style="background: transparent;" width="200" height="200" data-src="material\lan_zhou_logo.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							
+							
+						<br>	 
+					 
+					 兰州大学哲学社会学院 <br/><button id="lanzhou" onclick="connectSerial()"> @</button> 兰州 2025.9  <br/> 
+						</div>
+						
+						</container> -->
+					
+				</section>
+
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+function handleSerialInput(data) {
+  console.log("Serial input:", data);
+
+  switch (data) {
+    case '1':
+      Reveal.right();
+      break;
+    case '0':
+      Reveal.left();
+      break;
+    case '2':
+      Reveal.up();
+      break;
+    case '3':
+      Reveal.down();
+      break;
+    case '4':
+      spreadBelief('aladdin');
+      break;
+    case '5':
+      spreadBelief('chopper');
+      break;
+    default:
+      console.warn("Unrecognized input:", data);
+  }
+}
+
+</script>
+
+
+				
+<section>
+  
+    <h3>真值表：从句法到语义</h3>
+    <p>对于任何一个给定的命题逻辑公式（句法），我们都可以通过真值表来精确地确定它的性质（语义）。</p>
+    
+
+    <table class="truth-table-demo">
+        <thead>
+            <tr>
+                <th>p</th>
+                <th>q</th>
+                <th>r</th>
+                <th>p ∧ q</th>
+                <th class="result-column">(p ∧ q) → r</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> <td>1</td> <td>1</td> <td>1</td> <td>1</td> <td class="result-column">1</td> </tr>
+            <tr class="counterexample-row"> <td>1</td> <td>1</td> <td>0</td> <td>1</td> <td class="result-column">0</td> </tr>
+            <tr> <td>1</td> <td>0</td> <td>1</td> <td>0</td> <td class="result-column">1</td> </tr>
+            <tr> <td>1</td> <td>0</td> <td>0</td> <td>0</td> <td class="result-column">1</td> </tr>
+            <tr> <td>0</td> <td>1</td> <td>1</td> <td>0</td> <td class="result-column">1</td> </tr>
+            <tr> <td>0</td> <td>1</td> <td>0</td> <td>0</td> <td class="result-column">1</td> </tr>
+            <tr> <td>0</td> <td>0</td> <td>1</td> <td>0</td> <td class="result-column">1</td> </tr>
+            <tr> <td>0</td> <td>0</td> <td>0</td> <td>0</td> <td class="result-column">1</td> </tr>
+        </tbody>
+    </table>
+    
+        
+</section>
+
+<section>
+    <h3>逆向工程：从语义到句法</h3>
+    <p>现在，如果我们只知道一个真值表的“结果”，能否反向推导出它所对应的逻辑公式呢？</p>
+    
+    <div  style="align-items: center;">
+        <div style="flex: 4;">
+            <table class="truth-table-demo">
+                <thead>
+                    <tr> <th>p</th> <th>q</th> <th>r</th> <th class="result-column">Unknown Formula</th> </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>1</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>1</td> <td>1</td> <td>0</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>1</td> <td>0</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>1</td> <td>0</td> <td>0</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>0</td> <td>1</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr> <td>0</td> <td>1</td> <td>0</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>0</td> <td>0</td> <td>1</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>0</td> <td>0</td> <td>0</td> <td class="result-column">0</td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+      
+    </div>
+</section>
+
+<section>
+    <h3>卡诺图：真值表的“升维”</h3>
+    <div class="two-col-container-static1" style="align-items: center;">
+
+        <div class="truth-table-container-small">
+            <table class="truth-table-demo">
+                <thead>
+                    <tr> <th>p</th> <th>q</th> <th>r</th> <th class="result-column">F</th> </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>1</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>1</td> <td>1</td> <td>0</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>1</td> <td>0</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>1</td> <td>0</td> <td>0</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>0</td> <td>1</td> <td>1</td> <td class="result-column">0</td> </tr>
+                    <tr> <td>0</td> <td>1</td> <td>0</td> <td class="result-column">0</td> </tr>
+                    <tr class="highlight-row"> <td>0</td> <td>0</td> <td>1</td> <td class="result-column">1</td> </tr>
+                    <tr> <td>0</td> <td>0</td> <td>0</td> <td class="result-column">0</td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="k-map-container">
+    
+    <div class="k-map-wrapper">
+        <table class="k-map-table">
+            <tr>
+                <th class="k-map-corner" >p \ qr</th> <th>00</th>
+                <th>01</th>
+                <th>11</th>
+                <th>10</th>
+            </tr>
+            <tr>
+                <th>0</th>
+                <td>0</td>
+                <td class="group-2 fragment" data-fragment-index="2">1</td> <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>1</th>
+                <td class="group-1 fragment" data-fragment-index="1">1</td> <td>0</td>
+                <td>0</td>
+                <td class="group-1 fragment" data-fragment-index="1">1</td> </tr>
+        </table>
+    </div>
+
+    <div class="k-map-legend maintext">
+        <ul>
+            <li class="fragment" data-fragment-index="1">
+                <span class="color-box group-1"></span>
+                红格子: p=1, r=0 ➞ <code class="formula">p ∧ ¬r</code>
+            </li>
+            <li class="fragment" data-fragment-index="2">
+                <span class="color-box group-2"></span>
+                蓝格子: p=0, q=0, r=1 ➞ <code class="formula">¬p ∧ ¬q ∧ r</code>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="fragment final-expression maintext" data-fragment-index="3">
+        <p>最终最简析取范式：</p>
+        $$ F = (p \land \lnot r) \lor (\lnot p \land \lnot q \land r) $$
+    </div>
+
+</div>
+    </div>
+</section>
+
+<section>
+    <h3>卡诺图练习（一）</h3>
+    <div class="k-map-exercise">
+
+        <div class="k-map-wrapper">
+            <table class="k-map-table">
+                <tr>
+                    <th class="k-map-corner">p \ qr</th>
+                    <th>00</th><th>01</th><th>11</th><th>10</th>
+                </tr>
+                <tr>
+                    <th>0</th>
+                    <td>0</td><td class="group-2 fragment" data-fragment-index="1" >1</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td class="group-1 fragment" data-fragment-index="1">1</td>
+                    <td class="group-3 fragment" data-fragment-index="1">1</td>
+                    <td class="group-1 fragment" data-fragment-index="1">1</td>
+                    <td class="group-1 fragment" data-fragment-index="1">1</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="fragment final-expression" data-fragment-index="2">
+            <div class="k-map-legend" style="justify-content: center;">
+                 <ul>
+                    <li>
+                        <span class="color-box group-1 group-3"></span>
+                        红色背景的格子: p=1 ➞ <code class="formula">p</code>
+                    </li>
+                    <li class="fragment" data-fragment-index="3">
+                        <span class="color-box group-2 group-3"></span>
+                        蓝色背景的格子: q=0, r=1 ➞ <code class="formula">¬q ∧ r</code>
+                    </li>
+                </ul>
+            </div>
+            <p class="fragment" data-fragment-index="4">最终最简析取范式：
+                $$ F = p \lor (\lnot q \land r)  $$
+             </p>
+        </div>
+         
+        </div>
+        
+   
+</section>
+
+<section>
+    <h3>卡诺图练习（二）</h3>
+    <div class="k-map-exercise">
+
+        <div class="k-map-wrapper">
+            <table class="k-map-table">
+                <tr>
+                    <th class="k-map-corner">p \ qr</th>
+                    <th>00</th><th>01</th><th>11</th><th>10</th>
+                </tr>
+                <tr>
+                    <th>0</th>
+                    <td class="group-2 fragment" data-fragment-index="1">1</td>
+                    <td class="group-2 fragment" data-fragment-index="1">1</td>
+                    <td class="group-3 fragment" data-fragment-index="1">1</td>
+                    <td class="group-3 fragment" data-fragment-index="1">1</td>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td>0</td><td>0</td><td class="group-1 fragment" data-fragment-index="1">1</td><td class="group-1 fragment" data-fragment-index="1">1</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="fragment final-expression" data-fragment-index="2">
+            <div class="k-map-legend">
+                 <ul>
+                    <li class="fragment" data-fragment-index="2">
+                        <span class="color-box group-1"></span>
+                        红色背景的格子: q=1 ➞ <code class="formula">q </code>
+                    </li>
+                    <li class="fragment" data-fragment-index="3">
+                        <span class="color-box group-2"></span>
+                        蓝色背景的格子: p=0 ➞ <code class="formula">¬p</code>
+                    </li>
+                </ul>
+            </div>
+            <div class="fragment" data-fragment-index="4">
+                <p>最终最简析取范式：</p>
+                $$ F = \lnot p \lor  q $$
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+
+<section>
+    <h3>卡诺图的实用意义</h3>
+    <div class="two-col-container-static" style="align-items: flex-start; margin-top: 30px;">
+
+        <div class="app-container">
+            <h4><i class="fa-solid fa-brain"></i> 逻辑与算法层面</h4>
+            <ul class="app-list">
+                <li class="fragment" data-fragment-index="1">
+                    <i class="fa-solid fa-compress"></i>
+                    <div>
+                        <strong>公式化简</strong>
+                        <p>以最直观、系统的方式找到布尔函数的最简析取范式，降低逻辑复杂性。</p>
+                    </div>
+                </li>
+               
+                <li class="fragment" data-fragment-index="3">
+                    <i class="fa-solid fa-robot"></i>
+                    <div>
+                        <strong>辅助自动推理</strong>
+                        <p>其思想是奎因-麦克拉斯基算法（Quine–McCluskey algorithm）等自动逻辑化简程序的基础。</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="app-container">
+            <h4><i class="fa-solid fa-microchip"></i> 硬件与工程层面</h4>
+            
+            <svg class="workflow-diagram fragment" data-fragment-index="4" viewbox="0 0 300 200">
+                <rect class="workflow-box" x="50" y="10" width="80" height="30" rx="5"></rect>
+                <text class="workflow-text" x="90" y="30">真值表</text>
+                
+                <line class="workflow-arrow" x1="135" y1="25" x2="165" y2="25" marker-end="url(#arrowhead-ok)"></line>
+                <text class="workflow-label" x="150" y="18">化简</text>
+                
+                <rect class="workflow-box" x="170" y="10" width="80" height="30" rx="5"></rect>
+                <text class="workflow-text" x="210" y="30">卡诺图</text>
+
+                <line class="workflow-arrow" x1="210" y1="45" x2="210" y2="75" marker-end="url(#arrowhead-ok)"></line>
+
+                <rect class="workflow-box" x="150" y="80" width="120" height="30" rx="5"></rect>
+                <text class="workflow-text" x="210" y="100">最简逻辑表达式</text>
+                
+                <line class="workflow-arrow" x1="210" y1="115" x2="210" y2="145" marker-end="url(#arrowhead-ok)"></line>
+
+                <rect class="workflow-box" x="160" y="150" width="100" height="40" rx="5"></rect>
+                <text class="workflow-text" x="210" y="175">最优逻辑门电路</text>
+            </svg>
+
+            <ul class="app-list" style="margin-top: 20px;">
+                <li class="fragment" data-fragment-index="5">
+                    <i class="fa-solid fa-cogs"></i>
+                    <div>
+                        <strong>数字电路设计</strong>
+                        <p>最直接的应用。更简单的公式意味着使用更少的逻辑门，从而降低芯片的成本、功耗和延迟。</p>
+                    </div>
+                </li>
+              
+            </ul>
+        </div>
+    </div>
+</section>
+	
+<section>
+    <h3>思考与练习</h3>
+    
+    <div class="summary-box">
+    
+        <ul>
+            <li class="fragment maintext" data-fragment-index="1">
+                <strong>从卡诺图看，本质不同的3变量命题逻辑公式有多少个？</strong>
+                <p class="sub-point">提示：一个3变量卡诺图有8个格子，每个格子可以填0或1。每一种独特的填写方式，就对应一个逻辑上不等价的公式。这是一个排列组合问题。</p>
+               
+            </li>
+            <li class="fragment maintext" data-fragment-index="3">
+            
+                <p class="sub-point">我们只学习了3变量卡诺图。请思考或查阅资料，4变量的卡诺图（4x4网格）是如何操作的？5变量呢？（提示：维度越高，“相邻”关系越复杂。）</p>
+            </li>
+            <li class="fragment maintext" data-fragment-index="4">
+                
+                <p class="sub-point">我们总是在圈1，那0有什么用呢？</p>
+            </li>
+            
+        </ul>
+    </div>
+
+    <div class="exercise-box fragment maintext" data-fragment-index="5">
+        <div class="exercise-box" style="width: 95%; text-align: left;">
+        <ol>
+            <li>
+                <p><strong>练习一</strong>：化简下面的公式：</p>
+                <code class="formula"> p ∧ (¬q ∨ (¬r → p)) </code>
+                
+               <!-- <div class="fragment solution-block" data-fragment-index="1">
+                    <p><strong>解答：</strong></p>
+                    <div class="k-map-wrapper">
+                        <table class="k-map-table">
+                            <tr><th class="k-map-corner">p \ qr</th><th>00</th><th>01</th><th>11</th><th>10</th></tr>
+                            <tr><th>0</th><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><th>1</th><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                        </table>
+                        <div class="k-map-group group-1 fragment" data-fragment-index="2" style="top: 60px; left: 200px; width: 110px; height: 55px;"></div>
+                        <div class="k-map-group group-2 fragment" data-fragment-index="2" style="top: 115px; left: 90px; width: 110px; height: 55px;"></div>
+                    </div>
+                    <div class="final-expression fragment" data-fragment-index="3">
+                        $$ F = (p \land \lnot r) \lor (\lnot p \land q) $$
+                    </div>
+                </div>-->
+            </li>
+
+            <li class="fragment" data-fragment-index="6">
+                <p><strong>练习二</strong>：化简下面的公式：</p>
+                <code class="formula">(¬p∧q∧r) ∨ (¬p∧q∧¬r) ∨ (p∧¬q∧¬r) ∨ (p∧¬q∧r) ∨ (p∧q∧r) ∨ (p∧q∧¬r)</code>
+                
+                <!--   <div class="fragment solution-block" data-fragment-index="5">
+                    <p><strong>解答：</strong></p>
+                    <div class="k-map-wrapper">
+                     <table class="k-map-table">
+                            <tr><th class="k-map-corner">p \ qr</th><th>00</th><th>01</th><th>11</th><th>10</th></tr>
+                            <tr><th>0</th><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><th>1</th><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        </table>
+                         <div class="k-map-group group-1 fragment" data-fragment-index="6" style="top: 115px; left: 35px; width: 220px; height: 55px;"></div>
+                        <div class="k-map-group group-2 fragment" data-fragment-index="6" style="top: 60px; left: 145px; width: 110px; height: 55px;"></div>
+                    </div>
+                     <div class="final-expression fragment" data-fragment-index="7">
+                        $$ G = p \lor q $$
+                        <p style="font-size: 0.8em; color: #ccc;">(注意：变量 r 是冗余的，在最简范式中被消去了！)</p>
+                    </div>
+                </div>-->
+            </li>
+        </ol>
+    </div>
+    </div>
+                
+				
+	
+				
+
+	
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/math/math.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/search/search.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+
+<script>
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  center: true,
+  hash: true,
+  plugins: [ RevealMath.KaTeX, RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ],
+  katex: {
+    version: "0.16.4", // 或 latest
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$",  right: "$",  display: false},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\[", right: "\\]", display: true}
+    ]
+  }
+});
+</script>
+
+
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

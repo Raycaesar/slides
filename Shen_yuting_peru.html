@@ -1,0 +1,648 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/moon.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+
+			<!-- Start of Slides Container -->
+<div class="slides">
+
+    <!-- Title Slide -->
+    <section>
+        <h2>The Axiomatic Interdependence of S5 in Early Modal Logic </h2>
+        <p class="title maintext">
+			
+         
+        
+	Zhu Rui 祝瑞</p>
+        <div class="container align_just">
+            <div id="characters">
+                <div class="col-50">
+                    <!-- Placeholder for Logo if needed -->
+                    <img class="logo" style="background: rgba(255,255,255,0.5);" width="180" height="180" data-src="material/unilog2025.png" alt="Logo">
+                </div>
+                <div class="col-50 maintext">
+                    <p class="align_right">
+                       UNILOG 2025 <br/>
+   National University of Saint Anthony the Abbot <br/>
+
+Cusco &nbsp  &nbsp  Dec. 2025 
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motivation / Intro -->
+    <section>
+        <h3>Introduction & Motivation</h3>
+        <div class="fragment">
+            <div id="characters">
+                <div class="col-50">
+                    <img width="400" height="600" data-src="material/symbolic_logic_cover.png" alt="Symbolic Logic Cover">
+                </div>
+                <div class="col-50" style="text-align: left; font-size: 0.7em;">
+                    <ul>
+                        <li class="fragment"><strong>Context:</strong> C.I. Lewis & C.H. Langford, <i>Symbolic Logic</i> (1932), Appendix II.</li>
+                        </li>
+                        <li class="fragment"><strong>Post</strong> : <em>Modal collapse</em> issue in <i>A Survey of Symbolic Logic</i> (1918):
+                            <br/> $p \prec q = \sim q \prec \sim p $<br/>
+                            where <b>$p \prec q :=\Box(p \rightarrow q)$ 
+                            <br/>
+                            $~~~~~~~~~~\sim p  := \neg \Diamond p $  </b>
+                        
+                            </li>
+                        <li class="fragment"><strong>Lewis removes one direction :</strong> <br/> $ (\sim q \prec \sim p)\prec (p \prec q)$ </li>
+                        <li class="fragment"><strong>Becker</strong>: removal is correct but left an <em>open position (eine offene Stelle)  for "Modal Iteration"</em> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lewis's System B -->
+    <section>
+    <h3>Lewis's System B</h3>
+
+    <div class="container" style="display:flex; gap:40px;">
+        
+        <!-- Left Column -->
+        <div class="col-50 maintext">
+            <h3 class="fragment">Primitives</h3>
+            <ul class="fragment">
+                <li>Propositional variables: <code>p, q, r, …</code></li>
+                <li>Negation: $\sim$ (This is <i>classical negation</i> (it is false), which is different from the previous $\sim$ that means "it is impossible")</li>
+                <li>Possibility ("self-consistency"): $\Diamond$</li>
+                <li>Conjunction (product): $pq$ or $p \cdot q$</li>
+            </ul>
+
+           
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-50 maintext">
+            <h3 class="fragment">Definitions</h3>
+
+            <ul class="fragment" style="line-height:1.4em;">
+                <li><strong>d1.</strong> $p \lor q \ .=. \ \sim(\sim p \sim q)$
+                    <br> <b>$p \lor q := \neg(\neg p \land \neg q)$</b></li>
+                <li><strong>d2.</strong> $p \prec q \ .=. \ \sim\Diamond(p \sim q)$ <br> <b>$\Box(p \to q) := \neg\Diamond(p \land \neg q)$</b></li>
+                <li><strong>d3.</strong> $p = q \ .=: \ (p \prec q)(q \prec p)$ <br> <b>$\Box(p \leftrightarrow q) := \Box(p \to q) \land \Box(q \to p)$</b></li>
+                <li><strong>d4.</strong> $p \supset q \ .=. \ \sim(p \sim q)$ <br> <b>$p \to q := \neg(p \land \neg q)$</b></li>
+            </ul>
+
+            <p class="fragment" style="font-size:0.9em; margin-top:15px; font-style:italic;">
+              
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    
+    <h3>Postulates & Rules</h3>
+
+    <div class="container" style="display:flex; gap:40px;">
+
+        <!-- Left Column: Axioms -->
+        <div class="col-50 maintext">
+            <h3 >Postulates (Axioms)</h3>
+            <ul >
+                <li><strong>B1.</strong> $pq \prec qp$</li>
+                <li><strong>B2.</strong> $pq \prec p$</li>
+                <li><strong>B3.</strong> $p \prec pp$</li>
+                <li><strong>B4.</strong> $(pq)r \prec p(qr)$</li>
+                <li><strong>B5.</strong> $p \prec \sim\sim p$ <span style="font-size:0.8em;">(later shown redundant)</span></li>
+                <li><strong>B6.</strong> $(p \prec q)(q \prec r) \prec (p \prec r)$</li>
+                <li><strong>B7.</strong> $p(p \prec q) \prec q$</li>
+            </ul>
+        </div>
+
+        <!-- Right Column: Rules -->
+        <div class="col-50 maintext">
+            <h3 >Rules of Inference</h3>
+            <ul >
+                <li><strong>Sa — Substitution:</strong> Uniform substitution for variables.</li>
+                <li><strong>Sb — Substitution of Equivalents:</strong> If $A \equiv B$, substitute freely.</li>
+                <li><strong>Ad — Adjunction:</strong> From $A$ and $B$ infer $A \cdot B$.</li>
+                <li><strong>Smp — Strict Modus Ponens:</strong> From $A$ and $A \prec B$ infer $B$.</li>
+            </ul>
+
+            <p class="fragment" style="font-size:0.9em; margin-top:15px; font-style:italic;">
+                B8 and B9 were given by Lewis but are not used in modal reduction.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+    <!-- Reflexivity Axiom Derivation -->
+    <section>
+        <h3>The Reflexivity Theorem</h3>
+       
+        
+        <p class="maintext fragment" style="text-align:left;">
+            It is known today that Lewis's systems of strict implication are all reflexive. But deriving the canonical formula ($ p \supset \Diamond p$) in Lewis's syntactic system was non-trivial.
+        </p>
+
+        <div class="fragment maintext" style="border: 1px solid #fff; padding: 10px; text-align: left;">
+            <p><strong>Reconstruction of the Proof (Key Steps):</strong></p>
+            <ol>
+                <li>$~~\sim p \prec q \ ~.~ \prec ~.~ \ \sim q \prec p~~~~~~~~$  <i>(Prop. 12.2)</i></li>
+                <li>$~~p = \sim(\sim p)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ <i>(Prop 12.3)</i></li>
+                <li>$~~p ~.~\prec~.~ \Diamond p~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ <i>(Prop 18.4)</i></li>
+                <li>$~~p \prec \Diamond p ~.~ \prec~.~ p \supset \Diamond p$</li>
+            </ol>
+             <p>Proposition numbers follow <i>Symbolic Logic</i> (1932), Appendix II.</p>
+        </div>
+
+        <p class="maintext fragment">
+            <strong>Significance:</strong> <em>Reflexivity</em> is a prerequisite for the hidden proof as we know under the frame of reflexivity, axiom 4 + B equals axiom 5.
+        </p>
+    </section>
+
+    <!-- Becker's Challenge -->
+    <section>
+        <h3>Oskar Becker's Challenge (1930)</h3>
+        <ul class="container fragment">
+            <li class="maintext fragment">
+                <strong>"The Open Position":</strong> Lewis's original system allowed infinite distinct modalities.
+            </li>
+            <li class="maintext fragment">
+                Becker proposed three reduction axioms to "close" the system.
+            </li>
+        </ul>
+
+        <table class="smtext fragment">
+            <thead>
+                <tr>
+                    <th>Lewis Notation</th>
+                    <th>Becker Notation</th>
+                
+                    <th>Modern Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>C10 $~~ \sim\Diamond\sim p\prec \sim\Diamond\sim\sim\Diamond \sim p$</td>
+                    <td>1.92 $~~\sim - p < \sim -\sim - p$</td>
+                    
+                    <td>Axiom 4 (Transitivity)</td>
+                </tr>
+                <tr>
+                    <td>C11 $~\Diamond p \prec \sim\Diamond\sim\Diamond p$</td>
+                    <td>1.9 $~~- \sim p < \sim\sim p$ </td>
+                   
+                    <td>Axiom 5 (Euclidean)</td>
+                </tr>
+                <tr>
+                    <td>C12 $~~p \prec \sim\Diamond\sim\Diamond p$</td>
+                    <td>1.91$~~ p < \sim\sim p$</td>
+                    
+                    <td>Axiom B (Symmetry)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="fragment container">
+           
+                <div class="col-50">
+                    <img width="210" height="260" data-src="material/Oscar_Becker.jpg" alt="Oscar Becker">
+                    <p class="smtext">Becker was a follower of Husserl's phenomenology and Brouwer's intuitionism</p>
+                </div>
+                <ul class="col-50">
+                    <li> <i>1.9</i> reduces Lewis's system to only six modalities. </li>
+                    <li> <i>1.91</i> encapsulates the intuitionistism of Brouwer (<em>Brouwersche Axiom</em>). </li>
+                    <li> <i>1.92</i> captures the self-reflective nature of a proof system: if $p$ is necessary (<em>proven</em>), then it is necessarily necessary. </li>
+                </ul>
+            
+        </div>
+    </section>
+
+    <!-- Becker's Error -->
+    <section>
+        <h3>Becker's "Ten-Modality" Error</h3>
+        
+        <div class="col-50">
+            <p class="maintext fragment">
+                Becker correctly identified that <strong>C11</strong> collapses modalities to 6 (System S5).
+            </p>
+            <p class="maintext fragment" style="color: salmon;">
+                <strong>The Error:</strong> He claimed that adding <strong>C10 + C12</strong> (4 + B) creates a distinct "Ten-Modality Calculus" between S4 and S5.
+            </p>
+        </div>
+
+        <div class="fragment container">
+           
+                <div class="col-50 ">
+            <!-- Diagram representation from paper -->
+            $$
+\begin{tikzpicture}[node distance=3.5cm]
+    % Nodes
+    \node(W) [text = white] {$W (p)$};
+    \node(N) [ below left of=W, text=white] {$N (\Box p)$};
+    \node(U) [below right of=N, text=white] {$U^{2} (\Box\Diamond p)$};
+    \node(M) [below right of=W, text=white] {$M (\Diamond p)$};
+
+    % Arrows
+    \draw[->, white] (N) -- (W);
+    \draw[->, white] (N) -- (U);
+    \draw[->, white] (W) -- (M);
+    \draw[->, white] (U) -- (M);
+\end{tikzpicture}
+
+$$
+<p class="smtext"> <i>Strength Diagram of Becker’s Modalities</i> </p>
+        </div>
+                <div class="col-50">
+                
+$$
+\begin{tikzpicture}[node distance=3.5cm]
+    % Nodes
+    \node(W) [text = white] {$W (p)$};
+    \node(N) [ below left of=W, text=white] {$N (\Box p)$};
+    \node(U) [below right of=N, text=white] {$U^{2} (\Box\Diamond p)$};
+    \node(M) [below right of=W, text=white] {$M (\Diamond p)$};
+
+    % Arrows
+    \draw[->, white] (N) -- (W);
+    \draw[->, white] (N) -- (U);
+    \draw[->, white] (W) -- (M);
+    \draw[->, white] (U) -- (M);
+    \draw[->, yellow] (M) -- (U);
+\end{tikzpicture}
+
+$$
+<p \class="smtext">He overlooked the derivation of<i> $\Diamond p \rightarrow \Box\Diamond p $ </i> after adding axiom 4 and B.</p>
+
+                </div>
+            
+        </div>
+        
+    </section>
+
+    <!-- Shen's Proof Overview -->
+     <section>
+    <section>
+        <h3>Correction</h3>
+        <p class="maintext fragment">
+           The correction is firstly recorded in Lewis's <em>Symbolic Logic</em> (Appendix II).
+        </p>
+        <blockquote class="fragment maintext">
+            It demonstrates purely syntactically that within Lewis' reflexive system: $ \{C10, C12\} \vdash C11 $
+        </blockquote>
+        <p class="maintext fragment">
+            The "Ten-Modality Calculus" does not exist; it is exactly S5.
+        </p>
+        <p class="maintext fragment">
+            This was discovered by a <strong class = "fragment"> Chinese Logician.</strong> <i class="fragment">His name is Shen Yuting. </i>
+        </p>
+        <div class="fragment">
+        <img class="col-50" width="250" data-src="material/shen.png" alt="Shen Yuting">
+        <img  class="col-50" width="220"  data-src="material\appendix2.png" alt="Down arrow">
+    </div>
+ </section>
+ <section><img width="480"  data-src="material\appendix2.png" >
+     </section>
+
+    </section>
+
+    <section>
+    <h3>The Proof Reconstruction</h3>
+
+    <style>
+      
+
+        /* 2. 结论头样式：始终保留 */
+        .result-header {
+            text-align: left;
+            font-size: 0.8em;
+          
+            padding: 5px 10px;
+            border-left: 4px solid #42affa;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* 3. 【关键】让 fade-out 消失后不占位 (Collapse) */
+        /* 当 fragment 处于 visible 状态且包含 fade-out 类时，设为 display: none */
+        .fragment.fade-out.visible {
+            display: none !important;
+        }
+    </style>
+
+    <div style="font-size: 0.9em; width: 100%;">
+
+        <div class="result-header">
+            1. <strong>Simplification of C10</strong>: $\Diamond\Diamond p \prec \Diamond p$
+        </div>
+        
+        <div class="proof-grid fragment fade-out" data-fragment-index="0">
+            <div class="proof-math">$a.~~\sim\Diamond\sim p \prec \sim\Diamond\sim\sim\Diamond\sim p$</div>
+            <div class="proof-reason">(C10 / Axiom 4)</div>
+            
+            <div class="proof-math">$b.~~\sim\sim\Diamond\sim\sim\Diamond\sim p \prec \Diamond\sim p$</div>
+            <div class="proof-reason">(a, Prop 12.2)</div>
+            
+            <div class="proof-math">$c.~~\Diamond\Diamond\sim p \prec \Diamond\sim p$</div>
+            <div class="proof-reason">(b, Prop 12.3)</div>
+            
+            <div class="proof-math">$d.~~\Diamond\Diamond \sim\sim p \prec \Diamond \sim\sim p$</div>
+            <div class="proof-reason">(c, Sub $[\sim p / p]$)</div>
+            
+            <div class="proof-math">$e.~~\Diamond\Diamond p \prec \Diamond p$</div>
+            <div class="proof-reason">(d, Prop 12.3)</div>
+        </div>
+
+
+        <div class="fragment fade-in" data-fragment-index="0">
+            <div class="result-header">
+                2. <strong>Converse</strong>: $\Diamond p \prec \Diamond\Diamond p$
+            </div>
+            <div class="proof-grid fragment fade-out" data-fragment-index="1">
+                <div class="proof-math">$a.~~p \prec \Diamond p$</div>
+                <div class="proof-reason">(Prop. 18.4)</div>
+                
+                <div class="proof-math">$b.~~\Diamond p \prec \Diamond\Diamond p$</div>
+                <div class="proof-reason">(a, Sub $[\Diamond p/p]$)</div>
+            </div>
+        </div>
+
+
+        <div class="fragment fade-in" data-fragment-index="1">
+            <div class="result-header">
+                3. <strong>Equivalence</strong>: $\Diamond\Diamond p = \Diamond p$
+            </div>
+            <div class="proof-grid fragment fade-out" data-fragment-index="2">
+                <div class="proof-math">$a.~~\Diamond\Diamond p \prec \Diamond p .  \Diamond p \prec \Diamond\Diamond p$</div>
+                <div class="proof-reason">(From 1 & 2)</div>
+                
+                <div class="proof-math">$b.~~\Diamond\Diamond p = \Diamond p$</div>
+                <div class="proof-reason">(Def. Strict Equivalence)</div>
+            </div>
+        </div>
+
+
+        <div class="fragment fade-in" data-fragment-index="2">
+            <div class="result-header">
+                4. <strong> Application of C12 </strong>: $\Diamond p \prec \Box\Diamond\Diamond p$
+            </div>
+            <div class="proof-grid fragment fade-out" data-fragment-index="3">
+                <div class="proof-math">$a.~~p \prec \Box\Diamond p$</div>
+                <div class="proof-reason">(C12 / Axiom B)</div>
+                
+                <div class="proof-math">$b.~~\Diamond p \prec \Box\Diamond\Diamond p$</div>
+                <div class="proof-reason">(Sub $[\Diamond p/p]$)</div>
+            </div>
+        </div>
+
+
+        <div class="fragment fade-in" data-fragment-index="3">
+            <div class="result-header" style="border-color: #50fa7b; color: #50fa7b;">
+                5. Final Reduction: $\Diamond p \prec \Box\Diamond p$ (Q.E.D.)
+            </div>
+            <div class="proof-grid">
+                <div class="proof-math">Formula in Step 4 contains $\Diamond\Diamond p$</div>
+                <div class="proof-reason"></div>
+                
+                <div class="proof-math">Substitute $\Diamond\Diamond p = \Diamond p$</div>
+                <div class="proof-reason">(From Step 3)</div>
+                
+                <div class="proof-math">$\Diamond p \prec \Box\Diamond p$</div>
+                <div class="proof-reason" style="color: #50fa7b; font-weight:bold;">(C11 / Axiom 5)</div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <p class="maintext fragment">
+        Shen proved that Transitivity + Symmetry entails Euclidean-ness in reflexive frames.
+    </p>
+</section>
+  
+<section>
+<h3>The Formation of S4 and S5</h3>
+<ul class="maintext fragment">
+  <li class="maintext fragment">
+    Polish logician <strong>Mordechaj Wajsberg</strong> wrote to C. I. Lewis, showing —via matrix/algebraic methods— that strict implication cannot be reduced to material implication. He also presented a system equivalent to S5.
+  </li>
+
+  <li class="maintext fragment">
+    <strong>C. I. Lewis:</strong> Three postulates cannot be derived in systems A or B.
+  </li>
+
+  <ul>
+    <li class="maintext fragment"> C11 or C12 cannot be derived in system B + C10. (S4 differs from S5)</li>
+    <li class="maintext fragment"> C12 and C10 can be derived in system B + 11. (Inverse of Shen’s result)</li>
+    <li class="maintext fragment"> Presented S1–S5 in Appendix II: S4 = B + C10; S5 = B + C11 (or equivalently C10 + C12).</li>
+  </ul>
+</ul>
+
+<div class="fragment">
+  <div id="characters">
+    <div class="col-50">
+      <img width="270" height="350" data-src="material/Lewis.jpeg">
+    </div>
+    <div>
+      <img width="330" data-src="material/Wajsberg.jpg">
+    </div>
+    <div class="col-50">
+      <img width="270" height="300" data-src="material/group.png">
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h3>William T. Parry and Shen Yuting</h3>
+<p class="maintext fragment">
+  <strong>William T. Parry</strong>: Independently provided Groups I, II, and III. Later proved S4 has 14 modalities, S4.5 has 12, and showed the non-equivalence of S2 and S3. <br>
+  He confirmed Shen’s priority: <em>"The proof ... was first pointed out to me by Mr. Y. T. Shen."</em> <br>
+  <strong>Shen’s Unique Role:</strong> While others relied on algebra, Shen used pure syntactic reasoning in the pre-semantic era. <br>
+  Parry is well known for <i>analytic implication (AI)</i>, yet wrote in a memoir during his final illness: <em>"Another student of Sheffer's also developed the basic conceptions of AI—at first independent of my work—viz. Y. T. Shen. We exchanged ideas; I received much more from him than he from me."</em>
+</p>
+
+<div class="container fragment">
+  <div class="col-50">
+    <img width="270" height="350" data-src="material/parry.jpg">
+  </div>
+  <div class="col-50">
+    <img width="220" height="270" data-src="material/parry_justify.png">
+  </div>
+</div>
+</section>
+<section>
+<h3>From Syntax to Semantics</h3>
+
+<p class="maintext fragment">
+  Shen, together with Lewis, Wajsberg, and Parry, worked “blindly” before model theory. Their systems—especially S4 and S5—were validated decades later.
+</p>
+
+<div class="fragment" style="text-align: left; font-size: 0.7em;">
+  <p><strong>Algebraic/Topological Semantics (Tarski & McKinsey, 1944):</strong><br>
+  S4 corresponds to topological interior operators; S5 to “almost discrete” spaces.</p>
+</div>
+
+<div class="fragment" style="text-align: left; font-size: 0.7em; margin-top: 20px;">
+  <p><strong>Relational Semantics (Kripke, 1959-1963):</strong><br>
+  Axioms correspond to frame conditions:</p>
+  <ul>
+    <li><strong>T (B1–B7):</strong> Reflexive</li>
+    <li><strong>4 (C10):</strong> Transitive</li>
+    <li><strong>B (C12):</strong> Symmetric</li>
+    <li><strong>5 (C11):</strong> Euclidean</li>
+  </ul>
+</div>
+
+<div class="fragment maintext box" style="border: 2px solid white; margin-top: 20px; padding: 10px;">
+  Shen’s proof is the syntactic counterpart to the Frame Correspondence Theorem: <br>
+  <em>Any reflexive relation that is transitive and symmetric is Euclidean.</em>
+</div>
+</section>
+<section>
+<h3>Conclusion</h3>
+<ul class="container fragment">
+  <li class="maintext fragment"> Shen Yuting correctly identified the interdependence of modal axioms overlooked by Becker. </li>
+  <li class="maintext fragment"> He contributed to the canonical hierarchy: S4 is independent, but S4 + Axiom B equals to S5. </li>
+  <li class="maintext fragment"> This clarification was essential for the later development of rigorous modal semantics by McKinsey, Tarski and Kripke. </li>
+</ul>
+
+<p class="fragment maintext" style="margin-top: 40px;">
+  A lost chapter in the history of modal logic, <b> should be</b>, restored.
+</p>
+</section>
+
+<section>
+<h3>References</h3>
+
+<ul class="maintext fragment">
+  <li>Becker, O. (1930). “Zur Logik der Modalitäten”. <i>Jahrbuch für Philosophie und Phänomenologische Forschung</i>, 11, 497–548.</li>
+  <li>Cresswell, M. (2019). “Modal Logic before Kripke”. <i>Organon F</i>, 26(3), 323–339.</li>
+  <li>Kripke, S. A. (1959). “Semantic analysis of modal logic (abstract)”. <i>JSL</i>, 24, 323–324.</li>
+  <li>Kripke, S. A. (1963). “Semantical Analysis of Modal Logic I”. <i>ZMLG</i>, 9, 67–96.</li>
+  <li>Lewis, C. I. (1918). <i>A Survey of Symbolic Logic</i>. Berkeley.</li>
+  <li>Lewis, C. I., & Langford, C. H. (1932/1959). <i>Symbolic Logic</i>. Dover.</li>
+  <li>McKinsey, J. C. C. (1934). “A reduction in the postulates for strict implication”. <i>BAMS</i>, 45.</li>
+  <li>McKinsey, J. C. C., & Tarski, A. (1944). “The algebra of topology”. <i>Annals of Mathematics</i>, 45, 141–191.</li>
+  <li>McKinsey, J. C. C., & Tarski, A. (1948). “Some theorems...”. <i>JSL</i>, 13, 1–15.</li>
+  <li>Parry, W. T. (1934). “The postulates for strict implication”. <i>Mind</i>, 43.</li>
+  <li>Parry, W. T. (1939). “Modalities in the Survey System”. <i>JSL</i>, 4.</li>
+  <li>Parry, W. T. (1989). “Analytic implication”. In <i>Directions in Relevant Logic</i>.</li>
+  <li>Shen, Y. (1992). <i>Shen Youting Wenji</i>. Beijing.</li>
+  <li>Tarski, A. (1938). “Der Aussagenkalkül und die Topologie”. <i>Fundamenta Mathematicae</i>, 31.</li>
+</ul>
+</section>
+
+
+
+
+				<section data-auto-animate data-background-iframe ="frame/cube_end.html" frameBorder="0" >
+					
+					
+                 
+				</section>
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="https://i.upmath.me/latex.js"></script>
+		
+<script>
+  Reveal.initialize({
+	katex: {
+	  version: 'latest',
+	  delimiters: [
+		{left: '$$', right: '$$', display: true},
+		{left: '$', right: '$', display: false},
+		{left: '\\(', right: '\\)', display: false},
+		{left: '\\[', right: '\\]', display: true}
+	 ],
+	 ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+   },
+   plugins: [ RevealMath.KaTeX ]
+  });
+</script>
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

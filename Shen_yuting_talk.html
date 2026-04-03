@@ -1,0 +1,537 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/moon.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h2> 沈有鼎与严格蕴含扩张中的公理归约 </h2>
+					
+					<p class="title">
+						<small> 祝瑞 
+							</small>
+						<br/>
+					
+	
+						 </p>
+					 <container class="align_just">
+					<div id="characters">
+							<div class="col-50">
+							<img class="logo" style="background: rgba(255,255,255,0.5);" width="150" height="150" data-src="material\cass_phi_logo.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50 maintext">
+							<p class="align_right" >
+							
+							 
+					 <br/>
+					 中国社会科学院哲学研究所 <br/> 北京 2025.6 </p>
+						</div>
+						</div>
+						</container>
+					
+				</section>
+
+<section>
+
+
+</section>
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+
+</script>
+
+
+
+			
+					<section>
+						<h3>研究动机</h3>
+					
+						
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<img  width="400" height="600" data-src="material\symbolic_logic_cover.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							<img  width="400" height="600" data-src="material\appendix2.png" alt="Down arrow">
+						
+						</div>
+						</div>
+						</div>
+				
+					
+						
+						
+						
+					</section>
+					
+						
+			
+				
+				<script>
+					
+				</script>
+
+
+	
+								<section>
+						<h3>模态逻辑关系框架的背景知识</h3>
+					
+						
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<p>公理5. ◇p → □◇p 刻画欧几里德性 </p>
+							<p>公理4. □A → □□A 刻画传递性 </p>
+							<p>公理B（布劳威尔）. A → □◇A 刻画对称性 </p>
+							<iframe src="frame/modallogic-master/modallogic-master/index.html"
+  style="
+    width: 400px;
+    height: 300px;
+    border: none;
+    background: transparent;
+    pointer-events: auto;
+  "
+  tabindex="0"
+  allowfullscreen></iframe>
+
+							</div>
+
+							<div class="col-50">
+							<img  width="400" height="400" data-src="material\modal_lattice.png" alt="Down arrow">
+						
+						</div>
+						</div>
+						</div>
+	
+					</section>
+					
+
+<script>
+  document.querySelector('iframe').focus();
+</script>
+
+<section>
+	<h3>谁最早发现公理4+B蕴含公理5？</h3>
+	<h4> 或者在自返框架下，4+B = 5.</h4>
+			</p>
+	<div class="container ">
+
+		
+		<ul class="container fragment">
+			<p class = "maintext"> 这个问题有意义吗？
+			</p> 
+
+		<li  class = "maintext fragment">	
+			在克里普克语义之后，关系框架成为模态逻辑的语义框架之后，这个结果显而易见。
+		</li>
+
+		<li  class = "maintext fragment">	
+		但在，克里普克革命之前，甚至在塔斯基革命之前，这个结果依赖句法推导，并不容易得出。
+		</li>
+
+		
+		
+
+	<li class = "maintext fragment">
+		这个工作是沈有鼎在哈佛读硕士期间完成的！
+	
+</li>
+	</ul>
+
+		<!-- Character beliefs and pictures -->
+	</br>
+</br>
+</br>
+	</div>
+	
+	
+
+
+	
+	
+	
+</section>
+
+<section>
+						<h3>问题缘起</h3>
+						<ul class="container fragment">
+			
+		<li  class = "maintext fragment">	
+			Lewis 1918年的著作 “A Survey of Symbolic Logic” 被Post指出存在一个错误公设。他在1920的文章中予以修正。
+		</li>
+
+		<li  class = "maintext fragment">	
+		1932年这本 “Symbolic Logic”收录了修正的公设集A，连同本书第六章的另一个公设集B一起放在附录里。附录包含了大量其他人的工作，包括五个四值代数为两个公设集提供的语义。其中Group II和Group III 由华沙大学的Dr. Wajsberg博士在1927年通过信件传递给Lewis。其它由 Dr. William T. Parry完成, 而他也独立发现了Group II和Group III，并在他的博士论文中收录了Group I, II, III.
+		</li>
+
+		
+	
+	</ul>
+					
+						
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<img  width="270" height="350" data-src="material\Lewis.jpeg" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							<img  width="270" height="350" data-src="material\parry.jpg" alt="Down arrow">
+						
+						</div>
+						<div class="col-50">
+							<img  width="270" height="340" data-src="material\group.png" alt="Down arrow">
+						
+						</div>
+						</div>
+						</div>
+			
+					</section>
+<section>
+	<h3>模态逻辑史的节点</h3>
+						<ul class="container fragment">
+			
+		<li  class = "maintext fragment">	
+			Becker (1930) 关于模态词的论文 “Zur Logik der Modalitäten.” 中提出，一些复杂的模态词是Lewis的严格蕴含无法处理的。 
+		</li>
+
+		<li  class = "maintext fragment">	
+		Wajsberg提出了一个扩张严格蕴含系统的提纲，其等价于严格蕴含系统中的公设加上Becker的论文所提倡的C11。
+		</li>
+		<li  class = "maintext fragment">	
+		Max Cresswell (“Modal Logic before Kripke” 2019)认为从Lewis的表述来看，“Wajsberg在Becker在的工作出现之前就已经看到了它的重要性”。</li>
+	</ul>
+		 <table class = "smtext fragment">
+    <thead>
+      <tr>
+        <th>公式</th>
+        <th>Lewis 严格蕴含记法</th>
+        <th>Becker 记法</th>
+        <th>现代模态记法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>C10</td>
+        <td>~◇~p ⥽ ~◇~~◇~p</td>
+        <td>∼−p &lt;∼−∼−p</td>
+        <td>□(□p → □□p)</td>
+      </tr>
+      <tr>
+        <td>C11</td>
+        <td>◇p ⥽ ~◇~◇p</td>
+        <td>−∼p &lt;∼∼p</td>
+        <td>□(◇p → □◇p)</td>
+      </tr>
+      <tr>
+        <td>C12</td>
+        <td>p ⥽ ~◇~◇p</td>
+        <td>p &lt;∼∼p</td>
+        <td>□(p → □◇p)</td>
+      </tr>
+    </tbody>
+  </table>			
+						
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<img  width="230" height="280" data-src="material\Oscar_Becker.jpg" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							<img  width="230" height="280" data-src="material\Post.jpg" alt="Down arrow">
+						
+						</div>
+						<div class="col-50">
+							<img  width="230" height="280" data-src="material\cresswell.jpg" alt="Down arrow">
+						
+						</div>
+						</div>
+						</div>
+			
+					</section>
+
+
+
+<section>
+	<h3>Lewis在附录中的回应</h3>
+
+		<ul class="container fragment">
+			
+
+		<li  class = "maintext fragment">	
+			这三条公设与AB两套系统都是一致的并且独立于它们（无法被推出），但只有群III的语义使全部三条公设有效，而群I会让他们全部不再有效。 
+		</li>
+
+		<li  class = "maintext fragment">	
+		包含A和C10的系统 推不出C11 或C12， B和C10也推不出它们。C10在群II有效但 C11和C12 不是有效的。
+		</li>
+
+	<li class = "maintext fragment">
+		如果有A或B，那么从C11可以推出C10和C12（这是因为A和B系统都包括S1，语义蕴含自返框架）。
+</li>
+
+	<li class = "maintext fragment">
+		能否从C10和C12推出C11？可以，这就是沈有鼎的工作！
+</li>
+	</ul>
+<img class = "fragment" width="320" height="400" data-src="material\shen.png" alt="Down arrow">
+						
+	
+</section>
+
+
+<section>
+	<h3>证明过程</h3>
+	
+	 <table class = "smtext fragment">
+    <thead>
+      <tr>
+        <th>公式</th>
+        <th>Lewis 严格蕴含记法</th>
+        <th>Becker 记法</th>
+        <th>现代模态记法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>C10</td>
+        <td>~◇~p ⥽ ~◇~~◇~p</td>
+        <td>∼−p &lt;∼−∼−p</td>
+        <td>□(□p → □□p)</td>
+      </tr>
+      <tr>
+        <td>C11</td>
+        <td>◇p ⥽ ~◇~◇p</td>
+        <td>−∼p &lt;∼∼p</td>
+        <td>□(◇p → □◇p)</td>
+      </tr>
+      <tr>
+        <td>C12</td>
+        <td>p ⥽ ~◇~◇p</td>
+        <td>p &lt;∼∼p</td>
+        <td>□(p → □◇p)</td>
+      </tr>
+    </tbody>
+  </table>			
+	
+		<div>	
+		<ol class="container fragment">
+			
+
+		<li  class = "maintext fragment">	
+		C10 改写 ◇◇p ⥽ ◇p</li>
+
+		<li  class = "maintext fragment">	
+		 ◇p ⥽ ◇◇p   通过对公设 p ⥽ ◇p 进行代入 [◇p/p]
+		</li>
+
+	<li class = "maintext fragment">
+		 ◇◇p = ◇p   通过1，2。这个公式命名为 C10.1
+</li>
+
+<li class = "maintext fragment">
+		◇p ⥽~◇~◇◇p 通过对C12进行代入 [◇p/p]
+</li>
+
+	<li class = "maintext fragment">
+		 ◇p ⥽~◇~◇p  通过对4进行等价替换 [◇◇p/◇p]. Q.E.D.
+</li>
+	</ol>
+	
+	<p class = "maintext fragment"> Lewis在附录里明确提到了，这个证明归功于沈有鼎。而这样一来，他可以对Wajsberg的提纲进行回应，给出已归约的扩张版本。而这也是他在附录最后给出了S1 到S5 的背景。其中S1到S3只用到了A和B中的公理，S4则是B1-B7加上C10，而S5则是B1-B7加上C11（当然也可以加上C10和C12）。并提到Dr. Wajsberg也给出了等价于S5的系统。</p>
+	</div>
+</section>
+
+<section>
+	<h3>意义与澄清</h3>
+	
+		<div>	
+		<ul class="container fragment">
+			
+
+		<li  class = "maintext fragment">	
+		必须要考虑到的现实是，这个结果是在前克里普克时代，通过严格蕴含的句法推演证明了刚刚提出的较为复杂的模态公式的蕴含和归约。因为这本书出版于1932年，而Becker包含三条公理的论文出版于1930年。沈有鼎的这项工作应该完成于他在哈佛大学留学期间1929-1932。作为逻辑学刚刚起步环境下成长起来的中国学者，已经可以在当时逻辑学的前沿问题上做出贡献。
+
+		<li  class = "maintext fragment">	
+		 对于这个工作难度的评价，受限于Lewis原文中描述较少。沈有鼎的某些有难度的工作可能被忽略了。例如，只要有C10的简易等价形态，不需要C10.1，C10+C12对C11的蕴含依然可以得出。这或许可以大大跳出Lewis的严格蕴含系统。因为就我们今天所知，即使在非自返框架下，公理4和公理B依然蕴含公理5。
+		</li>
+
+	<li class = "maintext fragment">
+		 沈有鼎工作的难度可以从某个侧面体现出来。Oskar Becker在1930的文章有挑战Lewis的意味，他认为Lewis的严格蕴含无法处理复杂模态，也无法对叠置模态词进行归约。而他的三条公理正是能够对模态进行归约的。但他没注意到这三条模态词之间的蕴含和等价关系。
+</li>
+
+<li class = "maintext fragment">
+		Wajsberg是当时模态词归约问题最重要的研究者。尤其是他对S5的研究，证明了S5的模态词可以归约到6个，而且所有公式都可以等价于到只有模态深度为1的公式。同样，对于S4他也证明了模态词可以归约到有穷多个，但无法等价到深度为1的公式。但这个归约不知为何被遗漏了。
+</li>
+
+	
+	</ul>
+	</div>
+</section>
+
+<section>
+	<h3>疑惑求解以及未来工作</h3>
+	
+		<div class="maintext">	
+		<p>沈先生的这个工作是否被研究过？</p>
+
+		<p>扬·弗霍夫斯基（Jan Vrhovski）《汉学家眼中的“清华逻辑学派”》没有提到</p>
+
+		<p>《沈有鼎文集》里涉及严格蕴含与模态逻辑的内容较少，没有找到</p>
+
+		<p>刘培育《伟大而可爱的人—— 纪念沈有鼎先生诞生100周年》里有提到 “<i>沈先生早在20世纪30年代就用数理逻辑处理过复杂的模态问题，有不少新的发现。</i>他晚年花很多精力研究逻辑模态和本体论模态，计划结合后来西方模态逻辑的新发展，把自己多年的研究成果做个系统的总结，写一本关于模态的书，并阐述其哲学意义。他曾在逻辑室开过讲座，可惜此书没有完成。” </p>
+	</div>
+</section>
+	
+	
+				
+	
+				
+
+				<section data-auto-animate data-background-iframe ="frame/cube_end.html" frameBorder="0" >
+					
+					
+                 
+				</section>
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="https://i.upmath.me/latex.js"></script>
+		
+<script>
+  Reveal.initialize({
+	katex: {
+	  version: 'latest',
+	  delimiters: [
+		{left: '$$', right: '$$', display: true},
+		{left: '$', right: '$', display: false},
+		{left: '\\(', right: '\\)', display: false},
+		{left: '\\[', right: '\\]', display: true}
+	 ],
+	 ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+   },
+   plugins: [ RevealMath.KaTeX ]
+  });
+</script>
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

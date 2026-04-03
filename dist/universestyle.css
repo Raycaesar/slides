@@ -1,0 +1,1173 @@
+.container {
+    display: flex;
+  
+}
+
+.main_li {
+    font-size: 34px; 
+    line-height: 1.2;
+}
+
+.sub_li {
+    font-style: oblique 40deg;
+    font-size: 24px; 
+    font-family:  "Courier New";
+}
+.bran_li {
+    font-style: oblique 40deg;
+    font-size: 18px; 
+}
+.col{
+    flex: 1;
+    font-size: 16px;
+}
+
+.col-60 {
+    text-align: left;
+    flex: 60%;
+    font-size: 16px;
+}
+.col-50 {
+    line-height: 1.8;
+    flex: 50%;
+    font-size: 26px;
+    text-align: left;
+}
+.col-c50 {
+    line-height: 1.8;
+    flex: 50%;
+    font-size: 26px;
+    text-align: center;
+}
+.col-40 {
+    line-height: 1.8;
+    text-align: left;
+    flex: 40%;
+    font-size: 26px;
+}
+
+.col-s40 {
+    line-height: 1.8;
+    text-align: left;
+    flex: 40%;
+    font-size: 16px;
+}
+
+.col-s50 {
+    line-height: 1.8;
+    text-align: left;
+    flex: 50%;
+    font-size: 14px;
+}
+.row{
+    flex: 1;
+    font-size: 18px;
+    
+}
+.describe{
+    font-size: medium;
+}
+em{
+    color: #ED493C;
+}
+strong{
+  color:cyan;
+}
+b{ font-family: sans-serif;
+    color: plum;}
+
+u{font-family: cursive;
+    color: aquamarine;
+
+}
+
+i{
+    font-style: italic;
+    color: greenyellow;
+}
+.def{
+    text-align: left;
+}
+
+p{text-align: left;}
+
+.example{
+    font-size: 25px;
+    font-style: italic;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FEF9D9;
+}
+
+.title{
+    text-align: center;
+}
+.noborder .reveal section img {
+    background:none; 
+    border:none; 
+    box-shadow:none;
+    }
+    #characters {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+    .character {
+        text-align: center;
+    }
+    .character-img {
+        width: 120px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    .wide-img {
+        width: 250px;
+        height: 100px;
+        
+    }
+    textarea {
+        width: 200px;
+        height: 50px;
+        background-color: transparent;
+        color: aqua;
+    }
+
+    button {
+        width: 150px;
+        height: 40px;
+        background-color:  #a23;
+        opacity: 0.8; 
+        border: none;
+        color: white;
+        padding: 2px 2px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        margin-top: 3px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    #lanzhou {width: 40px;
+        border-radius: 20px 20px;}
+
+    button:hover {
+        background-color: #dd5566;;
+    }
+
+
+    svg {
+        z-index: -1;
+    }
+
+   
+    h3{
+        text-align: center;
+    }
+
+    b.white{
+        color: white;
+
+    }
+    b.orange{
+        color: orange;
+
+    }
+    .system{
+        font-size: 16pt;
+        border: white solid;
+        text-align: left;
+        padding-top: 5px;
+        padding-left: 50px;
+        padding-bottom: 5px;
+        width: 800px;
+    }
+    .maintext{
+        font-size: 26px;
+      
+    }
+
+    .maintext h5 {
+  white-space: nowrap;
+}
+    .smtext{
+        font-size: 20px;
+      
+    }
+    .kl{
+        text-align: left;
+    }
+
+    .kb{
+        font-size: 38;
+    }
+  
+    .bright {
+        opacity: 0.9;
+    }
+
+    .dark {
+        opacity: 0.1;
+    }
+
+
+    #left, #center, #right {
+        transition: all 0.5s ease;
+    }
+
+    #left, #right {
+        flex: 1;
+        padding: 10pt;
+    }
+
+    #center {
+        flex: 3;
+        opacity: 0.9; /* Always bright */
+    }
+
+    #container1 {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 20pt;
+    }
+
+    iframe{
+        padding: 10pt;
+    }
+
+    .tri-20 {
+        line-height: 1.8;
+        flex: 20%;
+    }
+
+
+    
+    .align_right {
+        display: flex;
+        justify-content: flex-end; /* Ensures flex items are aligned to the right */
+        text-align: right;
+        width: 80%; /* Ensures the container takes the full width */
+      /*   margin-left: auto; Pushes content to the right */
+    }
+
+    .align_just {
+        display: flex;
+         justify-content: space-evenly; /* Aligns images to the far left and right */
+        width: 100%; /* Ensure the container takes up the full width of its parent */
+    }
+/* Three-Column Layout Styling (Optimized for Dark Theme) */
+.three-col-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* 方案五：脉冲光效 */
+
+/* 定义一个名为 "pulse" 的动画 */
+@keyframes pulse {
+  from {
+    top: 5%;
+    opacity: 1;
+  }
+  to {
+    top: 95%;
+    opacity: 0;
+  }
+}
+
+.three-col-item {
+  flex: 1;
+  padding: 0 15px;
+  text-align: left;
+  font-size: 0.8em;
+  position: relative;
+}
+
+/* 用 ::before 创建静态的、半透明的背景线 */
+.three-col-item:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5%;
+  bottom: 5%;
+  width: 1px;
+  background: var(--r-link-color, #a23);
+  opacity: 0.3; /* 背景线设为半透明 */
+}
+
+/* 用 ::after 创建移动的光点 */
+.three-col-item:not(:first-child)::after {
+  content: '';
+  position: absolute;
+  left: -1px; /* 覆盖在背景线上 */
+  width: 3px;
+  height: 10%; /* 光点的高度 */
+  background: radial-gradient(
+    circle, 
+    #fff, /* 中心是白色 */
+    var(--r-link-color-hover, #dd5566), /* 外围是亮红色 */
+    transparent 70% /* 边缘是透明的，形成光晕 */
+  );
+  border-radius: 50%;
+  
+  /* 应用动画，让它无限循环 */
+  animation: pulse 2.5s ease-in infinite;
+}
+
+.three-col-item:first-child {
+  border-left: none;
+}
+
+.three-col-item h4 {
+  text-align: center;
+  color: #eee; /* 确保标题是亮的 */
+  /* 使用主题中的链接颜色作为下划线，保持风格统一 */
+  border-bottom: 2px solid var(--r-link-color, #a23);
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.three-col-item p,
+.three-col-item li {
+  color: #ddd; /* 确保正文和列表文字是亮的 */
+}
+
+.three-col-item ul {
+  list-style-type: '✔ ';
+  padding-left: 20px;
+}
+.three-col-item li {
+    margin-bottom: 15px;
+}
+
+/* ============================================= */
+/* ==  VISIBILITY FIXES FOR KATEX AND SVG      == */
+/* ============================================= */
+
+/* 1. 让 KaTeX 公式在深色背景下可见 */
+
+/* 2. 让 SVG 图形在深色背景下可见 */
+.tableau-svg text {
+  fill: #eee; /* SVG 文字填充为亮色 */
+}
+.tableau-svg line {
+  stroke: #eee; /* SVG 线条描边为亮色 */
+}
+.tableau-svg .branch-closed {
+  /* 使用主题中链接悬停的亮红色，更醒目 */
+  fill: var(--r-link-color-hover, #dd5566); 
+  
+}
+.tableau-svg .branch-open1 {
+  fill: #8f8; /* 用绿色表示开放分支，更清晰 */
+}
+
+/* ============================================= */
+/* ==  SLIDE 3: TWO-COLUMN & DIAGRAM STYLES    == */
+/* ============================================= */
+
+.subtitle {
+  font-size: 0.8em;
+  color: #ccc;
+  margin-top: -20px;
+  margin-bottom: 40px;
+}
+
+.two-col-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px; /* 两栏之间的间距 */
+}
+
+.col-left {
+  flex: 1; /* 左栏占据可用空间的一半 */
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.col-right {
+  flex: 1; /* 右栏占据可用空间的一半 */
+  display: flex;
+  justify-content: space-around; /* 让图示横向排列 */
+  align-items: flex-start;
+}
+
+.col-left h4 {
+  color: #eee;
+  border-bottom: 1px solid var(--r-link-color, #a23);
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.col-left ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.col-left li {
+  margin-bottom: 20px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.col-left li::before {
+  content: '🌲'; /* 用树的图标作为列表符号 */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--r-link-color, #a23);
+}
+
+
+/* Styling for diagrams in the right column */
+.diagram-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diagram-title-ok, .diagram-title-bad {
+  margin: 0 0 10px 0;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+.diagram-title-ok {
+  color: #8f8; /* 绿色 */
+}
+.diagram-title-bad {
+  color: #f88; /* 红色 */
+}
+
+.tree-diagram .tree-node {
+  fill: #eee;
+  stroke: #999;
+  stroke-width: 1;
+}
+
+.tree-diagram .tree-edge {
+  stroke: #eee;
+  stroke-width: 1;
+}
+
+.tree-diagram .error-path {
+  /* 使用主题中的亮红色来高亮错误路径 */
+  stroke: var(--r-link-color-hover, #dd5566);
+  stroke-width: 2;
+  stroke-dasharray: 4 2; /* 虚线效果 */
+}
+
+/* ============================================= */
+/* ==  SLIDE 5: STATIC RULES & DEMO LAYOUT     == */
+/* ============================================= */
+
+
+.two-col-container-static {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  height: 85%;
+}
+
+/* Left column for the rules toolbox */
+
+.rules-toolbox h4 {
+    width: 90%;
+    text-align: center;
+    color: #eee;
+    margin: 15px 0 10px 0;
+    font-size: 0.9em;
+}
+.rules-toolbox hr {
+    width: 80%;
+    border: 0;
+    border-top: 1px solid var(--r-link-color, #a23);
+    margin: 10px 0;
+}
+.rules-toolbox .rule-svg {
+    width: 80%;
+    height: auto;
+    max-height: 120px;
+}
+.rules-toolbox .rule-svg text, 
+.rules-toolbox .rule-svg line {
+    stroke: #ddd;
+    fill: #ddd;
+    font-size: 22px;
+    stroke-width: 1;
+}
+
+
+.rules-toolbox {
+  flex: 4.5; 
+  display: flex;
+  flex-direction: column;
+   justify-content: flex-start; 
+  align-items: center;
+  padding-top: 0; /* 移除内边距，让flexbox完全控制居中 */
+}
+
+.rules-compact-grid {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+    gap: 20px 10px;
+}
+
+.rule-svg-compact {
+    width: 100px; /* 再次增大SVG容器尺寸 */
+    height: 140px;
+}
+
+.rule-svg-compact text {
+    fill: #eee;
+    font-size: 24px; /* 修改：再次显著增大字体 */
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; /* 换一个更优雅的衬线字体 */
+    font-weight: bold; /* 加粗 */
+}
+
+.rule-svg-compact line {
+    stroke: #eee;
+    stroke-width: 1px;   /* 修改：将线条变细，突出文字 */
+}
+
+
+/* Right column for the demo canvas */
+.demo-canvas {
+  flex: 5.5; 
+  padding: 10px 10px 10px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; 
+}
+
+
+
+.demo-canvas h4 {
+    color: #eee;
+}
+
+
+#demo-tree-svg-static {
+    width: 100%;
+    height: 100%;
+}
+#demo-tree-svg-static .tree-text {
+    fill: #eee;
+    font-size: 20px;
+    font-family: monospace;
+}
+#demo-tree-svg-static .tree-line {
+    stroke: #eee;
+    stroke-width: 1.5;
+}
+#demo-tree-svg-static .branch-closed {
+    fill: var(--r-link-color-hover, #dd5566);
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* 让 fragment 平滑地淡入 */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+/* List of literals from the open branch */
+.literal-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    font-size: 0.8em;
+    color: #ddd;
+    text-align: center;
+}
+.literal-list .literal {
+    font-family: monospace;
+    color: var(--r-link-color-hover, #dd5566);
+    background: rgba(255,255,255,0.1);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+.literal-list .value {
+    font-weight: bold;
+    color: #8f8;
+}
+.countermodel-canvas {
+  flex: 4.5; /* 占据剩余空间 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 0.8em;
+}
+
+/* Styling for the generated truth table */
+.truth-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.truth-table th, .truth-table td {
+  border: 1px solid #555;
+  padding: 10px;
+  text-align: center;
+}
+.truth-table th {
+  color: var(--r-link-color, #a23);
+  font-weight: bold;
+}
+.truth-table td {
+  color: #eee;
+  font-family: monospace;
+}
+.truth-table .true {
+  color: #8f8; /* Green for TRUE */
+  font-weight: bold;
+}
+.truth-table .false {
+  color: #f88; /* Red for FALSE */
+  font-weight: bold;
+}
+
+/* Styling for highlighting the open branch in the SVG */
+.open-branch-highlight {
+  fill: var(--r-link-color, #a23);
+  opacity: 0.2;
+  stroke: var(--r-link-color-hover, #dd5566);
+  stroke-width: 2px;
+  stroke-dasharray: 4 2;
+}
+.branch-open {
+    fill: #8f8;
+    font-size: 24px;
+    font-weight: bold;
+}
+/* ======================================================== */
+/* ==  SLIDES 2 & 3: TRUTH TABLE & DERIVATION STYLES   == */
+/* ======================================================== */
+.two-col-container-static1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* 修改：让两栏内容垂直居中对齐 */
+  gap: 10px;
+  height: auto;
+  margin-top: 10px;
+}
+/* Styling for the truth tables */
+.truth-table-demo {
+  margin: 20px auto;
+  border-collapse: collapse;
+  font-size: 0.8em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+.truth-table-demo thead tr {
+  background-color: var(--r-link-color, #a23);
+  color: #ffffff;
+  text-align: center;
+}
+.truth-table-demo th,
+.truth-table-demo td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+.truth-table-demo tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.truth-table-demo tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.truth-table-demo .result-column {
+  background-color: rgba(162, 51, 35, 0.2); /* Light red background for result column */
+  font-weight: bold;
+  text-align: center;
+}
+.truth-table-demo .counterexample-row {
+    background-color: rgba(221, 85, 102, 0.4) !important; /* Highlight for counterexample row */
+}
+.truth-table-demo .highlight-row {
+    background-color: rgba(144, 238, 144, 0.3) !important; /* Light green for highlighted rows */
+}
+
+
+/* Box for the analysis text */
+.analysis-box {
+    margin-top: 30px;
+    font-size: 0.9em;
+}
+.analysis-box p {
+    margin: 10px 0;
+}
+.analysis-box i {
+    margin-right: 10px;
+    color: var(--r-link-color, #a23);
+}
+
+/* Styling for the derivation box on slide 3 */
+.derivation-box {
+    text-align: left;
+    padding-left: 30px;
+}
+.derivation-box p {
+    font-size: 0.9em;
+}
+.derivation-box .minterm-list {
+    list-style: none;
+    padding-left: 20px;
+    font-size: 0.8em;
+}
+.derivation-box .minterm-list li {
+    margin-bottom: 10px;
+}
+.derivation-box code {
+    font-family: monospace;
+    background: #eee;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #333;
+}
+.derivation-box .conclusion-text {
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--r-link-color, #a23);
+}
+
+
+/* ======================================================== */
+/* ==  SLIDE 4: KARNAUGH MAP STYLES (REFINED VERSION)    == */
+/* ======================================================== */
+
+
+/* ======================================================== */
+/* ==  SLIDE 4: KARNAUGH MAP STYLES (WIDTH CORRECTED)    == */
+/* ======================================================== */
+
+/* 右栏：卡诺图容器 */
+.k-map-container {
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.k-map-wrapper {
+    margin-bottom: 20px;
+}
+
+/* 卡诺图表格本身 */
+.k-map-table {
+  border-collapse: collapse;
+  font-size: 1.1em;
+}
+
+/* 普通单元格的样式 */
+.k-map-table th, .k-map-table td {
+  border: 1px solid #ccc;
+  width: 55px;  /* 修改：恢复到合理的单元格宽度 */
+  height: 55px; /* 修改：恢复到合理的单元格高度 */
+  text-align: center;
+  font-family: monospace;
+  transition: background-color 0.5s ease-in-out;
+}
+.k-map-table th {
+  background: #f8f8f8;
+  font-weight: bold;
+  color: #555;
+  border: 1px solid #ccc;
+}
+.k-map-table td {
+    font-weight: bold;
+}
+
+/* 新增：专门为左上角单元格设置样式 */
+.k-map-table .k-map-corner {
+    width: 80px; /* 给予更宽的空间 */
+    white-space: nowrap; /* 强制不换行 */
+}
+
+
+/* 单元格高亮样式 */
+.k-map-table td.group-1 {
+    background-color: rgba(162, 51, 35, 0.3);
+}
+.k-map-table td.group-2 {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+.k-map-table td.group-3 {
+    background-color: rgba(54, 6, 37, 0.3);
+}
+
+/* 图例样式 */
+.k-map-legend {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 0.8em;
+    text-align: center;
+}
+.k-map-legend ul {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+    text-align: left;
+}
+.k-map-legend li {
+    margin-bottom: 15px;
+}
+.k-map-legend .color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+.k-map-legend .color-box.group-1 {
+    background-color: rgba(162, 51, 35, 0.3);
+}
+.k-map-legend .color-box.group-2 {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+/* 最终公式样式 */
+.final-expression {
+    margin-top: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* ======================================================== */
+/* ==  SLIDES 5 & 6: K-MAP EXERCISE STYLES               == */
+/* ======================================================== */
+
+.k-map-exercise {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+/* ======================================================== */
+/* ==  FINAL SLIDE: APPLICATIONS STYLES                  == */
+/* ======================================================== */
+
+.app-container {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.app-container h4 {
+    font-size: 1.2em;
+    color: var(--r-main-color);
+    border-bottom: 2px solid var(--r-link-color, #a23);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.app-container h4 i {
+    margin-right: 15px;
+}
+
+.app-list {
+    list-style: none;
+    padding: 0;
+}
+
+.app-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.app-list li i {
+    font-size: 1.5em;
+    color: var(--r-link-color, #a23);
+    margin-top: 5px;
+    margin-right: 20px;
+    width: 30px; /* Ensure consistent icon alignment */
+    text-align: center;
+}
+
+.app-list li p {
+    margin: 5px 0 0 0;
+    font-size: 0.8em;
+    color: #555; /* Slightly dimmer text for descriptions */
+}
+
+/* Styles for the workflow diagram */
+.workflow-diagram {
+    width: 100%;
+    max-width: 300px; /* Limit max width */
+    height: auto;
+}
+.workflow-diagram .workflow-box {
+    fill: #f9f9f9;
+    stroke: var(--r-link-color, #a23);
+    stroke-width: 1.5;
+}
+.workflow-diagram .workflow-text {
+    font-size: 10px;
+    font-family: var(--r-main-font);
+    text-anchor: middle;
+    fill: #333;
+}
+.workflow-diagram .workflow-arrow {
+    stroke: #333;
+    stroke-width: 1.5;
+}
+.workflow-diagram .workflow-label {
+    font-size: 8px;
+    font-style: italic;
+    text-anchor: middle;
+    fill: #555;
+}
+
+img.logo:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+.litlist li { 
+  margin-bottom: 0.4em; 
+  list-style: "📘 ";
+  font-size: 90%;
+}
+
+.rule {
+  background: rgba(255,255,255,0.05);
+  border-left: 4px solid #00ccff;
+  padding: 3px;
+  border-radius: 8px;
+}
+.traits li { margin: 0.3em 0; }
+.example { color: #ccc; }
+.legend small { color: #ccc; }
+p.example { background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
+
+.axiom {
+  background: rgba(255,255,255,0.08);
+  padding: 6px;
+  margin: 4px 0;
+  border-left: 4px solid #00ccff;
+  border-radius: 4px;
+}
+
+.tutorial {
+            background-color: #fff;
+            color: #333; /* 教程使用亮色背景 */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .tutorial ul { list-style-type: disc; padding-left: 30px; }
+        .tutorial li { margin-bottom: 10px; }
+        .example { background-color: #f0f0f0; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        
+        #network {
+            border: 1px solid white;
+            background-color: #fff; /* SVG 背景设为白色 */
+        }
+
+
+        .cy {
+            width: 1200px;
+            height: 600px;
+            border: 1px solid white;
+            background-color: #fff; /* SVG 背景设为白色 */
+            overflow: auto; /* 如果内容溢出，允许滚动 */
+        }
+
+        .selected {
+            fill: #007bff;
+            cursor: move;
+        }
+        .definition-box {
+            background-color: #f9f9f9;
+            color: #333; /* 亮色背景，深色文字 */
+            border: 1px solid black;
+            max-width: 1000px;
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            text-align: left;
+            font-size: 0.8em; /* 缩小字体以容纳更多文本 */
+        }
+        .axioms { margin-top: 10px; }
+        .content {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            padding: 20px;
+            text-align: left;
+        }
+        .definition {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            color: #333;
+            background-color: #fff;
+        }
+        .verification{
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            padding: 20px;
+            color:brown;
+        }
+        
+        /* 用于 Belief Output 的特定样式 */
+        #beliefOutput {
+            background: #333;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 1.1em;
+            white-space: pre-wrap;
+            color: #fff;
+        }
+        #satisfaction {
+            
+            font-weight: bold;
+            color: #42affa;
+        }
+
+        .tableau-rule {
+            font-family: monospace, sans-serif;
+            text-align: center;
+            margin-bottom: 1.0em;
+            font-size: 0.40em; /* 缩小字体以适应空间 */
+            line-height: 1.4;
+        }
+        .rule-name {
+            font-weight: bold;
+            font-size: 0.8em;
+            color: #eee;
+        }
+        .rule-premise {
+            border: 1px solid #999;
+           
+            display: inline-block;
+            
+        }
+        .rule-conclusion {
+            border: 1px solid #999;
+         
+            display: inline-block;
+           
+        }
+        .rule-branch-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .rule-branch {
+            padding: 0 10px;
+        }
+        .arrow {
+            color: #999;
+            font-size: 1.2em;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        .rules-compact-grid-custom {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列布局 */
+            gap: 2px;
+        }
+       .tinytext{
+        font-size: 13.5pt;
+       }
+
+       .tableau-container-svg {
+            background-color: #2b2b2b;
+            border: 1px solid #555;
+            padding: 5px;
+            border-radius: 8px;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .tableau-container-svg  {
+            font-size: 0.55em;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            /* 确保 Unicode 文本正确显示 */
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif;
+        }
+
+        .tableau-container-svg .tree2-text {
+            /* 字体缩小，并使用支持 Unicode 的字体 */
+            font-size: 10px; 
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif;
+            fill: #eee;
+        }
+
+        .tableau-container-svg .tree-line {
+            stroke: #999;
+            stroke-width: 1.5;
+        }
+
+        .tableau-container-svg .branch2-closed {
+            font-size: 10px;
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif;
+            fill: #ff6b6b; /* 闭合分支的颜色 */
+            font-weight: bold;
+            font-style: italic;}
+
+    .branch2-open{
+        font-size: 10px;
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif;
+            fill: #8f8;
+            font-weight: bold;
+            font-style: italic;
+
+    }
+
+    .proof-step {
+            width: 100%;
+            
+        }
+        .proof-grid {
+            display: grid;
+            grid-template-columns: 60% 40%; /* 6:4 分栏 */
+            gap: 10px;
+            text-align: left;
+            font-size: 0.7em;
+            align-items: center; /* 垂直居中 */
+            margin-top: 1em;
+        }
+        .proof-row-math {
+            text-align: right;
+            padding-right: 15px;
+            border-right: 1px solid #555; /* 中间加一条分割线，可选 */
+        }
+        .proof-row-reason {
+            padding-left: 15px;
+            font-style: italic;
+            color: #aaa;
+        }
+        .step-title {
+            text-align: left;
+            color: #42affa; /* 标题高亮颜色 */
+            margin-bottom: 0.5em;
+            font-size: 0.9em;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }

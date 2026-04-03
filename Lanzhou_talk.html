@@ -1,0 +1,1199 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/league.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h2> 社交网络中的信念传播 </h2>
+                    
+					
+					<p class="title">
+						祝瑞 
+							
+						<br/>
+					
+	
+						 </p>
+					 <container class="align_just">
+					
+							<div class="col-c50">
+							<img class="logo" style="background: white;" width="200" height="200" data-src="material\lan_zhou_logo.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							
+							
+						<br>	 
+					 
+					 兰州大学哲学社会学院 <br/><button id="lanzhou" onclick="connectSerial()"> @</button> 兰州 2025.9  <br/> 
+						</div>
+						
+						</container>
+					
+				</section>
+
+
+
+			
+				
+							
+								
+							
+					
+
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+
+function handleSerialInput(data) {
+  console.log("Serial input:", data);
+
+  switch (data) {
+    case '1':
+      Reveal.right();
+      break;
+    case '0':
+      Reveal.left();
+      break;
+    case '2':
+      Reveal.up();
+      break;
+    case '3':
+      Reveal.down();
+      break;
+    case '4':
+      spreadBelief('aladdin');
+      break;
+    case '5':
+      spreadBelief('chopper');
+      break;
+    default:
+      console.warn("Unrecognized input:", data);
+  }
+}
+
+</script>
+
+							<!-- Character beliefs and pictures -->
+							<section>
+						<h3>社交宣告</h3>
+					
+						<div class="container">	
+						</div>
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<div class="character" id="aladdin">
+								<img src="material/genie1.png" alt="Aladdin" class="wide-img">
+								
+								<textarea readonly id="aladdin-belief">灯神是蓝色的</textarea>
+								<button onclick="spreadBelief('aladdin')">传播阿拉丁的信念</button>
+							</div>
+							
+							<div class="character" id="bulma">
+								🡹
+							</br>
+								<img src="bulma.png" alt="Bulma" class="character-img"> 
+								<textarea readonly id="bulma-belief"> 如果灯神是蓝色的，他一定有长长的眼线。</textarea>
+								<button onclick="spreadBelief('bulma')">散布布尔玛的信念</button>
+							</div>
+							</div>
+
+							<div class="col-50">
+							<div class="character" id="chopper">
+								🡸
+								<img src="chopper.png" alt="Chopper" class="character-img">
+								<textarea readonly id="chopper-belief">如果灯神是蓝色的，他一定有圆圆的脑袋。</textarea>
+								<button onclick="spreadBelief('chopper')">传播乔巴的信念</button>
+							</div>
+							
+						</br>
+						❓❓❓<div class="character" id="doraemon">
+								<img src="doraemon.png" alt="Doraemon" class="character-img">
+							
+								<textarea readonly id="doraemon-belief">我有这世界上唯一的圆形蓝色脑袋</textarea>
+							</div>
+						</div>
+						</div>
+						</div>
+				
+					
+						
+						
+						
+					</section>
+					
+						
+			
+				
+				<script>
+					function spreadBelief(character) {
+						if (character === 'aladdin') {
+							document.getElementById('bulma-belief').innerHTML = '灯神是蓝色的并且他有长长的眼线！';
+							document.getElementById('chopper-belief').innerHTML = '灯神是蓝色的并且他有圆圆的脑袋';
+							document.getElementById('bulma').getElementsByTagName('img')[0].src = 'bulma_happy.png';
+							document.getElementById('chopper').getElementsByTagName('img')[0].src = 'chopper_happy.png';
+						} else if (character === 'bulma') {
+							// No change happens here based on your description
+						} else if (character === 'chopper') {
+							document.getElementById('doraemon-belief').innerHTML = '等等...我怎么成了灯神!?';
+							document.getElementById('doraemon').getElementsByTagName('img')[0].src = 'doraemon_shock.gif';
+						}
+					}
+				</script>
+
+
+<section>
+	<h3>逻辑架构</h3>
+	
+	<div class="container">
+
+		
+		<ul>
+			<p class = "maintext"> 我们使用带有<i>行动</i>算子的动态认知逻辑。
+			</p> 
+
+		<li  class = "maintext">	
+			$B_{a} \theta$ 是说 "主体 $a$ 相信 $\theta$。" 
+		</li>
+
+		<li  class = "maintext">	
+			$\langle X\rangle\phi$ 表达 "行动 $X$ 发生后，$\phi$ 就会成为真的。"
+			<ul> 
+				<li  class = "maintext">	
+			<i>例如：</i> $[a: \theta](B_{b}\gamma \wedge \neg B_{c}\gamma)$ 是说 "主体 $a$ 向他社交圈的追随者宣告 $\theta$ 后, 主体 $b$ 相信 $\gamma$, 但主体 $c$ 没有。"
+				</li>
+			</ul>
+		</li>
+
+		
+		<li  class = "maintext" >	
+			信念 ($\gamma$) 和宣告 ($\theta$) 都被限制在 <b>命题</b> 层面。
+		</li>
+
+	<li class = "maintext">
+
+		主体被要求是 <em>保守的</em>：他们不会舍弃已有的信念。
+</li>
+	</ul>
+
+		<!-- Character beliefs and pictures -->
+	</br>
+</br>
+</br>
+	</div>
+	
+	
+
+
+	
+	
+	
+</section>
+
+<section>
+<section>
+	<h3>模型的视觉表达</h3>
+	
+	<div class="container">
+		
+	<ul>
+		
+
+		<p class = "example ">
+
+			信念状态由彩图表达: 带<b class="white">白色</b>圈的点表示命题 $p$ 在<i>信念空间</i>的 <em>外延</em>, 而 <b class="orange">橙色</b>圈的点构成主体的信念状态。
+		</p>
+
+		
+
+			
+			
+
+
+	</div>
+
+<div id="characters">
+	
+	<div class="col-c50 ">
+
+							
+$$	
+
+
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+
+
+\draw[white, line width=1pt] (A4) circle (18pt);
+\draw[white, line width=1pt] (B2) circle (18pt);
+\draw[white, line width=1pt] (B1) circle (18pt);
+\draw[white, line width=1pt] (D1) circle (18pt);
+
+
+\draw[orange, line width=1pt] (D1) circle (15pt);
+\draw[orange, line width=1pt] (B1) circle (15pt);
+\draw[orange, line width=1pt] (B2) circle (15pt);
+
+
+
+
+\end{tikzpicture}
+
+		
+			$$
+				
+			
+	</div>
+								
+	<div class="col-c50 fragment">
+		
+		$$	
+		
+
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+
+\draw[white, line width=1pt] (A4) circle (18pt);
+\draw[white, line width=1pt] (B2) circle (18pt);
+\draw[white, line width=1pt] (B1) circle (18pt);
+\draw[white, line width=1pt] (D1) circle (18pt);
+
+
+
+\draw[orange, line width=1pt] (B1) circle (15pt);
+
+\end{tikzpicture}
+
+		
+			$$
+		
+			
+			
+		</div>
+	  </div>
+	  
+	
+					
+</section>
+	
+<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\denotation\denotation_slide.html"></section>
+</section>
+</section>
+
+
+
+
+
+
+	
+
+
+<section>
+	<h3>语义</h3>
+<p class = "maintext"> 一个模型 $m = (f, k)$ 是一个二元组其中函数 $f$ 代表一个 <b>社交网络</b> 而函数 $k$ 代表一个 <b>认知分配</b>。 </p>
+
+
+
+<div class="container">
+				
+				
+<div class="col">
+
+
+	<div class ="def">
+					
+$$	
+\begin{tikzpicture}[node distance=1.5cm]
+% Define nodes with white text
+\node(A)  [text = white] {\textbf{model} $m$};
+\node(A1) [below of=A, text=orange] {$a$};
+\node(A2) [left of=A1, text=cyan] {$b$};
+\node(B1) [below of=A1, text=magenta] {$c$}; % Corrected from B1 to A1
+\node(B2) [left of=B1, text=green] {$d$};
+
+
+
+% Draw arrows
+\draw[->, white] (A1) .. controls +(up:19mm) and +(right:15mm) .. (A1);
+\draw[->, white] (A2) -- (A1);
+\draw[->, white] (B1) -- (A1);
+\draw[->, white] (B2) -- (B1);
+
+\end{tikzpicture}
+\\
+\\
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+\draw[orange, line width=1pt] (A4) circle (21pt);
+\draw[orange, line width=1pt] (B1) circle (21pt);
+
+\draw[cyan, line width=1pt] (B1) circle (18pt);
+\draw[cyan, line width=1pt] (D1) circle (18pt);
+
+
+\draw[magenta, line width=1pt] (D1) circle (15pt);
+\draw[magenta, line width=1pt] (E) circle (15pt);
+
+\draw[green, line width=1pt] (B3) circle (13pt);
+\draw[green, line width=1pt] (D2) circle (13pt);
+\draw[green, line width=1pt] (D3) circle (13pt);
+
+\end{tikzpicture}
+
+
+	$$
+		</div>
+	
+</div>
+						
+<div class="col">
+<div class="def">
+	<ul class="smtext">
+		<li class="fragment">
+		  主体 $\color{orange}{a}$ 相信 $p$ 和 $r$, $B_{a}(p \wedge r)$, 但不相信 $q$, $\neg B_{a}q$。
+		</li>
+		
+		<li class="fragment">
+		  主体 $\color{cyan}{b}$ 相信 $p$, $B_{b}p$, 但不相信 $r$, $\neg B_{b}r$。
+		</li>
+		
+		<li class="fragment">
+		  主体 $\color{magenta}{c}$ 相信 $\neg q$, $B_{c}\neg q$, 但不相信 $p$, $\neg B_{c}p$。
+		</li>
+		
+		<li class="fragment">
+		  主体 $\color{lightgreen}{d}$ 不相信 $r$, $\neg B_{d}r$, 但相信 $q$ 或 $r$ 之一。
+		</li>
+		
+		<li class="fragment">
+		  主体 $\color{orange}{a}$ 宣告 $r$后, $[a:r]m \vDash B_{b}r \wedge B_{c}p \wedge \neg B_{d}r$。
+	
+
+	  $$\begin{tikzpicture}[node distance=1.5cm ]
+	  \node(A4)        [text=white]                {$p,q,r$};
+	  \node(B2)      [below of= A4, text=white ]       {$ p,q$};
+	  \node(B1)      [left of= B2 , text=white]        {$ p,r$};
+	  \node(B3)      [right of=B2, text=white]        {$ q,r $};
+	  
+	  
+	  
+	  \node(D1)      [below of=B1, text=white]       {$p$};
+	  \node(D2)      [right of=D1, text=white]       {$q$};
+	  \node(D3)      [right of=D2, text=white]       {$r$};
+	  
+	  \node(E)      [below  of=D2, text=white] 
+	  {$\varnothing$};
+	  
+	  
+	  \draw[orange, line width=1pt] (A4) circle (21pt);
+	  \draw[orange, line width=1pt] (B1) circle (21pt);
+	  
+	  \draw[cyan, line width=1pt] (B1) circle (18pt);
+	  
+	  
+	  
+	  \draw[green, line width=1pt] (B3) circle (13pt);
+	  \draw[green, line width=1pt] (D2) circle (13pt);
+	  \draw[green, line width=1pt] (D3) circle (13pt);
+	  
+	  \end{tikzpicture}
+	  
+			  
+				  $$
+				</li>
+			</ul>
+</div>
+</div>
+
+</div>					
+</section>
+
+
+
+
+		
+
+<section>
+<section>
+<h3>公理化</h3>
+
+<p class="maintext"> 形式系统 $\mathsf{Fsal}$ 是可靠的和强完全的.</p>
+<div class = "system">
+
+<b>Axioms</b>  $\mathsf{Taut}$ &nbsp;&nbsp;  All substitution instances of propositional tautologies
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_{\top}}$ &nbsp;&nbsp;  $B_{i}\theta$ &nbsp; where &nbsp; $\theta$ is an instance of propositional tautology.
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_B}$ &nbsp;&nbsp;  $B_{a}(\theta \rightarrow \gamma) \rightarrow (B_{a}\theta \rightarrow B_{a}\gamma)$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_{[:]}}$ &nbsp;&nbsp; $[a:\theta](\phi \rightarrow \psi) \rightarrow ([a:\theta]\phi \rightarrow [a:\theta]\psi)$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{[:]Dual}$ &nbsp;&nbsp; $\neg [a:\theta]\phi \leftrightarrow [a:\theta]\neg\phi$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{UMon}$ &nbsp;&nbsp;  $B_{b}\chi\rightarrow[a:\theta]B_{b}\chi$
+</br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{SDMon}$ &nbsp;&nbsp;   $[a:\theta]B_{b}\chi\rightarrow B_{b}(\theta\rightarrow\chi)$
+</br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{RDMon}$ &nbsp;&nbsp;    $[a:\gamma]\neg B_{b}\gamma\rightarrow([a:\theta]B_{b}\chi\rightarrow B_{b}\chi)$
+</br>
+<b>Rules</b>
+	&nbsp;&nbsp;&nbsp;&nbsp; $\mathsf{MP}$ &nbsp;&nbsp;  From $(\phi \rightarrow \psi), \phi $, infer $ \psi$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{[:]Nec}$ &nbsp;&nbsp;  From $\vdash\phi$, infer $\vdash[a:\theta]\phi$
+</div>
+</br>
+	<ul class="smtext fragment"> 
+		<li> <em>真诚</em>社交宣告, $\langle a!\theta \rangle$, 要求宣告 $\theta$ 必须是 $a$ 持有的信念。</li>
+		<li> [SRed]   $\langle a!\theta\rangle\phi\leftrightarrow B_{a}\theta \wedge [a:\theta]\phi$。 </li>
+		<li> 只带有真诚社交宣告的片段, 参见 Xiong et al. (2017)。</li>
+	</ul>
+
+</br>
+</section>
+<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\parse\parse_slide.html"></section>	
+
+</section>
+					
+
+
+<section>
+<section>
+	<h3>任意宣告</h3>
+	
+
+	<div class="maintext">
+
+<p> 
+   <em>任意</em> 社交宣告, $\langle a \rangle\phi$ 或 $\langle a!\rangle \phi$, 表示主体 $a$ 有能力做一个 (真诚) 社交宣告使得 $\phi$ 为真。
+</p>
+
+<div class ="smtext">	
+	$\langle a\rangle\phi$: "主体 $a$ 向其追随者做一个宣告后, $\phi$成为真的。"
+	<br>
+	$\langle a!\rangle\phi$:"主体 $a$ 向其追随者做一个真诚宣告后, $\phi$成为真的。"
+	
+	</div>
+	
+	<div class="smtext fragment kl">
+		<p> 带任意宣告的逻辑都不是 <i>紧致的</i>，参考下面两个例子。</p>
+		$\{\langle a\rangle(B_{a}\bot \wedge \neg B_{b}\bot), \langle a\rangle B_{b}\bot \}\cup \{\neg B_{a}\theta ~~|~~ \theta~~is~~not~~an~~instance ~~of~~tautology~~\}$
+	</br>
+		$\{\langle a!\rangle B_{b}p \wedge \neg B_{b} p \}\cup\{\neg B_{a}\theta ~~|~~ \theta~~is~~not~~an~~instance~~of~~tautology~~\}$
+	
+	
+
+	</div>
+</section>
+
+<section>
+	<h3>Framework</h3>
+	<h6></h6> 
+	<p class="row"> <b>Language of ASAL</b>
+	 $\mathsf{A}$ is a finite set of agents. $\mathsf{Prop}$ is the set of propositional variables.  A <u> message </u> is defined as follows
+	 <br>
+	
+	   \[ \theta := p~|~\neg \theta~|~(\theta\wedge \theta)\]
+	 
+	 And we define language $L_{SAL}$ by specifying   
+	 <br>
+
+	 \[ \phi :=  B_{a} \theta~|~\neg\phi~|~(\phi\wedge\phi)~|~[a: \theta]\phi~|~\langle a! \theta\rangle\phi~|~\langle a \rangle\phi~|~\langle a! \rangle\phi \]  
+	  where $p\in \mathsf{Prop}$, $a \in A$ and for each $a$ there is a modality $B_{a}$ in $L_{SAL}$
+
+		</p>
+	<div class="container">
+	
+	
+<div class="col">
+<div><b>Denotation</b>
+
+<div class ="def">
+\[V = 2^{\mathsf{Prop}}
+\\
+\llbracket p \rrbracket = \{x \in V ~|~ p \in x \}
+\\
+\llbracket \neg \theta \rrbracket = V \backslash \llbracket \theta \rrbracket 
+\\
+\llbracket (\theta_1 \wedge \theta_2) \rrbracket = \llbracket \theta_1\rrbracket \cap \llbracket\theta_2 \rrbracket\]
+</div>
+</div>
+</div>
+		
+<div class="col">
+<b>Model</b>								
+<div class ="def">	
+$~~~~~~~~(f, k)\vDash  B_{a}\theta \Leftrightarrow k(a)\subseteq \llbracket \theta\rrbracket$ 
+<br>
+$~~~~~~~~(f, k)\vDash  [a:\theta] \phi \Leftrightarrow (f, [a:\theta]k)\vDash   \phi$ 
+<br>
+where $[a:\theta]k(b) = 
+\begin{cases}
+k(b)\cap \llbracket \theta \rrbracket~~~~ {\rm if}~b\in f(a), 
+\\
+k(b)~~~~~~{\rm otherwise}
+\end{cases}$
+<br>
+$~~~~~~~~(f, k)\vDash  \langle a!\theta\rangle \phi  \Leftrightarrow [a:\theta](f, k)\vDash \phi~\&~k(a)\subseteq \llbracket \theta\rrbracket$
+<br>
+$~~~~~~~~(f, k)\vDash \langle a\rangle\phi  \Leftrightarrow \exists\theta [a :\theta](f, k) \vDash \phi$
+<br>
+$~~~~~~~~(f, k)\vDash \langle a!\rangle\phi \Leftrightarrow \exists\theta (k(a) \subseteq \llbracket \theta\rrbracket~\&~[a :\theta](f, k) \vDash \phi)$
+
+		
+</div>
+</div>
+</div>	
+
+
+</section>
+
+
+</section>
+
+
+<section>
+	<h3>挑战</h3>
+<p class="maintext">证明带任意宣告算子的社交宣告逻辑需要下面两条规则的可靠性。</p>
+
+<div class = "system">	
+$\mathsf{A^{S}D}~~~~~~~~$  From $\langle a!p\rangle\phi \rightarrow \psi $, infer $ \langle a!\rangle\phi \rightarrow \psi$
+<br>
+$\mathsf{A^{F}D}~~~~~~~~$ From $[a:p]\phi \rightarrow \psi$, infer $\langle a\rangle\phi\rightarrow \psi$
+<br>
+where $p$ is a propositional variable that does not occur $\phi$ or $\psi$.
+</div>
+<br>
+<ul class="smtext fragment"> 
+
+<li > 类似逻辑如带任意宣告算子的公开宣告逻辑因为可靠性证明的问题，导致2008-2014年数篇文章出现错误。</li>
+<br>
+<li >而且遗憾的是，这种可靠性证明所使用的方法 necessity form 依然是这一类逻辑使用的主流。</li>
+<br>
+<li >我的工作就是提供一种更直接的可靠性定理的证明，通过两步骤组成的的模型变换方法：</li>
+    <ul class="fragment">
+        <li >首先对模型进行预处理，成为 $p$-free 的模型。</li>
+        <li >然后对主体在任意宣告后会被保留的信念部分统统加入 $p$。这样一个未在公式中出现的 $p$，可以充当任意宣告的替代。</li>
+    </ul>
+</ul>
+
+
+</section>
+
+<section>
+					<h3>p-free模型</h3>
+					
+    <div class="smtext">
+    <p>
+    <i>例子1 </i>:给定一个模型 $m$ 如下图，考虑 \(q\) 出现在所给公式 \(\phi\)中。我们定义一个不在公式中出现的变元的枚举 \(\Pi = p_{0}, p_{1},...\), 其中 \(p = p_0\), \(r = p_1\), \(s = p_2\)。基于枚举，我们定义一个单射的像映射$g$以及一个公式上的算子$g^{*}$，于是我们可以将模型转换为相应的 <i>$p$-free 模型 $g[m]$</i>。 </p>
+</div>
+                <div id="characters">
+	
+	<div class="col-c50 ">
+
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt] (B1) circle (12pt);
+					\draw[orange, line width=1pt] (B2) circle (12pt);
+					\draw[orange, line width=1pt] (D1) circle (12pt);
+					\draw[orange, line width=1pt] (D3) circle (12pt);
+					\draw[cyan, line width=1pt] (B4) circle (10pt);
+					\draw[cyan, line width=1pt] (D3) circle (10pt);
+					\draw[magenta, line width=1pt] (A1) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}
+
+		
+			$$
+				
+			
+	</div>
+								
+	<div class="col-c50 fragment">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (B6) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (D3) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (D4) circle (12pt);
+					
+					\draw[cyan, line width=1pt, dashed] (B5) circle (10pt);
+					\draw[cyan, line width=1pt, dashed] (D4) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+	  </div>
+<div class="maintext "><p><b>定理 1</b> 对于任何 $\Pi$-free 公式 $\phi$:  
+	<br><br>
+		\(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ m\vDash \phi \iff g[m] \vDash \phi \)
+ </p></div>
+
+
+				
+				</section>
+
+
+<section>
+					<h3>第二次变换</h3>
+					
+    
+ 
+              
+					
+					
+       <div class="smtext "><p> 将 $p$ 指派给任意宣告后会被保留的点，这样一来 $p$与任意宣告的内容等价。 </p>
+		<br>
+		<p><i>例子2</i>: 假设主体 ${\color{magenta}b}$ 和 ${\color{orange}a}$ 追随 ${\color{cyan}c}$, 那么 $g[m]\vDash \langle c! \rangle (B_{a}(r \vee  s)\wedge \neg B_{b}q )$。</p>
+		
+		<p >这是因为 $g[m]\vDash \langle c! (\neg q \vee \neg r) \rangle  (B_{a}(r \vee s)\wedge \neg B_{b}q )$。 
+			<br >对于所有主体 $i$， 我们构造 $k′(i) = (g[k(i)]\setminus [g^{∗}(\neg q \vee \neg r)]) \cup (( g[k(b)] \cap [g^{∗}(\neg q \vee \neg r)]) + p)$。
+			<br> 
+			我们可以看到 $(f, k')\vDash \langle c!p \rangle (B_{a}(r \vee s)\wedge \neg B_{b}q )$。</p>
+		
+</div>
+                <div id="characters">
+						
+	<div class="col-c50">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt] (B6) circle (12pt);
+					\draw[orange, line width=1pt] (D3) circle (12pt);
+					\draw[orange, line width=1pt] (D4) circle (12pt);
+
+					\draw[cyan, line width=1pt] (B5) circle (10pt);
+					\draw[cyan, line width=1pt] (D4) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+
+<div class="col-c50 fragment">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (A4) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (B2) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (B3) circle (12pt);
+					\draw[cyan, line width=1pt, dotted] (A2) circle (10pt);
+					\draw[cyan, line width=1pt, dotted] (B3) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt, dotted] (B1) circle (14pt);
+					\draw[magenta, line width=1pt, dotted] (D1) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+		
+	  </div>
+	  <p class ="smtext fragment">我们最后需要证明新构造模型和原模型对于所有 $p$-free 公式等价。 </p>	
+				</section>
+
+
+
+<section>
+					<h3>无涉于p的可满足</h3>
+			
+
+
+    <div class="maintext "> <p>我们定义信念集上的算子 +：
+		 $\Sigma + p = \{w \cup \{p\}~|~ w \in \Sigma\}$。 
+		 <br>
+		 然后我们定义两个模型 $m_1 = (f_1, k_1)$ 和 $m_2 = (f_2, k_2)$ <i>模$p$等价</i>, 写作 $m_{1} \sim_{p} m_{2}$ 是说
+$k_{1}(a) + p = k_{2}(a) + p$ 对于所有 $a \in A$。 
+<br>
+定义模型 $m$ 满足 $\phi$ <i>无涉于 $p$</i>, 写作 $m \vDash_{p} \phi$:
+<br>
+$m \vDash_{p} \phi \iff m \vDash \phi$ 如果 $\phi$ 不是任意宣告公式。
+<br>
+$m \vDash_{p} \langle a!\rangle\phi \iff$ 存在不包含$p$ 的 $\theta$ 使得 $k(a) \subseteq \llbracket \theta\rrbracket$ 并且 $[a : θ]m \vDash_{p} \phi$。</p>
+	<br>
+
+		<p><b>定理 2 </b>  如果 $m_{1} \sim_{p} m_{2}$ 那么对于所有不包含 $p$ 的 $\phi$：
+	 <br>
+		$~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~m_{1} \vDash_{p} \phi \iff m_{2} \vDash_{p} \phi$
+  <br>
+  <b>定理 3 </b> 如果某个不包含 $p$ 的 $\theta$，并且对所有 $i \in A, m \vDash B_{i}(p \leftrightarrow \theta)$ 那么对于所有不包含 $p$ 的 $\phi$：
+ <br>
+$~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~m \vDash \phi \iff m \vDash_{p} \phi$
+		</p>
+</div>
+	
+</section>
+
+<section>
+					<h3>可靠性证明</h3>
+			
+
+
+    <div class="smtext "><p> 
+<p >
+假设 $\vDash \langle a!p \rangle \phi \rightarrow \psi$, 存在某个模型 $m = (f, k)$ such that $(f, k) \vDash
+\langle a! \rangle \phi$。 </p> 
+
+<p >
+存在某个 $\theta$ 使得 $k(a) \subseteq \llbracket \theta \rrbracket$ 并且 $m \vDash [a : \theta]\phi$。 </p> 
+
+<p >
+ 做第一次变换，得到$p$-free 模型$(f, g[k])$。 进而证明 $(f,g[k]) \vDash [a : g^{∗}\theta]\phi$ and $g[k](a) \subseteq [g^{∗}\theta]$。</p>
+<p >
+
+做第二次变换，得到 $m′ = (f, k′)$ 其中 $k′(b) = （g[k(b)]\setminus [g^{∗}\theta]） \cup （( g[k(b)] \cap [g^{∗}\theta]） + p)$。
+</p>
+<p >
+可证 $m′ \sim_{p} g[m]$。 
+
+</p>
+<p >
+$m′ \vDash_{p} [a : g^{∗}\theta]\phi \wedge B_{a}g^{∗}\theta$ 根据 <b>Theorem 2</b>。  
+</p>
+<p >
+ $m′ \vDash [a : g^{∗}\theta]\phi \wedge B_{a}g^{∗}\theta$,  根据 <b>Theorem 3</b>。
+ </p>
+<p >
+可证 $m′ \vDash [a : p]\phi \wedge B_{a}p~~(即~~ m′ \vDash \langle a!p\rangle \phi)$</b>。 
+</p>
+<p >
+ $m′ \vDash \psi$, 根据假设。 
+
+<p >
+$g[m] \vDash_{p} \psi$ 接着， $g[m] \vDash_{p} g^{∗}\psi$ 根据 <b>Theorem 2</b>。  
+ </p>
+ <p >
+ $g[m] \vDash g^{∗}\psi$ 根据 <b>Theorem 3。</b></p>
+ <p >
+ $m \vDash \psi$, 根据 <b>Theorem 1</b> Q.E.D.
+</p>
+</div>
+	
+</section>
+
+<section><section>
+					<h3>主要结果</h3>
+					
+
+<p class="maintext"> 形式系统 $\mathsf{sal}$ 由 $\mathsf{Fsal}$ 加以下公理与规则得到:</p>
+<div class = "system">
+
+<b>Axioms</b> 
+</br>
+$\mathsf{SRed}~~~~~~$   $\langle a!\theta\rangle\phi\leftrightarrow (B_{a}\theta \wedge [a:\theta]\phi)$ </li>		
+</br>
+$\mathsf{K^{S}_A}~~~~~~~~~~$ $[a!](\phi \rightarrow \psi) \rightarrow ([a!]\phi \rightarrow [a!]\psi)$
+<br>
+$\mathsf{K^{F}_{A}}~~~~~~~~~~$ $[a](\phi \rightarrow \psi) \rightarrow ([a]\phi \rightarrow [a]\psi)$
+<br>
+$\mathsf{A^{S}I}~~~~~~~~~$  $\langle a!\theta\rangle\phi \rightarrow \langle a!\rangle\phi$
+<br>
+$\mathsf{A^{F}I}~~~~~~~~~$  $[a:\theta]\phi \rightarrow \langle a\rangle\phi$
+<br>
+<b>Rules</b>
+<br>
+$\mathsf{[a]Nec}~~~$ From $ \phi$, infer $ [a]\phi$
+<br>
+$\mathsf{[a!]Nec}~~$ From $\phi$, infer $ [a!]\phi$
+<br>
+$\mathsf{A^{S}D}~~~~~~$  From $\langle a!p\rangle\phi \rightarrow \psi $, infer $ \langle a!\rangle\phi \rightarrow \psi$
+<br>
+$\mathsf{A^{F}D}~~~~~~$ From $[a:p]\phi \rightarrow \psi$, infer $\langle a\rangle\phi\rightarrow \psi$
+<br>
+where $p$ is a propositional variable that does not occur $\phi$ or $\psi$.
+</div>
+	
+<p class="maintext fragment"> 构造林登保姆集时，我们使用非贪婪集的技巧。 一个集合的公式是 <u>贪婪的</u> 是说它包括了 <em>余有穷</em>的命题字母集. 我们只须证明 <u>非贪婪</u> 的一致集是可满足的。
+<br>
+最后，系统 <em>$\mathsf{sal}$</em> 是可靠且弱完全的<em>有穷</em>公理系统。 </p>
+	
+					
+				
+				</section>
+
+					<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\announce\announceable_slide.html"></section>
+
+</section>
+
+
+						
+
+
+<section>
+	<h3>Kuijer的反例</h3>
+	
+
+
+<p  class="smtext">
+ Kuijer在2014年发现了APAL规则 <i>$[R_{\Box}]$</i>，他证明了规则
+</p>
+	<div class="smtext fragment kl">
+		
+		From $ \langle \chi\rangle\langle q\rangle\phi\rightarrow\psi$, infer $ \langle \chi\rangle\Diamond\phi\rightarrow\psi$
+where $q\not\in Var(\psi)\cup Var(\phi)\cup Var(\chi)$ 不保持有效性。
+	<br>
+令 $\gamma := p \wedge \widehat{K}_{b}\neg p \wedge \widehat{K}_{a}K_{b}p$. 我们有 $\vDash [\widehat{K}_{b}p]\neg \gamma \rightarrow [q]\neg \gamma$。
+<br>
+
+<img  width="900" height="450" data-src="material\Kuijer_example.png" alt="Down arrow">
+	</div>
+	<br>
+
+	
+	
+</section>
+
+	<section>
+			<h3>目前进度</h3>
+			 <div class="maintext fragment"> 
+				 <ul>
+				<li >我在尝试用这里SAL的方法解决APAL的问题。</li>
+				<li >提供给布尔域的任意公开宣告逻辑 (BAPAL) 非紧致性和新的有穷公理化证明。</li>
+                <li >提供知识域的任意公开宣告逻辑 (EAPAL) 有穷公理化。</li>
+                <li >原始的任意公开宣告逻辑 (APAL) ：非常接近但尚未完成。我对这个思路有信心。一些内容已经发给相关学者们讨论。</li>
+            </ul></div> 
+				
+	</section> 
+		
+		<section>
+			<h2>参考文献</h2>
+			<div class="container">
+				
+			<ul class="example">
+				<li>van Ditmarsch, Hans, Wiebe van Der Hoek, and Barteld Kooi (2007). "Dynamic epis-
+					temic logic"</li>
+			   <li>P. Balbiani et al. (2008) ‘Knowable’ as ‘known after an announcement’. Review of
+Symbolic Logic</li>
+				<li>Seligman, Jeremy, Fenrong Liu, and Patrick Girard (2013). “Facebook and the epistemic logic of friendship”</li>
+				<li>Kuijer, Bouke (2015). "Unsoundness of R$_{\Box}$"</li>
+				<li>Christoff, Zoé (2016). “Dynamic logics of networks: information flow and the spread of opin-
+					ion”</li>
+
+					<li>Xiong, Zuojun et al. (2017). “Towards a logic of tweeting”</li>
+				<li>Xiong and Ågotnes (2020). “Arbitrary propositional network announcement logic,”
+in International Workshop on Dynamic Logic”</li>
+<li>Baltag, A., A. Özgün, and A. L. V. Sandoval (2022) “Arbitrary public announcement
+logic with memory”</li>
+<li>
+Galimullin, R and Kuijer, L.B (2023)
+“Satisfiability of Arbitrary Public Announcement Logic with
+Common Knowledge is $\Sigma^{1}_{1}$-hard” in TARK
+</li>
+
+
+				</ul>
+			</ul>
+		
+			</div>
+		</section> 
+	
+	
+				
+	
+				
+
+				<section data-auto-animate data-background-iframe ="frame/cube_end.html" frameBorder="0" >
+					
+					
+                 
+				</section>
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="https://i.upmath.me/latex.js"></script>
+		
+<script>
+  Reveal.initialize({
+	katex: {
+	  version: 'latest',
+	  delimiters: [
+		{left: '$$', right: '$$', display: true},
+		{left: '$', right: '$', display: false},
+		{left: '\\(', right: '\\)', display: false},
+		{left: '\\[', right: '\\]', display: true}
+	 ],
+	 ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+   },
+   plugins: [ RevealMath.KaTeX ]
+  });
+</script>
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

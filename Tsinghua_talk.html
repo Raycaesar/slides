@@ -1,0 +1,1411 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/league.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h2> Arbitrary Announcement Operators </h2>
+					<h5>How to &nbsp; <button onclick="connectSerial()"> HANDLE THEM</button> &nbsp; via model transformation in Social Announcement Logic</h5>
+                    
+					<p class="title">
+						<small> Rui Zhu 祝瑞 
+							</small>
+						<br/>
+					
+	
+						<small class="align_right" >
+							</p>
+							 
+					 <br/>
+					  Tsting Ch'a Sessions, Tsinghua Logic  <br/> Beijing, June 2025 </small> </p>
+					 <container class="align_just">
+						<img class="logo" style="background: rgba(255,255,255,0.5);" width="200" height="150" data-src="material\The University of Auckland.png" alt="Down arrow">
+						<iframe 
+      src="frame/cube.html"
+      style="
+        width: 200px;
+        height: 150px;
+        border: none;
+        background: transparent;
+        pointer-events: auto;
+      "
+      allowfullscreen
+    ></iframe>
+						<img class="logo" style="background: rgba(255,255,255,0.5);" width="200" height="150" data-src="material\TH_L_logo.jpg" alt="Down arrow">
+						</container>
+					
+				</section>
+
+
+
+			
+					<section>
+						<h3>Social Announcements</h3>
+					
+						<div class="container">
+							
+								
+							
+					
+
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+
+function handleSerialInput(data) {
+  console.log("Serial input:", data);
+
+  switch (data) {
+    case '1':
+      Reveal.right();
+      break;
+    case '0':
+      Reveal.left();
+      break;
+    case '2':
+      Reveal.up();
+      break;
+    case '3':
+      Reveal.down();
+      break;
+    case '4':
+      spreadBelief('aladdin');
+      break;
+    case '5':
+      spreadBelief('chopper');
+      break;
+    default:
+      console.warn("Unrecognized input:", data);
+  }
+}
+
+</script>
+
+							<!-- Character beliefs and pictures -->
+							
+						</div>
+						<div class = "fragment">
+						<div id="characters">
+							<div class="col-50">
+							<div class="character" id="aladdin">
+								<img src="material/genie1.png" alt="Aladdin" class="wide-img">
+								
+								<textarea readonly id="aladdin-belief">Genie is blue</textarea>
+								<button onclick="spreadBelief('aladdin')">Share Aladdin's Belief</button>
+							</div>
+							
+							<div class="character" id="bulma">
+								🡹
+							</br>
+								<img src="bulma.png" alt="Bulma" class="character-img"> 
+								<textarea readonly id="bulma-belief"> If Genie is blue, it has long eyes lashes.</textarea>
+								<button onclick="spreadBelief('bulma')">Spread Bulma's Belief</button>
+							</div>
+							</div>
+
+							<div class="col-50">
+							<div class="character" id="chopper">
+								🡸
+								<img src="chopper.png" alt="Chopper" class="character-img">
+								<textarea readonly id="chopper-belief">If Genie is blue, then he has a perfect round head.</textarea>
+								<button onclick="spreadBelief('chopper')">Broadcast Chopper's Belief</button>
+							</div>
+							
+						</br>
+						❓❓❓<div class="character" id="doraemon">
+								<img src="doraemon.png" alt="Doraemon" class="character-img">
+							
+								<textarea readonly id="doraemon-belief">If there is some blue monster with a perfect round head, then it must be me!</textarea>
+							</div>
+						</div>
+						</div>
+						</div>
+				
+					
+						
+						
+						
+					</section>
+					
+						
+			
+				
+				<script>
+					function spreadBelief(character) {
+						if (character === 'aladdin') {
+							document.getElementById('bulma-belief').innerHTML = 'Genie is blue and it does have long eyelashes!';
+							document.getElementById('chopper-belief').innerHTML = 'Genie is blue and it does have a perfect round head!';
+							document.getElementById('bulma').getElementsByTagName('img')[0].src = 'bulma_happy.png';
+							document.getElementById('chopper').getElementsByTagName('img')[0].src = 'chopper_happy.png';
+						} else if (character === 'bulma') {
+							// No change happens here based on your description
+						} else if (character === 'chopper') {
+							document.getElementById('doraemon-belief').innerHTML = 'wait...I am Genie!?';
+							document.getElementById('doraemon').getElementsByTagName('img')[0].src = 'doraemon_shock.gif';
+						}
+					}
+				</script>
+
+<section>
+	<h3>Protocols</h3>
+	
+	<div class="container">
+
+		
+		<ul>
+			<p class = "maintext"> Different forms of communication can be modeled using the action frameworks of Dynamic Epistemic Logic.
+			</p> 
+
+		<li  class = "maintext">	
+			$B_{a} \theta$ means "agent $a$ believes the statement $\theta$." 
+		</li>
+
+		<li  class = "maintext">	
+			$\langle X\rangle\phi$ expresses "the statement $\phi$ holds after the action $X$ occurs."
+			<ul> 
+				<li  class = "maintext">	
+			<i>E.g.</i> $[a: \theta](B_{b}\gamma \wedge \neg B_{c}\gamma)$ is read as "After agent $a$ announces $\theta$ to its followers, agent $b$ believes $\gamma$, while agent $c$ does not."
+				</li>
+			</ul>
+		</li>
+
+		
+		<li  class = "maintext" >	
+			Both beliefs (e.g., $\gamma$) and announcements (e.g., $\theta$) are represented at the <b>propositional</b> level.
+		</li>
+
+	<li class = "maintext">
+
+		Agents are <em>conservative</em>; they never discard their current beliefs.
+</li>
+	</ul>
+
+		<!-- Character beliefs and pictures -->
+	</br>
+</br>
+</br>
+	</div>
+	
+	
+
+
+	
+	
+	
+</section>
+
+<section>
+<section>
+	<h3>Model Visualization</h3>
+	
+	<div class="container">
+		
+	<ul>
+		
+
+		<p class = "example ">
+
+			Belief states can be displayed by a colorful diagram: nodes circled in <b class="white">white</b> indicate the <em>denotation</em> of proposition $p$, while nodes circled in <b class="orange">orange</b> constitute an agent's belief state.
+		</p>
+
+		
+
+			
+			
+
+
+	</div>
+
+<div id="characters">
+	
+	<div class="col-c50 ">
+
+							
+$$	
+
+
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+
+
+\draw[white, line width=1pt] (A4) circle (18pt);
+\draw[white, line width=1pt] (B2) circle (18pt);
+\draw[white, line width=1pt] (B1) circle (18pt);
+\draw[white, line width=1pt] (D1) circle (18pt);
+
+
+\draw[orange, line width=1pt] (D1) circle (15pt);
+\draw[orange, line width=1pt] (B1) circle (15pt);
+\draw[orange, line width=1pt] (B2) circle (15pt);
+
+
+
+
+\end{tikzpicture}
+
+		
+			$$
+				
+			
+	</div>
+								
+	<div class="col-c50 fragment">
+		
+		$$	
+		
+
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+
+\draw[white, line width=1pt] (A4) circle (18pt);
+\draw[white, line width=1pt] (B2) circle (18pt);
+\draw[white, line width=1pt] (B1) circle (18pt);
+\draw[white, line width=1pt] (D1) circle (18pt);
+
+
+
+\draw[orange, line width=1pt] (B1) circle (15pt);
+
+\end{tikzpicture}
+
+		
+			$$
+		
+			
+			
+		</div>
+	  </div>
+	  
+	
+					
+</section>
+	
+<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\denotation\denotation_slide.html"></section>
+</section>
+</section>
+
+
+
+
+
+
+	
+
+
+<section>
+	<h3>Semantics</h3>
+<p class = "maintext"> A model $m = (f, k)$ is a tuple where $f$ represents a <b>social network</b> and function $k$ represents an <b> epistemic distribution</b>. </p>
+
+
+
+<div class="container">
+				
+				
+<div class="col">
+
+
+	<div class ="def">
+					
+$$	
+\begin{tikzpicture}[node distance=1.5cm]
+% Define nodes with white text
+\node(A)  [text = white] {\textbf{model} $m_1$};
+\node(A1) [below of=A, text=orange] {$a$};
+\node(A2) [left of=A1, text=cyan] {$b$};
+\node(B1) [below of=A1, text=magenta] {$c$}; % Corrected from B1 to A1
+\node(B2) [left of=B1, text=green] {$d$};
+
+
+
+% Draw arrows
+\draw[->, white] (A1) .. controls +(up:19mm) and +(right:15mm) .. (A1);
+\draw[->, white] (A2) -- (A1);
+\draw[->, white] (B1) -- (A1);
+\draw[->, white] (B2) -- (B1);
+
+\end{tikzpicture}
+\\
+\\
+\begin{tikzpicture}[node distance=1.5cm ]
+\node(A4)        [text=white]                {$p,q,r$};
+\node(B2)      [below of= A4, text=white ]       {$ p,q$};
+\node(B1)      [left of= B2 , text=white]        {$ p,r$};
+\node(B3)      [right of=B2, text=white]        {$ q,r $};
+
+
+
+\node(D1)      [below of=B1, text=white]       {$p$};
+\node(D2)      [right of=D1, text=white]       {$q$};
+\node(D3)      [right of=D2, text=white]       {$r$};
+
+\node(E)      [below  of=D2, text=white] 
+{$\varnothing$};
+
+
+\draw[orange, line width=1pt] (A4) circle (21pt);
+\draw[orange, line width=1pt] (B1) circle (21pt);
+
+\draw[cyan, line width=1pt] (B1) circle (18pt);
+\draw[cyan, line width=1pt] (D1) circle (18pt);
+
+
+\draw[magenta, line width=1pt] (D1) circle (15pt);
+\draw[magenta, line width=1pt] (E) circle (15pt);
+
+\draw[green, line width=1pt] (B3) circle (13pt);
+\draw[green, line width=1pt] (D2) circle (13pt);
+\draw[green, line width=1pt] (D3) circle (13pt);
+
+\end{tikzpicture}
+
+
+	$$
+		</div>
+	
+</div>
+						
+<div class="col">
+<div class="def">
+	<ul class="smtext">
+		<li class="fragment">
+		  $\color{orange}{a}$ believes $p$ and $r$, $B_{a}(p \wedge r)$, but does not believe $q$, $\neg B_{a}q$.
+		</li>
+		
+		<li class="fragment">
+		  $\color{cyan}{b}$ believes $p$, $B_{b}p$, but does not believe $r$, $\neg B_{b}r$.
+		</li>
+		
+		<li class="fragment">
+		  $\color{magenta}{c}$ believes $\neg q$, $B_{c}\neg q$, but does not believe $p$, $\neg B_{c}p$.
+		</li>
+		
+		<li class="fragment">
+		  $\color{lightgreen}{d}$ does not believe $r$, $\neg B_{d}r$, but believes either $q$ or $r$, $B_{d}(q \vee r)$.
+		</li>
+		
+		<li class="fragment">
+		  After $\color{orange}{a}$ announces $r$, the updated model $[a:r]m_{1}$ satisfies $B_{b}r \wedge B_{c}p \wedge \neg B_{d}r$.
+	
+
+	  $$\begin{tikzpicture}[node distance=1.5cm ]
+	  \node(A4)        [text=white]                {$p,q,r$};
+	  \node(B2)      [below of= A4, text=white ]       {$ p,q$};
+	  \node(B1)      [left of= B2 , text=white]        {$ p,r$};
+	  \node(B3)      [right of=B2, text=white]        {$ q,r $};
+	  
+	  
+	  
+	  \node(D1)      [below of=B1, text=white]       {$p$};
+	  \node(D2)      [right of=D1, text=white]       {$q$};
+	  \node(D3)      [right of=D2, text=white]       {$r$};
+	  
+	  \node(E)      [below  of=D2, text=white] 
+	  {$\varnothing$};
+	  
+	  
+	  \draw[orange, line width=1pt] (A4) circle (21pt);
+	  \draw[orange, line width=1pt] (B1) circle (21pt);
+	  
+	  \draw[cyan, line width=1pt] (B1) circle (18pt);
+	  
+	  
+	  
+	  \draw[green, line width=1pt] (B3) circle (13pt);
+	  \draw[green, line width=1pt] (D2) circle (13pt);
+	  \draw[green, line width=1pt] (D3) circle (13pt);
+	  
+	  \end{tikzpicture}
+	  
+			  
+				  $$
+				</li>
+			</ul>
+</div>
+</div>
+
+</div>					
+</section>
+
+
+
+
+		
+
+<section>
+<section>
+<h3>Axiomatization</h3>
+
+<p class="maintext"> The formal system $\mathsf{Fsal}$ is sound and strongly complete.</p>
+<div class = "system">
+
+<b>Axioms</b>  $\mathsf{Taut}$ &nbsp;&nbsp;  All substitution instances of propositional tautologies
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_{\top}}$ &nbsp;&nbsp;  $B_{i}\theta$ &nbsp; where &nbsp; $\theta$ is an instance of propositional tautology.
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_B}$ &nbsp;&nbsp;  $B_{a}(\theta \rightarrow \gamma) \rightarrow (B_{a}\theta \rightarrow B_{a}\gamma)$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{K_{[:]}}$ &nbsp;&nbsp; $[a:\theta](\phi \rightarrow \psi) \rightarrow ([a:\theta]\phi \rightarrow [a:\theta]\psi)$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{[:]Dual}$ &nbsp;&nbsp; $\neg [a:\theta]\phi \leftrightarrow [a:\theta]\neg\phi$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{UMon}$ &nbsp;&nbsp;  $B_{b}\chi\rightarrow[a:\theta]B_{b}\chi$
+</br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{SDMon}$ &nbsp;&nbsp;   $[a:\theta]B_{b}\chi\rightarrow B_{b}(\theta\rightarrow\chi)$
+</br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{RDMon}$ &nbsp;&nbsp;    $[a:\gamma]\neg B_{b}\gamma\rightarrow([a:\theta]B_{b}\chi\rightarrow B_{b}\chi)$
+</br>
+<b>Rules</b>
+	&nbsp;&nbsp;&nbsp;&nbsp; $\mathsf{MP}$ &nbsp;&nbsp;  From $(\phi \rightarrow \psi), \phi $, infer $ \psi$
+</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	$\mathsf{[:]Nec}$ &nbsp;&nbsp;  From $\vdash\phi$, infer $\vdash[a:\theta]\phi$
+</div>
+</br>
+	<ul class="smtext fragment"> 
+		<li> <em>Sincere</em> social announcement, $\langle a!\theta \rangle$, which requires $\theta$ be $a$'s belief.</li>
+		<li> [SRed]   $\langle a!\theta\rangle\phi\leftrightarrow B_{a}\theta \wedge [a:\theta]\phi$ </li>
+		<li> For logic of sincere social announcement, refer to Xiong et al. (2017).</li>
+	</ul>
+
+</br>
+</section>
+<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\parse\parse_slide.html"></section>	
+
+</section>
+					
+
+
+<section>
+<section>
+	<h3>Arbitrary Announcements</h3>
+	
+
+	<div class="maintext">
+
+<p> 
+  The formula for an <em>arbitrary</em> social announcement, $\langle a \rangle\phi$ or $\langle a!\rangle \phi$, signifies that agent $a$ is capable of making a (sincere) social announcement such that $\phi$ holds.
+</p>
+
+<div class ="smtext">	
+	$\langle a\rangle\phi$: "After $a$ makes an announcement to its followers, $\phi$ is true."
+	<br>
+	$\langle a!\rangle\phi$:"After $a$ sincerely makes an announcement to its followers, $\phi$ is true."
+	
+	</div>
+	
+	<div class="smtext fragment kl">
+		<p> Logics involving arbitrary operators are <i>not compact</i>. Here are two counterexamples.</p>
+		$\{\langle a\rangle(B_{a}\bot \wedge \neg B_{b}\bot), \langle a\rangle B_{b}\bot \}\cup \{\neg B_{a}\theta ~~|~~ \theta~~is~~not~~an~~instance ~~of~~tautology~~\}$
+	</br>
+		$\{\langle a!\rangle B_{b}p \wedge \neg B_{b} p \}\cup\{\neg B_{a}\theta ~~|~~ \theta~~is~~not~~an~~instance~~of~~tautology~~\}$
+	
+	
+
+	
+	<container class="align_just">
+					<img  width="400" height="300" data-src="triangle_impossible.png" alt="Down arrow">
+						
+						<iframe 
+      src="frame/cube_question.html"
+      style="
+        width: 400px;
+        height: 300px;
+        border: none;
+        background: transparent;
+        pointer-events: auto;
+      "
+      allowfullscreen
+    ></iframe>
+						
+						</container></div>
+</section>
+
+<section>
+	<h3>Framework</h3>
+	<h6></h6> 
+	<p class="row"> <b>Language of ASAL</b>
+	 $\mathsf{A}$ is a finite set of agents. $\mathsf{Prop}$ is the set of propositional variables.  A <u> message </u> is defined as follows
+	 <br>
+	
+	   \[ \theta := p~|~\neg \theta~|~(\theta\wedge \theta)\]
+	 
+	 And we define language $L_{SAL}$ by specifying   
+	 <br>
+
+	 \[ \phi :=  B_{a} \theta~|~\neg\phi~|~(\phi\wedge\phi)~|~[a: \theta]\phi~|~\langle a! \theta\rangle\phi~|~\langle a \rangle\phi~|~\langle a! \rangle\phi \]  
+	  where $p\in \mathsf{Prop}$, $a \in A$ and for each $a$ there is a modality $B_{a}$ in $L_{SAL}$
+
+		</p>
+	<div class="container">
+	
+	
+<div class="col">
+<div><b>Denotation</b>
+
+<div class ="def">
+\[V = 2^{\mathsf{Prop}}
+\\
+\llbracket p \rrbracket = \{x \in V ~|~ p \in x \}
+\\
+\llbracket \neg \theta \rrbracket = V \backslash \llbracket \theta \rrbracket 
+\\
+\llbracket (\theta_1 \wedge \theta_2) \rrbracket = \llbracket \theta_1\rrbracket \cap \llbracket\theta_2 \rrbracket\]
+</div>
+</div>
+</div>
+		
+<div class="col">
+<b>Model</b>								
+<div class ="def">	
+$~~~~~~~~(f, k)\vDash  B_{a}\theta \Leftrightarrow k(a)\subseteq \llbracket \theta\rrbracket$ 
+<br>
+$~~~~~~~~(f, k)\vDash  [a:\theta] \phi \Leftrightarrow (f, [a:\theta]k)\vDash   \phi$ 
+<br>
+where $[a:\theta]k(b) = 
+\begin{cases}
+k(b)\cap \llbracket \theta \rrbracket~~~~ {\rm if}~b\in f(a), 
+\\
+k(b)~~~~~~{\rm otherwise}
+\end{cases}$
+<br>
+$~~~~~~~~(f, k)\vDash  \langle a!\theta\rangle \phi  \Leftrightarrow [a:\theta](f, k)\vDash \phi~\&~k(a)\subseteq \llbracket \theta\rrbracket$
+<br>
+$~~~~~~~~(f, k)\vDash \langle a\rangle\phi  \Leftrightarrow \exists\theta [a :\theta](f, k) \vDash \phi$
+<br>
+$~~~~~~~~(f, k)\vDash \langle a!\rangle\phi \Leftrightarrow \exists\theta (k(a) \subseteq \llbracket \theta\rrbracket~\&~[a :\theta](f, k) \vDash \phi)$
+
+		
+</div>
+</div>
+</div>	
+
+
+</section>
+
+
+</section>
+
+<section>
+<h3>Prior Research</h3>
+<p class="maintext"> Xiong and Ågotnes (2019) incorporates arbitrary operators based on previous work. However, their approach, relying on the
+same techniques as APAL, only resulted in an infinitary axiomatization.</p>
+
+<p class="maintext"> To complete Lindenbaum construction, Xiong and Ågotnes (2019) adds the following rule, which is an $\omega$ rule, so all rules allows length of derivations to be infinite.
+ </p>
+ </br>
+<div class = "system">
+$\mathsf{Dia}~~~~~~~~\{\widehat{\phi}([a!\theta]\psi)~|~\theta \in L_{Prop}\} \vdash^{\omega} \widehat{\phi}([a!]\psi)$ 
+</div>
+</br>
+<ul class="smtext fragment"> 
+<li > $\widehat{\phi}$, known as <em>necessity forms</em>, is a technique for axiomatization introduced by Goldblatt (1982) which was also used in axiomatizing APAL in  Balbiani, et al(2008) but caused a critical error.</li>
+</br>
+<li > $\omega$ rule is inherently non-computable because checking infinitely many premises is impossible within a finite computational framework, such as a Turing machine. It only has niche usage in specialized areas, such as proof theory. And they have not gained traction as a foundational tool. </li>
+	</ul>
+</section>
+
+<section>
+	<h3>Goal and Obstacle</h3>
+<p class="maintext">Demonstrate the soundness of the following two rules, which enable a more standard Henkin-style construction.</p>
+
+<div class = "system">	
+$\mathsf{A^{S}D}~~~~~~~~$  From $\langle a!p\rangle\phi \rightarrow \psi $, infer $ \langle a!\rangle\phi \rightarrow \psi$
+<br>
+$\mathsf{A^{F}D}~~~~~~~~$ From $[a:p]\phi \rightarrow \psi$, infer $\langle a\rangle\phi\rightarrow \psi$
+<br>
+where $p$ is a propositional variable that does not occur $\phi$ or $\psi$.
+</div>
+<br>
+<ul class="smtext fragment"> 
+
+<li >Suppose \(\vDash [a:p]\phi \rightarrow \psi\) and a model \(m\) such that \(m \vDash \langle a\rangle\phi\). We must show \(m \vDash \psi\).</li>
+<br>
+<li >A standard Henkin construction adds new constants to the non-logical vocabulary, serving as <i>witnesses</i> for quantifiers.</li>
+<br>
+<li >Since \(\mathsf{Prop}\) is fixed, language expansion is not possible. Given \(m \vDash [a:\theta]\phi\), we need a method to transform the model such that announcing \(p\) equates to announcing \(\theta\). This transformation involves two main steps:</li>
+    <ul class="fragment">
+        <li >Transform the model so no agent believes \(p\), ensuring this preserves satisfiability of \(p\)-free formulas, despite interference from agents' beliefs involving \(p\).</li>
+        <li >In the transformed model, assign \(p\) as \(\theta\) for each agent, verifying satisfiability is preserved.</li>
+    </ul>
+</ul>
+
+
+</section>
+
+<section>
+					<h3>p-free model</h3>
+					
+    <div class="smtext">
+    <p>Given a formula \(\phi\), enumerate all propositions not in \(\phi\) as \(\Pi = (p_0, p_1, p_2, \ldots)\).</p>
+    <ul>
+        <li>Define the <em>successor</em> function \(g: \mathsf{Prop} \rightarrow \mathsf{Prop}\),</li>
+        <li>operator \(g^*\) replacing each \(p_i\) with \(p_{i+1}\),</li>
+        <li>model transformation \(g[]\) such that \(g[m]\) is a \(p\)-free model, i.e., \(\bigcup_{i \in A} k(i) \subseteq \llbracket \neg p \rrbracket\).</li>
+        <li>Apply the same for the <em>predecessor</em> function \(\bar{g}: \mathsf{Prop} \setminus \{p\} \rightarrow \mathsf{Prop}\) and operator \(\bar{g}^*\).</li>
+        <li><i>Example</i>: If \(q\) occurs in \(\phi\), and \(p = p_0\), \(r = p_1\), \(s = p_2\), the transformation proceeds accordingly.</li>
+    </ul>
+</div>
+                <div id="characters">
+	
+	<div class="col-c50 ">
+
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt] (B1) circle (12pt);
+					\draw[orange, line width=1pt] (B2) circle (12pt);
+					\draw[orange, line width=1pt] (D1) circle (12pt);
+					\draw[orange, line width=1pt] (D3) circle (12pt);
+					\draw[cyan, line width=1pt] (B4) circle (10pt);
+					\draw[cyan, line width=1pt] (D3) circle (10pt);
+					\draw[magenta, line width=1pt] (A1) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}
+
+		
+			$$
+				
+			
+	</div>
+								
+	<div class="col-c50 fragment">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (B6) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (D3) circle (12pt);
+					\draw[orange, line width=1pt, dashed] (D4) circle (12pt);
+					
+					\draw[cyan, line width=1pt, dashed] (B5) circle (10pt);
+					\draw[cyan, line width=1pt, dashed] (D4) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+	  </div>
+
+
+
+				
+				</section>
+
+
+<section>
+					<h3>Model Reservation</h3>
+					
+    <div class="maintext "><p><b>Theorem 1</b> Given a model $m = (f, k)$ and an infinite enumeration of atomic messages $\Pi =  (p, p_{1}, p_{2}, ....) $ and its successor function $g$. It is provable that for every $\Pi$-free formula $\phi$:  
+	 <br>
+		$~~~~~~~~~~~~m\vDash \phi \iff g[m] \vDash \phi$
+  <br>
+ <br>
+ <i>Remark</i> The dynamic case is tricky. We do not have a direct equivalence like 
+  <br>
+
+ $~~~~~~~~~~~~g[[a:\theta]m]\vDash \phi \iff [a:g^{*}\theta]g[m] \vDash \phi$ 
+ <br>
+ <br>
+ because $\theta$ may contain $p$ and the inverse of $p$ does not exist.
+ <br>
+  <br>
+ <em>Lemma 1</em> Given a model $m = (f, k)$, it is provable that for every message $\theta$ and  $\Pi$-free formula $\phi$
+<br>
+ $~~~~~~~~~~~~g[[a:\theta]m]\vDash \phi \Longrightarrow [a:g^{*}\theta]g[m] \vDash \phi$
+<br>
+$~~~~~~~~~~~~[a:\theta]g[m] \vDash \phi \Longrightarrow g[[a:\bar{g}^{*}\theta[p/\bot]]m]\vDash \phi$ 
+ </p>
+
+</div>
+              
+
+
+
+				
+				</section>
+
+<section>
+					<h3>p-Assignment</h3>
+					
+       <div class="smtext "><p> Then we assign $p$ by letting each agent believe that $p$ and the potential announcement is equivalent. 
+		
+		<i>Example</i>: suppose both ${\color{magenta}b}$ and ${\color{orange}a}$ follow ${\color{cyan}c}$. Then $g[m]\vDash \langle c! \rangle (B_{a}(r \vee  s)\wedge \neg B_{b}q )$.</p>
+		
+		<p >This is because of $g[m]\vDash \langle c! (\neg q \vee \neg r) \rangle  (B_{a}(r \vee s)\wedge \neg B_{b}q )$. Thus, we construct a model $m'$ as below and we can see $m'\vDash \langle c!p \rangle (B_{a}(r \vee s)\wedge \neg B_{b}q )$</p>
+		
+</div>
+                <div id="characters">
+						
+	<div class="col-c50">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt] (B6) circle (12pt);
+					\draw[orange, line width=1pt] (D3) circle (12pt);
+					\draw[orange, line width=1pt] (D4) circle (12pt);
+
+					\draw[cyan, line width=1pt] (B5) circle (10pt);
+					\draw[cyan, line width=1pt] (D4) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt] (D2) circle (14pt);
+					\draw[magenta, line width=1pt] (E) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+
+<div class="col-c50 fragment">
+		
+						
+$$\begin{tikzpicture}[node distance=1.2cm]
+
+					\title{Before Announcement}
+					\node(A1)               [text=white]                        {$p,q,r$};
+					\node(A2)      [right of= A1, text=white]                    {$p,q,s$};
+					\node(A4)       [right of=A2, text=white]                   {$p, r,s $};
+					\node(A3)       [right of=A4, text=white]                   {$q, r,s $};
+					
+					
+					\node(B2)      [below of= A1, text=white]       {$ p,r$};
+					\node(B1)      [left of= B2, text=white]        {$ p,q$};
+					\node(B3)      [right of=B2, text=white]        {$ p,s $};
+					\node(B4)      [right of= B3, text=white]       {$ q,r$};
+					\node(B5)      [right of= B4, text=white]        {$ q,s$};
+					\node(B6)      [right of=B5, text=white]        {$ r,s  $};
+					
+					
+					\node(D1)      [below of=B1, text=white]       {$p$};
+					\node(D2)      [right of=D1, text=white]       {$q$};
+					\node(D3)      [right of=D2, text=white]       {$r$};
+					\node(D4)      [right of=D3, text=white]        {$s $};
+					
+					
+					
+					\node(E)      [below  of=D2, text=white]     {$\varnothing$};
+					
+					
+					
+					
+					\draw[orange, line width=1pt, dashed] (B4) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (A4) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (B2) circle (12pt);
+					\draw[orange, line width=1pt, dotted] (B3) circle (12pt);
+					\draw[cyan, line width=1pt, dotted] (A2) circle (10pt);
+					\draw[cyan, line width=1pt, dotted] (B3) circle (10pt);
+					\draw[magenta, line width=1pt, dashed] (A3) circle (14pt);
+					\draw[magenta, line width=1pt, dotted] (B1) circle (14pt);
+					\draw[magenta, line width=1pt, dotted] (D1) circle (14pt);
+					
+					\end{tikzpicture}$$
+		
+			
+		</div>
+		
+	  </div>
+	  <p class ="smtext fragment">We still need to show that any new model constructed this way agree with the original model for all $p$-free formulas. </p>	
+				</section>
+
+
+
+<section>
+					<h3>Unreference Satisfaction</h3>
+			
+
+
+    <div class="maintext "> <p>Define $\Sigma + p = {w \cup \{p\}~|~ w \in \Sigma}$. We say models $m_1 = (f_1, k_1)$ and $m_2 = (f_2, k_2)$ <i>agree modulo $p$</i>, write $m_{1} \sim_{p} m_{2}$ if
+$k_{1}(a) + p = k_{2}(a) + p$ for all $a \in A$. 
+<br>
+model $m$ satisfies $\phi$ <i>without reference to $p$</i>, write $m \vDash_{p} \phi$ by specifying:
+<br>
+$m \vDash_{p} \phi \iff m \vDash \phi$ if $\phi$ is not an arbitrary announcement formula.
+<br>
+$m \vDash_{p} \langle a!\rangle\phi \iff$ there exists a $\theta$ that does not contain $p$ such that $k(a) \subseteq \llbracket \theta\rrbracket$ and $[a : θ]m \vDash_{p} \phi$
+	<br>
+<em>Lemma 2</em> Given a p-free message $\theta$, and $a, i \in A$ 
+<br>
+$k_{1}(a) + p = k_{2}(a) + p \Rightarrow [a : \theta]k_{1}(i) + p = [a : θ]k_{2}(i) + p$.
+</p>
+		
+		<p><b>Theorem 2 </b>  If $m_{1} \sim_{p} m_{2}$ then for every $\phi$ not containing $p$, it
+is provable that  
+	 <br>
+		$m_{1} \vDash_{p} \phi \iff m_{2} \vDash_{p} \phi$
+  <br>
+  <b>Theorem 3 </b> If for some message $\theta$ not containing $p$ and all
+$i \in A, m \vDash B_{i}(p \leftrightarrow \theta)$ then for all $\phi$ not containing $p$, it is provable that
+ <br>
+$m \vDash \phi \iff m \vDash_{p} \phi$
+<br>
+  <b>Theorem 4 </b> If $m \vDash B_{i}(\theta \leftrightarrow \delta)$ for all $i \in A$, then it is provable that for all $a$,
+<br> 
+$m \vDash \langle a!\theta\rangle \phi \leftrightarrow \langle a!\delta\rangle\phi$
+</div>
+	
+</section>
+
+<section>
+					<h3>Soundness Proof</h3>
+			
+
+
+    <div class="smtext "><p> 
+<p class="fragment">
+Suppose $\vDash \langle a!p \rangle \phi \rightarrow \psi$, some $m = (f, k)$ such that $(f, k) \vDash
+\langle a! \rangle \phi$. </p> 
+
+<p class="fragment">
+There exists some $\theta$ such that $k(a) \subseteq \llbracket \theta \rrbracket$ and $m \vDash [a : \theta]\phi$ by semantics. </p> 
+
+<p class="fragment">
+ $(f,g[k]) \vDash [a : g^{∗}\theta]\phi$ and $g[k](a) \subseteq [g^{∗}\theta]$, by <em>lemma 1</em>.</p>
+<p class="fragment">
+$ (f,g[k]) \vDash_{p} [a : g^{∗}\theta]\phi$,  by definition</p>
+<p class="fragment">
+Define a new model $m′ = (f, k′)$ by specifying $k′(b) = g[k(b)]\setminus [g^{∗}\theta] \cup ( g[k(b)] \cap [g^{∗}\theta] + p)$.
+</p>
+<p class="fragment">
+$m′ \sim_{p} g[m]$, by definition. $~~~~~~~~m′ \vDash_{p} [a : g^{∗}\theta]\phi \wedge B_{a}g^{∗}\theta$ by <b>Theorem 2</b>.  
+</p>
+<p class="fragment">
+ $m′ \vDash [a : g^{∗}\theta]\phi \wedge B_{a}g^{∗}\theta$,  by <b>Theorem 3</b>.
+ </p>
+<p class="fragment">
+$m′ \vDash [a : p]\phi \wedge B_{a}p~~(i.e.~~ m′ \vDash \langle a!p\rangle \phi)$, by <b>Theorem 4</b>. 
+</p>
+<p class="fragment">
+ $m′ \vDash \psi$, by assumption, 
+
+<p class="fragment">
+$g[m] \vDash_{p} \psi$ and then $g[m] \vDash_{p} g^{∗}\psi$ by <b>Theorem 2</b>.  
+ </p>
+ <p class="fragment">
+ $g[m] \vDash g^{∗}\psi$ by <b>Theorem 3</b></p>
+ <p class="fragment">
+ $m \vDash \psi$, by <b>Theorem 1</b> Q.E.D.
+</p>
+</div>
+	
+</section>
+
+<section><section>
+					<h3>Main Result</h3>
+					
+
+<p class="maintext"> The formal system $\mathsf{sal}$ is $\mathsf{Fsal}$ plus the following:</p>
+<div class = "system">
+
+<b>Axioms</b> 
+</br>
+$\mathsf{SRed}~~~~~~$   $\langle a!\theta\rangle\phi\leftrightarrow (B_{a}\theta \wedge [a:\theta]\phi)$ </li>		
+</br>
+$\mathsf{K^{S}_A}~~~~~~~~~~$ $[a!](\phi \rightarrow \psi) \rightarrow ([a!]\phi \rightarrow [a!]\psi)$
+<br>
+$\mathsf{K^{F}_{A}}~~~~~~~~~~$ $[a](\phi \rightarrow \psi) \rightarrow ([a]\phi \rightarrow [a]\psi)$
+<br>
+$\mathsf{A^{S}I}~~~~~~~~~$  $\langle a!\theta\rangle\phi \rightarrow \langle a!\rangle\phi$
+<br>
+$\mathsf{A^{F}I}~~~~~~~~~$  $[a:\theta]\phi \rightarrow \langle a\rangle\phi$
+<br>
+<b>Rules</b>
+<br>
+$\mathsf{[a]Nec}~~~$ From $ \phi$, infer $ [a]\phi$
+<br>
+$\mathsf{[a!]Nec}~~$ From $\phi$, infer $ [a!]\phi$
+<br>
+$\mathsf{A^{S}D}~~~~~~$  From $\langle a!p\rangle\phi \rightarrow \psi $, infer $ \langle a!\rangle\phi \rightarrow \psi$
+<br>
+$\mathsf{A^{F}D}~~~~~~$ From $[a:p]\phi \rightarrow \psi$, infer $\langle a\rangle\phi\rightarrow \psi$
+<br>
+where $p$ is a propositional variable that does not occur $\phi$ or $\psi$.
+</div>
+	
+<p class="maintext fragment"> We construct Lindenbaum set by non-greedy technique. A set of formulas is <u>greedy</u> if it contains a <em>cofinite</em> set of atomic messages. We show that any <u>non-greedy</u> consistent set is satisfiable. 
+<br>
+Hence, <em>$\mathsf{sal}$</em> is a sound and weakly complete <em>finitary</em>  axiomatization. </p>
+	
+					
+				
+				</section>
+
+					<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="frame\programs\announce\announceable_slide.html"></section>
+
+</section>
+
+<section>
+	<h3>Towards Arbitrary Public Announcement Logic</h3>
+	<h6></h6> 
+	<p class="row"> <b>Language of APAL</b>
+		The language of arbitrary public announcement logic $L_{APAL}$ is defined by specifying
+	 <br>
+	
+	   \[ \phi :=  p~|~B_{a} \phi~|~\neg\phi~|~(\phi\wedge\phi)~|~\langle\phi\rangle\phi~|~\Diamond\phi\]
+		</p>
+	<div class="container">
+	
+	
+<div class="col">
+<div><b> Model</b>
+	<br>
+	An epistemic model is triple $m = (W, \{R_{i}\}_{i\in \mathsf{A}}, V)$:
+	<br>
+    $W$ is a non-empty set of points,
+    <br>
+	$R_{i} \subseteq {W^{2}}$ is an accessibility relation for each agent $i \in \mathsf{A}$,
+	<br>
+	$V : \mathsf{Prop} \rightarrow 2^{W}$ is a valuation function. 
+	<br>
+	
+	When a point model $m, w \vDash \phi$, we can define an <i>updated model</i>
+	<br>
+	$[\uparrow \phi]m, w = ([\uparrow \phi]W,
+	\{[\uparrow \phi]R_{i}\}_{i\in \mathsf{A}}, [\uparrow \phi]V), w$: 
+
+	<br>
+$\llbracket \phi\rrbracket_{m} = \{w~|~ m, w \vDash \phi\}$
+<br>
+$[\uparrow \phi]W = \llbracket \phi\rrbracket_{m}$
+<br>
+$[\uparrow \phi]R_{a} = R_{a}\cap \llbracket \phi\rrbracket_{m}^{2}$
+<br>
+$[\uparrow \phi]V(p) = V(p) \cap \llbracket \phi\rrbracket_{m}$
+<br>
+
+
+
+</div>
+</div>
+		
+<div class="col">
+<b>Satisfication</b>								
+<div class ="def">	
+
+<br>
+$m, w \vDash p \Leftrightarrow w\in V(p)$
+<br>
+$m, w \vDash \neg\phi \Leftrightarrow m, w \not\vDash \phi$
+<br>
+$m, w \vDash (\phi\wedge\psi) \Leftrightarrow m, w \vDash \phi$ and $m, w \vDash \psi$
+<br>
+$m, w \vDash B_{a}\phi \Leftrightarrow$  for all $v\in W$ with $wR_{a}v$, $m, v \vDash \phi$
+<br>
+$m, w\vDash  \langle\psi\rangle \phi \Leftrightarrow m, w\vDash \psi~~\&~~[\uparrow \psi]m, w\vDash \phi$
+<br>
+$ m, w \vDash \Diamond\phi \Leftrightarrow$ for some $\epsilon \in L_{EL}$, $ m, w \vDash \langle\epsilon\rangle\phi$
+
+		
+</div>
+</div>
+</div>									
+</section>
+
+<section>
+					<h3>APAL Axiomatization</h3>
+					
+
+<p class="maintext"> Balbiani et al.(2008) axiomatized APAL as follow.</p>
+<div class = "system">
+All substitution instances of propositional tautologies
+<br>
+$K_a(\phi \rightarrow \psi) \rightarrow (K_a\phi \rightarrow K_a\psi)$
+<br>
+<b>Axioms from $\mathsf{S5}$</b>: $K_a\phi \rightarrow \phi$ 
+<br>
+$K_a\phi \rightarrow K_aK_a\phi$
+<br>
+$\neg K_a\phi \rightarrow K_a\neg K_a\phi$
+<br>
+<b>Reduction axioms</b>: $[\psi]p \leftrightarrow (\psi\rightarrow p)$
+<br>
+$[\psi]\neg\phi\leftrightarrow(\psi\rightarrow\neg[\psi]\phi)$
+<br>
+$[\psi](\phi\wedge\chi)\leftrightarrow([\psi]\phi\wedge[\psi]\chi)$
+<br>
+$[\psi]K_a\phi\leftrightarrow (\psi\rightarrow K_a[\psi]\phi)$
+<br>
+$[\psi][\chi]\phi\leftrightarrow[\psi\wedge[\psi]\chi]\phi$
+<br>
+$\langle \epsilon\rangle\phi \rightarrow \Diamond\phi $
+<br>
+<i>$[R_{\Box}]$</i> From $ \langle \chi\rangle\langle p\rangle\phi\rightarrow\psi$, infer $ \langle \chi\rangle\Diamond\phi\rightarrow\psi$
+<br>
+From $ \phi\rightarrow\psi$ and $\phi$, infer $\psi$
+<br>
+From $\vdash \phi$, infer $\vdash K_a\phi$
+<br>
+From $\vdash \phi$, infer $\vdash [\psi]\phi$
+<br>
+where $p\not\in Var(\psi)\cup Var(\phi)\cup Var(\chi)$, $a\in \mathsf{A}$,  $\epsilon \in L_{EL}$ and $\phi, \psi, \chi \in L_{APAL}$. 
+} 
+						
+</section>
+
+<section>
+	<h3>Kuijer's Counterexample</h3>
+	
+
+
+<p  class="smtext">
+ Kuijer found a counterexample to <i>$[R_{\Box}]$</i> in 2014. He showed that the rule
+</p>
+	<div class="smtext fragment kl">
+		
+		From $ \langle \chi\rangle\langle q\rangle\phi\rightarrow\psi$, infer $ \langle \chi\rangle\Diamond\phi\rightarrow\psi$
+where $q\not\in Var(\psi)\cup Var(\phi)\cup Var(\chi)$ does not preserve validity.
+	<br>
+Let $\gamma := p \wedge \widehat{K}_{b}\neg p \wedge \widehat{K}_{a}K_{b}p$. Then we have $\vDash [\widehat{K}_{b}p]\neg \gamma \rightarrow [q]\neg \gamma$
+<br>
+
+<img  width="900" height="450" data-src="material\Kuijer_example.png" alt="Down arrow">
+	</div>
+	<br>
+
+	
+	
+</section>
+
+<section>
+			 <h3>Recent Works in APAL</h3>
+    <ul class="maintext fragment">
+        <li>Balbiani and van Ditmarsch (2015) corrected an error but introduced an \(\omega\) rule in the axiomatization.</li>
+        <li >van Ditmarsch and French (2022) provided a finitary axiomatization for Boolean Arbitrary Public Announcement Logic (BAPAL), restricting the arbitrary announcement operator to Booleans. However, it reuses prior techniques with reduced proof details and does not show if BAPAL is compact.</li>
+        <li>Baltag, Özgün, and Sandoval (2022) enhanced the model with a memory mechanism, enabling a finitary axiomatization for APAL with Memory.</li>
+        <li >Several works on Group Announcement Logic and Coalition Announcement Logic (2008–2014) require correction due to the lack of finitary axiomatization.</li>
+        <li >Kuijer (2014) noted the error's cause remains unclear, and recent works still rely on the same technique, which concerns me.</li>
+        
+        <li >Galimullin and Kuijer (2023) demonstrated that APAL with common knowledge is not finitely axiomatizable.</li>
+    </ul>
+
+				<img  width="900" height="120" data-src="material\open_problem.png" alt="Down arrow">
+	</section> 
+
+<section>
+			<h3>Applying Free Message Technique IN APAL</h3>
+			 <div class="maintext"> <p> 
+				This problem motivated my years-long development of this technique in SAL, potentially applicable to APAL for a solution or analysis.  
+			<br> <br> Using this technique on Kuijer's counterexample reveals the issue stems from differing expressive power between epistemics and propositions. Announcing a fresh \(p\) cannot encompass all epistemics; we must enhance the expressive power of potential witnesses.</p>
+<div class="fragment">
+		<p >Thus, instead, we should show the rule  </p>
+
+			 <div class = "system">
+$\mathsf{AD}~~~~~~$ From $\langle \chi \rangle \langle \neg p \wedge  \widehat{K_{c}}p\rangle \phi \rightarrow \psi$, infer $\langle \chi \rangle \Diamond \phi \rightarrow \psi$ 
+<br>
+where $p\not\in Var(\psi)\cup Var(\phi)\cup Var(\chi)$ and $c\not\in Agt(\psi)\cup Agt(\phi)\cup Agt(\chi)$
+</div>
+
+<p class="fragment">The witness \(\neg p \wedge \widehat{K_c}p\) is epistemic, requiring a countably infinite set of agents. Applying to Kuijer's counterexample, the premise \([\widehat{K}_b p] \neg \gamma \rightarrow [\neg q \wedge \widehat{K_c} q] \neg \gamma\) becomes invalid, as \(\neg q \wedge \widehat{K_c} q\) allows any update combination, making points distinguishable.</p>
+			 </div></div> 
+	</section>
+
+	<section>
+			<h3>Current Progress</h3>
+			 <div class="maintext fragment"> 
+				 <ul>
+				<li class="fragment">Boolean Arbitrary Public Announcement Logic (BAPAL) is non-compact.</li>
+                <li class="fragment">Epistemic APAL (EAPAL), a fragment of APAL without nested arbitrary operators like \([\Diamond p]q\), has a finitary axiomatization.</li>
+                <li class="fragment">I am currently verifying my proof, believing APAL has a finitary axiomatization.</li>
+            </ul></div> 
+				<iframe class="fragment"
+      src="frame/cube_large.html"
+      style="
+        width: 800px;
+        height: 400px;
+        border: none;
+        background: transparent;
+        pointer-events: auto;
+      "
+      allowfullscreen
+    ></iframe>
+	</section> 
+		
+		<section>
+			<h2>Reference</h2>
+			<div class="container">
+				
+			<ul class="example">
+				<li>van Ditmarsch, Hans, Wiebe van Der Hoek, and Barteld Kooi (2007). "Dynamic epis-
+					temic logic"</li>
+			   <li>P. Balbiani et al. (2008) ‘Knowable’ as ‘known after an announcement’. Review of
+Symbolic Logic</li>
+				<li>Seligman, Jeremy, Fenrong Liu, and Patrick Girard (2013). “Facebook and the epistemic logic of friendship”</li>
+				<li>Kuijer, Bouke (2015). "Unsoundness of R$_{\Box}$"</li>
+				<li>Christoff, Zoé (2016). “Dynamic logics of networks: information flow and the spread of opin-
+					ion”</li>
+
+					<li>Xiong, Zuojun et al. (2017). “Towards a logic of tweeting”</li>
+				<li>Xiong and Ågotnes (2020). “Arbitrary propositional network announcement logic,”
+in International Workshop on Dynamic Logic”</li>
+<li>Baltag, A., A. Özgün, and A. L. V. Sandoval (2022) “Arbitrary public announcement
+logic with memory”</li>
+<li>
+Galimullin, R and Kuijer, L.B (2023)
+“Satisfiability of Arbitrary Public Announcement Logic with
+Common Knowledge is $\Sigma^{1}_{1}$-hard” in TARK
+</li>
+
+
+				</ul>
+			</ul>
+		
+			</div>
+		</section> 
+	
+	
+				
+	
+				
+
+				<section data-auto-animate data-background-iframe ="frame/cube_end.html" frameBorder="0" >
+					
+					
+                 
+				</section>
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="https://i.upmath.me/latex.js"></script>
+		
+<script>
+  Reveal.initialize({
+	katex: {
+	  version: 'latest',
+	  delimiters: [
+		{left: '$$', right: '$$', display: true},
+		{left: '$', right: '$', display: false},
+		{left: '\\(', right: '\\)', display: false},
+		{left: '\\[', right: '\\]', display: true}
+	 ],
+	 ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+   },
+   plugins: [ RevealMath.KaTeX ]
+  });
+</script>
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

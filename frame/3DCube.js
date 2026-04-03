@@ -1,0 +1,156 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById("myCanvas");
+  const ctx = canvas.getContext("2d"); 
+
+  // Make canvas fullscreen
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  // Cube properties
+  const SIZE = 40;
+  let Qx = Math.PI / 4;
+  let Qy = Math.PI / 3;
+  let Qz = Math.PI / 4;
+  let dx = 0, dy = 0, dz = 0;
+  let selected = false;
+  let colorsVisible = true;
+
+  const vertices = [
+    [+SIZE, +SIZE, +SIZE],
+    [-SIZE, +SIZE, +SIZE],
+    [-SIZE, -SIZE, +SIZE],
+    [+SIZE, -SIZE, +SIZE],
+    [+SIZE, +SIZE, -SIZE],
+    [-SIZE, +SIZE, -SIZE],
+    [-SIZE, -SIZE, -SIZE],
+    [+SIZE, -SIZE, -SIZE]
+  ];
+
+  const faces = [
+    [0, 1, 2, 3], // front
+    [4, 5, 6, 7], // back
+    [0, 3, 7, 4], // right
+    [1, 2, 6, 5], // left
+    [0, 1, 5, 4], // top
+    [3, 2, 6, 7]  // bottom
+  ];
+
+  const faceColors = [
+    "rgba(255, 105, 97, 0.9)",     // redish front
+    "rgba(119, 221, 119, 0.9)",    // greenish back
+    "rgba(135, 206, 250, 0.9)",    // light blue right
+    "rgba(255, 215, 0, 0.9)",      // golden left
+    "rgba(186, 85, 211, 0.9)",     // purple top
+    "rgba(255, 160, 122, 0.9)"     // salmon bottom
+  ];
+
+  canvas.addEventListener("click", function (e) {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = canvas.width * 0.25;
+    const centerY = canvas.height / 2;
+
+    const dx = x - centerX;
+    const dy = y - centerY;
+
+    if (Math.sqrt(dx * dx + dy * dy) < SIZE * 2) {
+      selected = true;
+    } else {
+      selected = false;
+    }
+  });
+
+  canvas.addEventListener("dblclick", function () {
+    if (selected) {
+      colorsVisible = false;
+    }
+  });
+
+  window.addEventListener("keydown", function (e) {
+    if (!selected) return;
+
+    const step = Math.PI / 180;
+    switch (e.key.toLowerCase()) {
+      case "w": dx += step; break;
+      case "s": dx -= step; break;
+      case "a": dy -= step; break;
+      case "d": dy += step; break;
+      case "z": dz -= step; break;
+      case "x": dz += step; break;
+    }
+  });
+
+  function project([x, y, z]) {
+    let x1 = x * Math.cos(Qz) + y * Math.sin(Qz);
+    let y1 = y * Math.cos(Qz) - x * Math.sin(Qz);
+    let z1 = z;
+
+    let x2 = x1;
+    let y2 = y1 * Math.cos(Qx) + z1 * Math.sin(Qx);
+    let z2 = z1 * Math.cos(Qx) - y1 * Math.sin(Qx);
+
+    let x3 = x2 * Math.cos(Qy) + z2 * Math.sin(Qy);
+    let y3 = y2;
+    return [x3, y3];
+  }
+
+  function toCanvasCoords([x, y]) {
+  return [x + canvas.width * 0.5, -y + canvas.height / 2];
+}
+
+  function drawCube() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const projected = vertices.map(v => toCanvasCoords(project(v)));
+
+    // Draw faces
+    faces.forEach((face, i) => {
+      ctx.beginPath();
+      face.forEach((idx, j) => {
+        const [x, y] = projected[idx];
+        if (j === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      if (colorsVisible) {
+        ctx.fillStyle = faceColors[i];
+        ctx.fill();
+      }
+      ctx.strokeStyle = "white"; // neon border
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+
+    // Draw 3D P inside cube when color is gone
+    if (!colorsVisible) {
+      ctx.save();
+      ctx.translate(canvas.width * 0.5, canvas.height / 2);
+      ctx.rotate(-Qz);
+      ctx.rotate(-Qy);
+      ctx.rotate(-Qx);
+      ctx.font = "bold 50px Arial";
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillText("P", -15, 15);
+      ctx.restore();
+    }
+  }
+
+  function animate() {
+    dx *= 0.98;
+    dy *= 0.98;
+    dz *= 0.98;
+    Qx += dx;
+    Qy += dy;
+    Qz += dz;
+    drawCube();
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+});
+

@@ -1,0 +1,576 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/blood.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h2> 命题逻辑的表列式演算 </h2>
+					
+					<p class="title">
+						祝瑞 
+							
+						<br/>
+					
+	
+						 </p>
+					<!-- <container class="align_just">
+					
+							<div class="col-c50">
+							<img class="logo" style="background: transparent;" width="200" height="200" data-src="material\Anhui_Logo.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							
+							
+						<br>	 
+					 
+					 安徽大学哲学学院 <br/><button id="lanzhou" onclick="connectSerial()"> @</button> 合肥 2025.10  <br/> 
+						</div>
+						
+						</container> -->
+					
+				</section>
+
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+function handleSerialInput(data) {
+  console.log("Serial input:", data);
+
+  switch (data) {
+    case '1':
+      Reveal.right();
+      break;
+    case '0':
+      Reveal.left();
+      break;
+    case '2':
+      Reveal.up();
+      break;
+    case '3':
+      Reveal.down();
+      break;
+    case '4':
+      spreadBelief('aladdin');
+      break;
+    case '5':
+      spreadBelief('chopper');
+      break;
+    default:
+      console.warn("Unrecognized input:", data);
+  }
+}
+
+</script>
+
+
+
+			
+			<section>
+    <h3>为什么选择表列式演算？</h3>
+    <div class="three-col-container">
+        
+        <div class="three-col-item">
+            <h4>1. 正向如“迷宫”</h4>
+            <p class="maintext ">公理化的正向证明，如同在迷宫中寻找出路，需要技巧和灵感，对初学者不够友好。</p>
+           
+				<div>
+        $$    \color{white}   \tiny
+        \begin{aligned} 
+		E.g. &\vdash p\to p & \\
+        1. & (p \to ((p \to p) \to p))\to  &\\
+		~&((p \to (p \to p)) \to (p \to p)) & \text{(A2)} \\
+        2. & p \to ((p \to p) \to p) & \text{(A1)} \\
+        3. & (p \to (p \to p)) \to (p \to p) & \text{(1, 2)} \\
+        4. & p \to (p \to p) & \text{(A1)} \\
+        5. & p \to p & \text{(3, 4)} 
+        \end{aligned}  $$</div>
+            </div>
+        
+
+        <div class="three-col-item fragment">
+            <h4>2. 反向如“地图”</h4>
+            <p class="maintext ">表列式反向分解，如同按图索骥，只需遵守规则，无需选择。树形结构也更直观。还能生成反模型。</p>
+            
+            <svg class="tableau-svg" width="200" height="250" viewbox="0 0 100 125" style="margin-top: 15px;">
+                <text x="50" y="10" font-size="8" text-anchor="middle">p ∨ q</text>
+                <text x="50" y="20" font-size="8" text-anchor="middle">¬p</text>
+                <line x1="50" y1="25" x2="50" y2="45" stroke-width="1"/>
+                <line x1="50" y1="45" x2="25" y2="60" stroke-width="1"/>
+                <line x1="50" y1="45" x2="75" y2="60" stroke-width="1"/>
+                <text x="25" y="70" font-size="8" text-anchor="middle">p</text>
+				
+                <text class="branch-closed" x="25" y="85" font-size="12" text-anchor="middle">×</text>
+                <text x="75" y="70" font-size="8" text-anchor="middle">q</text>
+        
+                <text class="branch-open1" x="75" y="85" font-size="8" text-anchor="middle">(Open)</text>
+            </svg>
+        </div>
+
+        <div class="three-col-item fragment">
+            <h4>3. 实践的“桥梁”</h4>
+            <ul class="maintext ">
+                <li >教学资源稀缺，引入新视角。</li>
+                <li >清晰展现算法思想，加深对“可判定性”等概念的理解。</li>
+                <li >打通逻辑学与计算机科学的壁垒。</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+					
+<section>
+    <h3>表列的结构：什么是“树”？</h3>
+    <p class="maintext">表列式证明的过程，就是一棵不断向下扩展的“树”。</p>
+
+    <div class="two-col-container smtext">
+        <div class="col-left">
+            <h4>一棵“树”是满足以下条件的节点集合：</h4>
+            <ul>
+                <li ><strong>根节点 (Root)</strong>：有且仅有一个节点没有父节点，它是一切的起点。</li>
+                <li><strong>父节点 (Parent)</strong>：除根节点外，每个节点都有且仅有一个父节点。</li>
+                <li ><strong>祖先与后代 (Ancestor / Descendant)</strong>：“是...的父节点的父节点...” 这种关系链构成了祖先与后代。</li>
+                <li ><strong>无环性 (Acyclic)</strong>：一个节点永远不能是其自身的祖先。这是树最重要的特性。</li>
+            </ul>
+        </div>
+
+        <svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <marker id="arrowhead-ok" markerWidth="5" markerHeight="4" refX="2.5" refY="2" orient="auto">
+      <polygon points="0 0, 5 2, 0 4" style="fill:#eee;" />
+    </marker>
+    <marker id="arrowhead-bad" markerWidth="5" markerHeight="4" refX="2.5" refY="2" orient="auto">
+      <polygon points="0 0, 5 2, 0 4" style="fill:var(--r-link-color-hover, #dd5566);" />
+    </marker>
+  </defs>
+</svg>
+
+
+<div class="col-right fragment">
+    <div class="diagram-row">
+        <div class="diagram-container">
+            <h4 class="diagram-title-ok">✔ 这是一棵树</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="10" x2="25" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="50" y1="10" x2="75" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="30" x2="10" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="30" x2="40" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="75" y1="30" x2="75" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="50" cy="10" r="5"/> <circle class="tree-node" cx="25" cy="30" r="5"/> <circle class="tree-node" cx="75" cy="30" r="5"/> <circle class="tree-node" cx="10" cy="50" r="5"/> <circle class="tree-node" cx="40" cy="50" r="5"/> <circle class="tree-node" cx="75" cy="50" r="5"/>
+            </svg>
+        </div>
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (存在多个根)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="30" y1="10" x2="30" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="30" cy="10" r="5"/> <circle class="tree-node" cx="30" cy="30" r="5"/>
+                <line class="tree-edge" x1="70" y1="10" x2="60" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="70" y1="10" x2="80" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="70" cy="10" r="5"/> <circle class="tree-node" cx="60" cy="30" r="5"/> <circle class="tree-node" cx="80" cy="30" r="5"/>
+            </svg>
+        </div>
+    </div>
+    <div class="diagram-row">
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (共享子节点)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="10" x2="25" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="50" y1="10" x2="75" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge error-path" x1="25" y1="30" x2="40" y2="50" marker-end="url(#arrowhead-bad)"/>
+                <line class="tree-edge error-path" x1="75" y1="30" x2="60" y2="50" marker-end="url(#arrowhead-bad)"/>
+                <circle class="tree-node" cx="50" cy="10" r="5"/> <circle class="tree-node" cx="25" cy="30" r="5"/> <circle class="tree-node" cx="75" cy="30" r="5"/> <circle class="tree-node" cx="50" cy="60" r="5"/>
+            </svg>
+        </div>
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (存在循环)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="20" x2="25" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="50" x2="75" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge error-path" x1="75" y1="50" x2="60" y2="30" marker-end="url(#arrowhead-bad)"/>
+                <circle class="tree-node" cx="50" cy="20" r="5"/> <circle class="tree-node" cx="25" cy="50" r="5"/> <circle class="tree-node" cx="75" cy="50" r="5"/>
+            </svg>
+        </div>
+    </div>
+</div>
+    </div>
+</section>					
+			
+				
+<section>
+    <h3>表列法的规则与定理证明</h3>
+    <div class="two-col-container-static">
+
+        <div class="rules-toolbox">
+            <div class="rules-compact-grid">
+				<hr>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A ∧ B</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A ∨ B</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">A</text><text x="75" y="75" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A → B</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">¬A</text><text x="75" y="75" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬¬A</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A ∧ B)</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">¬A</text><text x="75" y="75" text-anchor="middle">¬B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A ∨ B)</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">¬A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">¬B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A → B)</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">¬B</text></svg>
+				<hr>
+            </div>
+        </div>
+
+        <div class="demo-canvas">
+            <p class="smtext">推演：证明 ((p→q)→p)→p</p>
+            <svg id="demo-tree-svg-static" viewbox="0 0 400 500">
+                <g class="fragment" data-fragment-index="1">
+                    <text class="tree-text" x="200" y="30" text-anchor="middle">1. ¬(((p→q)→p)→p)</text>
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                    <line class="tree-line" x1="200" y1="40" x2="200" y2="60"/>
+                    <text class="tree-text" x="200" y="75" text-anchor="middle">2. (p→q)→p</text>
+                    <text class="tree-text" x="200" y="100" text-anchor="middle">3. ¬p</text>
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                    <line class="tree-line" x1="200" y1="110" x2="150" y2="140"/>
+                    <line class="tree-line" x1="200" y1="110" x2="250" y2="140"/>
+                    <text class="tree-text" x="150" y="155" text-anchor="middle">4. ¬(p→q)</text>
+                    <text class="tree-text" x="250" y="155" text-anchor="middle">5. p</text>
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                     <text class="branch-closed" x="250" y="200" text-anchor="middle">× (3, 5)</text>
+                </g>
+                <g class="fragment" data-fragment-index="5">
+                    <line class="tree-line" x1="150" y1="165" x2="150" y2="185"/>
+                    <text class="tree-text" x="150" y="200" text-anchor="middle">6. p</text>
+                    <text class="tree-text" x="150" y="225" text-anchor="middle">7. ¬q</text>
+                </g>
+                <g class="fragment" data-fragment-index="6">
+                     <text class="branch-closed" x="150" y="270" text-anchor="middle">× (3, 6)</text>
+                </g>
+            </svg>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <h3>表列法的应用：检验论证有效性</h3>
+    <div class="two-col-container-static">
+
+        <div class="rules-toolbox">
+            <div class="rules-compact-grid">
+				<hr>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A ∧ B</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A ∨ B</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">A</text><text x="75" y="75" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">A → B</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">¬A</text><text x="75" y="75" text-anchor="middle">B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬¬A</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A ∧ B)</text><line x1="50" y1="20" x2="50" y2="40"/><line x1="50" y1="40" x2="25" y2="60"/><line x1="50" y1="40" x2="75" y2="60"/><text x="25" y="75" text-anchor="middle">¬A</text><text x="75" y="75" text-anchor="middle">¬B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A ∨ B)</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">¬A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">¬B</text></svg>
+                <svg class="rule-svg-compact" viewbox="0 0 100 120"><text x="50" y="15" text-anchor="middle">¬(A → B)</text><line x1="50" y1="20" x2="50" y2="40"/><text x="50" y="55" text-anchor="middle">A</text><line x1="50" y1="60" x2="50" y2="80"/><text x="50" y="95" text-anchor="middle">¬B</text></svg>
+				<hr>
+            </div>
+        </div><div class="demo-canvas">
+    <p class="smtext">推演：(p ∨ ¬r) ∧ (q → r) ⊢ q → p</p>
+    <svg id="demo-tree-svg-static" viewbox="0 0 400 500">
+        
+        <g class="fragment" data-fragment-index="1">
+            <text class="tree-text" x="200" y="30" text-anchor="middle">1. (p ∨ ¬r) ∧ (q → r)</text>
+            <text class="tree-text" x="200" y="55" text-anchor="middle">2. ¬(q → p)</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="2">
+            <line class="tree-line" x1="200" y1="65" x2="200" y2="85"/>
+            <text class="tree-text" x="200" y="100" text-anchor="middle">3. p ∨ ¬r</text>
+            <text class="tree-text" x="200" y="125" text-anchor="middle">4. q → r</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="3">
+            <line class="tree-line" x1="200" y1="135" x2="200" y2="155"/>
+            <text class="tree-text" x="200" y="170" text-anchor="middle">5. q</text>
+            <text class="tree-text" x="200" y="195" text-anchor="middle">6. ¬p</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="4">
+            <line class="tree-line" x1="200" y1="205" x2="150" y2="235"/>
+            <line class="tree-line" x1="200" y1="205" x2="250" y2="235"/>
+            <text class="tree-text" x="150" y="250" text-anchor="middle">7. p</text>
+            <text class="tree-text" x="250" y="250" text-anchor="middle">8. ¬r</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="5">
+            <text class="branch-closed" x="150" y="280" text-anchor="middle">× (6, 7)</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="6">
+            <line class="tree-line" x1="250" y1="260" x2="220" y2="290"/>
+            <line class="tree-line" x1="250" y1="260" x2="280" y2="290"/>
+            <text class="tree-text" x="200" y="305" text-anchor="middle">9. ¬q</text>
+            <text class="tree-text" x="300" y="305" text-anchor="middle">10. r</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="7">
+            <text class="branch-closed" x="170" y="335" text-anchor="middle">× (5, 9)</text>
+        </g>
+
+        <g class="fragment" data-fragment-index="8">
+            <text class="branch-closed" x="290" y="355" text-anchor="middle">× (8, 10)</text>
+        </g>
+
+    </svg>
+</div>
+    </div>
+        
+</section>
+
+<section>
+    <h3>表列法的应用：反例模型生成</h3>
+    <div class="two-col-container-static">
+
+        <div class="demo-canvas"> <p class="smtext">推演：(p → q) ∧ r ⊢ q → (p ∧ r)</p>
+            <svg id="demo-tree-svg-static" viewbox="0 0 400 500">
+                <g class="fragment" data-fragment-index="1">
+                    <text class="tree-text" x="200" y="30" text-anchor="middle">1. (p → q) ∧ r</text>
+                    <text class="tree-text" x="200" y="55" text-anchor="middle">2. ¬(q → (p ∧ r))</text>
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                    <line class="tree-line" x1="200" y1="65" x2="200" y2="85"/>
+                    <text class="tree-text" x="200" y="100" text-anchor="middle">3. p → q</text>
+                    <text class="tree-text" x="200" y="125" text-anchor="middle">4. r</text>
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                    <line class="tree-line" x1="200" y1="135" x2="200" y2="155"/>
+                    <text class="tree-text" x="200" y="170" text-anchor="middle">5. q</text>
+                    <text class="tree-text" x="200" y="195" text-anchor="middle">6. ¬(p ∧ r)</text>
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                    <line class="tree-line" x1="200" y1="205" x2="150" y2="235"/>
+                    <line class="tree-line" x1="200" y1="205" x2="250" y2="235"/>
+                    <text class="tree-text" x="150" y="250" text-anchor="middle">7. ¬p</text>
+                    <text class="tree-text" x="250" y="250" text-anchor="middle">8. q </text>
+                </g>
+                <g class="fragment" data-fragment-index="5">
+                    <line class="tree-line" x1="150" y1="260" x2="120" y2="290"/>
+                    <line class="tree-line" x1="150" y1="260" x2="180" y2="290"/>
+                    <text class="tree-text" x="110" y="305" text-anchor="middle">9. ¬p </text>
+                    <text class="tree-text" x="190" y="305" text-anchor="middle">10. ¬r</text>
+                </g>
+                <g class="fragment" data-fragment-index="6">
+                    <text class="branch-closed" x="200" y="355" text-anchor="middle">× (4, 10)</text>
+                </g>
+                <g class="fragment" data-fragment-index="7">
+                    
+                    <text class="branch-open" x="100" y="335" text-anchor="middle">OPEN</text>
+                </g>
+            </svg>
+        </div>
+        
+        <div class="countermodel-canvas fragment">
+			 <p class="maintext">生成的反例模型</p>
+            <p style="font-size: 0.8em; color: #ccc;">从开放支的“字” (Literals) 中提取真值:</p>
+            <ul class="literal-list">
+                <li><span class="literal">r</span> (from 4) ➞ <span class="value">r = 1</span></li>
+                <li><span class="literal">q</span> (from 5) ➞ <span class="value">q = 1</span></li>
+                <li><span class="literal">¬p</span> (from 7) ➞ <span class="value">p = 0</span></li>
+            </ul>
+            <table class="truth-table">
+                <thead>
+                    <tr>
+                        <th>p</th><th>q</th><th>r</th><th>前提： (p→q)∧r</th><th>结论：q→(p∧r)</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td>0</td><td>1</td><td>1</td><td class="true">1</td><td class="false">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</section>
+	
+	<section>
+    <h3>思考与练习</h3>
+    
+    <div class="summary-box">
+       
+        <ol>
+            <li class="fragment maintext" data-fragment-index="1">
+                根据今天的学习，请思考下列没有涉及的情况：
+                <ul>
+                    <li>如果一个公式 <strong>的否定</strong> (¬φ) 的表列树 <em>有开放分支</em>，说明原公式 φ 是什么？<!--<br/>
+                        <span class="fragment answer" data-fragment-index="2">答案：说明 ¬φ 可满足，因此原公式 φ 是**可证伪的 (falsifiable)**，不是重言式。</span> -->
+                    </li>
+                    <li>如果一个公式 <strong>本身</strong> (φ) 的表列树<em>完全关闭</em>，又说明 φ 是什么？<!--<br/>
+                        <span class="fragment answer" data-fragment-index="3">答案：说明 φ 不可满足，因此它是一个**矛盾式 (contradiction)**。</span>-->
+                    </li>
+                </ul>
+            </li>
+            <li class="fragment maintext" data-fragment-index="4">
+                <b>可判定性 (Decidability)</b>：如果一个问题存在一个<i>能在有限步骤内必定终止</i>、并给出正确“是/否”答案的方法，那么该问题就是<i>可判定的</i>。
+                
+				<p>问题：根据我们今天学习的表列法，请思考：“<i>一个命题公式是否是重言式？</i>” 这个问题是可判定的吗，为什么？<br/>
+                       <!--* <span class="fragment answer" data-fragment-index="5">答案：**是**。因为任何命题逻辑公式都由有限个联结词构成，表列法的分解规则会把公式越拆越小，最终必然终止。树完全关闭则答案为“是”（有效），有开放分支则答案为“否”（无效）。</span>-->
+				</p>
+            </li>
+        </ol>
+    </div>
+
+    <div class="exercise-box fragment">
+        <h4><i class="fa-solid fa-pencil-alt "></i> 练习</h4>
+        <ol>
+            <li class=" maintext" data-fragment-index="6">
+                检验以下公式是否为重言式： <code class="formula">((p ∧ r) → q) → ((¬q ∧ r) → ¬p)</code>
+            </li>
+            <li class=" maintext" data-fragment-index="6">
+                检验以下论证的有效性： <code class="formula"> {p → (¬q ∧ r), ¬r → q} ⊢ ¬p </code>
+            </li>
+           <!-- <li class="fragment" data-fragment-index="8">
+                检验以下公式是否为重言式。如果不是，请给出反例模型。<br/>
+                <code class="formula">(p → q) → (q → p)</code>
+                <div class="fragment solution" data-fragment-index="9">
+                    <p><strong>解答</strong>：该公式**不是**重言式。表列会留下开放分支，其包含的原子信息为 <code class="literal">{¬p, q}</code>。</p>
+                    <p><strong>反例模型</strong>：当 <code class="value">p=0</code>, <code class="value">q=1</code> 时，原公式为假。</p>-->
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>
+				
+	
+				
+
+	
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/math/math.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/search/search.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+
+<script>
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  center: true,
+  hash: true,
+  plugins: [ RevealMath.KaTeX, RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ],
+  katex: {
+    version: "0.16.4", // 或 latest
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$",  right: "$",  display: false},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\[", right: "\\]", display: true}
+    ]
+  }
+});
+</script>
+
+
+
+
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+		
+
+	</body>
+</html>

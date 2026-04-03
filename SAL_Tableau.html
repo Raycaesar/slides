@@ -1,0 +1,905 @@
+
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--<link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css"> 
+		<script src="http://tikzjax.com/v1/tikzjax.js"></script>
+		<script type="text/tikz">
+			\begin{tikzpicture}
+			  \draw (0,0) circle (1in);
+			\end{tikzpicture}
+		  </script>      
+
+		
+		
+		
+		-->
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/universestyle.css"> <!--change style by tags-->
+		<link rel="stylesheet" href="dist/theme/blood.css" id="theme"> <!--change style by themes-->
+		
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<section>
+					<h3> 社交宣告逻辑的表列式演算 </h3>
+					
+					<p class="title">
+						祝瑞 
+							
+						<br/>
+					
+	
+						 </p>
+					 <container class="align_just">
+					
+							<div class="col-c50">
+							<img class="logo" style="background: transparent;" width="200" height="200" data-src="material\East_China_Normal_University_logo.png" alt="Down arrow">
+						
+							</div>
+
+							<div class="col-50">
+							
+							
+						<br>	 
+					 第19届全国现代逻辑学术研讨会<br>
+					 华东师范大学哲学学院 <br/><button id="lanzhou" onclick="connectSerial()"> @</button> 上海 2025.11  <br/> 
+						</div>
+						
+						</container>
+					
+				</section>
+
+<script>
+let port;
+let reader;
+
+async function connectSerial() {
+  try {
+    port = await navigator.serial.requestPort(); // 必须手动点击触发
+    await port.open({ baudRate: 9600 });
+    console.log("Port opened");
+
+    const decoder = new TextDecoderStream();
+    port.readable.pipeTo(decoder.writable);
+    reader = decoder.readable.getReader();
+
+    readSerialLoop();
+  } catch (err) {
+    console.error('Serial Connection Error:', err);
+    alert('串口连接失败，请确认是否正确选择串口。');
+  }
+}
+
+async function readSerialLoop() {
+  while (true) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (value) handleSerialInput(value.trim());
+    } catch (err) {
+      console.error('Read error:', err);
+      break;
+    }
+  }
+}
+function handleSerialInput(data) {
+  console.log("Serial input:", data);
+
+  switch (data) {
+    case '1':
+      Reveal.right();
+      break;
+    case '0':
+      Reveal.left();
+      break;
+    case '2':
+      Reveal.up();
+      break;
+    case '3':
+      Reveal.down();
+      break;
+    case '4':
+      // 模拟点击“随机生成网络”按钮
+      document.getElementById("randomizeNetworkBtn")?.click();
+      break;
+    case '5':
+      // 模拟点击“随机分配信念”按钮
+      document.getElementById("randomizeBeliefsBtn")?.click();
+      break;
+    case '6':
+      // 模拟点击“生成反模型”按钮
+      document.getElementById("construct_countermodel")?.click();
+      break;
+      
+      break;
+    default:
+      console.warn("Unrecognized input:", data);
+  }
+}
+
+</script>
+
+
+
+
+ <section data-auto-animate>
+                <h3> 社交网络</h3>
+            
+                <button id="randomizeNetworkBtn">随机生成网络</button>
+                <p id="followerOutput" class = "smtext"></p>
+                <div id="network">
+                    <svg id="networkCanvas"  width="900" height="400"></svg>
+                </div>
+            </section>
+
+            <section data-auto-animate>
+                <h3>信念分布</h3>
+               
+                <button id="randomizeBeliefsBtn">随机分配信念</button>
+                
+                <div class="cy" style="float: left; width: 75%; height: 550px;">
+                    
+                    <svg class="beliefCanvas" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet"
+     width="100%" height="100%"></svg>
+                </div>
+                
+                <div style="float: right; width: 23%; height: 550px; padding-left: 10px;">
+                    
+                    <p class = "smtext">社交网络:</p>
+                    <div id="network_clone_container" style="width: 100%; height: 150px; border: 1px solid #555; background-color: #fff; margin-bottom: 15px;">
+                        </div>
+                    
+                    <p class = "smtext">宣告:
+                    <input type="text" id="beliefupdate" placeholder="Enter announcement [a:p]"></p>
+                    
+                    <button id="updateModelBtn">更新模型</button>
+                    <button id="restoreBeliefsBtn" style="display: none; background-color: #f0ad4e;">恢复</button>
+                    
+                    <input type="text" id="formulaInput" placeholder="Enter formula, e.g., [a:p]Bbp" style="margin-top: 15px;">
+                    <button id="checkSatBtn">检查</button>
+                    <p id="satisfaction" class = "smtext">结果</p>
+                    
+                </div>
+            </section>
+
+<section>
+  <h3>基本设定</h3>
+  <div class="grid grid-cols-2 gap-6">
+    <div class="rule">
+       
+      <p class = "maintext"><b>信念</b> $B_{a}\theta$: 主体 <em>a</em> 相信命题<em>θ</em>。</p>
+    </div>
+    <div class="rule">
+       
+      <p class = "maintext"> <b>行动</b> $\langle X\rangle\phi$: 公式<em>φ</em> 在行动 <em>X</em> 之后成立。 <br> <i>例如：</i> $[a:\theta](B_{b}\gamma \wedge \neg B_{c}\gamma)$
+        意味着：“在 $a$ 宣告 θ 后，$b$ 相信 γ，而 $c$ 不相信。”
+      </p>
+    </div>
+    <div class="rule">
+       
+      <p class = "maintext"><b>表示</b> 信念和宣告都是<b>命题性</b>的。</p>
+    </div>
+    <div class="rule">
+       
+      <p class = "maintext"><b>网络</b> 网络是<em>静态的</em> —— 在信念传播期间不会改变。</p>
+    </div>
+    <div class="rule col-span-2">
+      <h4>主体属性</h4>
+      <ul class="traits maintext">
+        <li>🧠 <em>轻信的 (Gullible)</em>: 相信接收到的消息。</li>
+        <li>🛡️ <em>保守的 (Conservative)</em>: 永不失去信念。</li>
+        <li>⚙️ <em>逻辑全知的 (Logically omniscient)</em>: 相信他们信念的所有逻辑后果。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section>
+    <h3>框架</h3>
+    <h6></h6> 
+    <p class="row"> <b>语言</b>
+     $\mathsf{A}$ 是一个有限的主体集合。 $\mathsf{Prop}$ 是命题变元的集合。  <u>消息</u> (message) 定义如下
+     <br>
+    
+     \[ \theta ::= p~|~\neg \theta~|~(\theta\wedge \theta)\]
+     
+     我们定义 $L_{SAL}$ 语言中的<u>公式</u> (formula) 如下
+     <br>
+
+     \[ \phi ::=  B_{a} \theta~|~bFa~|~\neg\phi~|~(\phi\wedge\phi)~|~[a: \theta]\phi~|~\langle a! \theta\rangle\phi~|~\langle a! \rangle\phi \]  
+
+     其中 $p\in \mathsf{Prop}$，$a \in A$，并且对于每个 $a$，在 $L_{SAL}$ 中都有一个模态算子 $B_{a}$。
+    </p>
+
+    <div class="container">
+    
+        <div class="col">
+            <div><b>指称 (Denotation)</b>
+                <div class ="def">
+                \[V = 2^{\mathsf{Prop}}
+                \\
+                \llbracket p \rrbracket = \{x \in V ~|~ p \in x \}
+                \\
+                \llbracket \neg \theta \rrbracket = V \backslash \llbracket \theta \rrbracket 
+                \\
+                \llbracket (\theta_1 \wedge \theta_2) \rrbracket = \llbracket \theta_1\rrbracket \cap \llbracket\theta_2 \rrbracket\]
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <b>模型 (Model)</b>                               
+            <div class ="def">   
+            $~~~~~~~~(f, k)\vDash  B_{a}\theta \Leftrightarrow k(a)\subseteq \llbracket \theta\rrbracket$ 
+            <br>
+            $~~~~~~~~(f, k)\vDash  bFa \Leftrightarrow b \in f(a)$ 
+            <br>
+            $~~~~~~~~(f, k)\vDash  [a:\theta] \phi \Leftrightarrow (f, [a:\theta]k)\vDash   \phi$ 
+            <br>
+            其中 $[a:\theta]k(b) = 
+            \begin{cases}
+            k(b)\cap \llbracket \theta \rrbracket~~~~ 如果~b\in f(a), 
+            \\
+            k(b)~~~~~~其他情况
+            \end{cases}$
+            <br>
+            $~~~~~~~~(f, k)\vDash  \langle a!\theta\rangle \phi  \Leftrightarrow [a:\theta](f, k)\vDash \phi~\&~k(a)\subseteq \llbracket \theta\rrbracket$
+            <br>
+            $~~~~~~~~(f, k)\vDash \langle a!\rangle\phi \Leftrightarrow \exists\theta (k(a) \subseteq \llbracket \theta\rrbracket~\&~[a :\theta](f, k) \vDash \phi)$
+            </div>
+        </div>
+    </div>
+<p class="row">所有 $L_{SAL}$ 公式都可以等价地转换为<u>否定范式</u> (Negation Normal Form, NNF)
+         \[
+\phi_{\neg} ::= B_{a} \theta \mid \neg B_{a} \theta \mid bFa \mid \neg bFa \mid (\phi \wedge \phi) \mid (\phi \vee \phi) \mid [a:\theta]\phi \mid \langle a!\theta\rangle \phi \mid [a!\theta]\phi \mid \langle a!\rangle \phi \mid [a!]\phi
+\]  </p>
+</section>
+
+
+
+
+			<section>
+    <h3>表列式演算</h3>
+    <div class="three-col-container">
+        
+        <div class="three-col-item">
+             <h4>公理系统的难处</h4>
+            <p class="maintext ">"Hilbert-style systems are easy to define and admit a simple proof of the completeness theorem but they are difficult to use."<br>  &emsp;&emsp;——Jon Barwise</p>
+           
+				<div>
+        $$    \color{white}   \tiny
+        \begin{aligned} 
+		E.g. &\vdash p\to p & \\
+        1. & (p \to ((p \to p) \to p))\to  &\\
+		~&((p \to (p \to p)) \to (p \to p)) & \text{(A2)} \\
+        2. & p \to ((p \to p) \to p) & \text{(A1)} \\
+        3. & (p \to (p \to p)) \to (p \to p) & \text{(1, 2)} \\
+        4. & p \to (p \to p) & \text{(A1)} \\
+        5. & p \to p & \text{(3, 4)} 
+        \end{aligned}  $$</div>
+            </div>
+        
+
+        <div class="three-col-item fragment">
+            <h4>表列的分析特性</h4>
+            <ul class="maintext ">
+                <li>采用直观的树状结构表示推导过程。</li>
+                <li>逐步分解公式为更简单的子公式。</li>
+                <li>易于从末端开放的分支构造反模型。</li>
+            </ul>
+            
+            <svg class="tableau-svg" width="200" height="250" viewbox="0 0 100 125" style="margin-top: 15px;">
+                <text x="50" y="10" font-size="8" text-anchor="middle">p ∨ q</text>
+                <text x="50" y="20" font-size="8" text-anchor="middle">¬p</text>
+                <line x1="50" y1="25" x2="50" y2="45" stroke-width="1"/>
+                <line x1="50" y1="45" x2="25" y2="60" stroke-width="1"/>
+                <line x1="50" y1="45" x2="75" y2="60" stroke-width="1"/>
+                <text x="25" y="70" font-size="8" text-anchor="middle">p</text>
+				
+                <text class="branch2-closed" x="25" y="85" font-size="12" text-anchor="middle">×</text>
+                <text x="75" y="70" font-size="8" text-anchor="middle">q</text>
+        
+                <text class="branch-open1" x="75" y="85" font-size="8" text-anchor="middle">(Open)</text>
+            </svg>
+        </div>
+
+        <div class="three-col-item fragment">
+            <h4>算法与可判定性</h4>
+            <ul class="maintext ">
+                <li >表列推导过程类似算法：按规则分解公式，分支选择有限。</li>
+                <li >清晰体现证明的结构，有助于分析可判定性 (decidability)。</li>
+                <li >易于通过编程实现自动化证明。</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+	
+<section>
+    <h3>表列的结构</h3>
+    <p class="maintext">表列式证明的过程，就是一棵不断向下扩展的“树”。</p>
+
+    <div class="two-col-container smtext">
+        <div class="col-left">
+            <h4>一棵“树”是满足以下条件的节点集合：</h4>
+            <ul>
+                <li ><strong>根节点 (Root)</strong>：有且仅有一个节点没有父节点，它是一切的起点。</li>
+                <li><strong>父节点 (Parent)</strong>：除根节点外，每个节点都有且仅有一个父节点。</li>
+                <li ><strong>祖先与后代 (Ancestor / Descendant)</strong>：“是...的父节点的父节点...” 这种关系链构成了祖先与后代。</li>
+                <li ><strong>无环性 (Acyclic)</strong>：一个节点永远不能是其自身的祖先。这是树最重要的特性。</li>
+            </ul>
+        </div>
+
+        <svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <marker id="arrowhead-ok" markerWidth="5" markerHeight="4" refX="2.5" refY="2" orient="auto">
+      <polygon points="0 0, 5 2, 0 4" style="fill:#eee;" />
+    </marker>
+    <marker id="arrowhead-bad" markerWidth="5" markerHeight="4" refX="2.5" refY="2" orient="auto">
+      <polygon points="0 0, 5 2, 0 4" style="fill:var(--r-link-color-hover, #dd5566);" />
+    </marker>
+  </defs>
+</svg>
+
+
+<div class="col-right fragment">
+    <div class="diagram-row">
+        <div class="diagram-container">
+            <h4 class="diagram-title-ok">✔ 这是一棵树</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="10" x2="25" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="50" y1="10" x2="75" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="30" x2="10" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="30" x2="40" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="75" y1="30" x2="75" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="50" cy="10" r="5"/> <circle class="tree-node" cx="25" cy="30" r="5"/> <circle class="tree-node" cx="75" cy="30" r="5"/> <circle class="tree-node" cx="10" cy="50" r="5"/> <circle class="tree-node" cx="40" cy="50" r="5"/> <circle class="tree-node" cx="75" cy="50" r="5"/>
+            </svg>
+        </div>
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (存在多个根)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="30" y1="10" x2="30" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="30" cy="10" r="5"/> <circle class="tree-node" cx="30" cy="30" r="5"/>
+                <line class="tree-edge" x1="70" y1="10" x2="60" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="70" y1="10" x2="80" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <circle class="tree-node" cx="70" cy="10" r="5"/> <circle class="tree-node" cx="60" cy="30" r="5"/> <circle class="tree-node" cx="80" cy="30" r="5"/>
+            </svg>
+        </div>
+    </div>
+    <div class="diagram-row">
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (共享子节点)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="10" x2="25" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="50" y1="10" x2="75" y2="30" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge error-path" x1="25" y1="30" x2="40" y2="50" marker-end="url(#arrowhead-bad)"/>
+                <line class="tree-edge error-path" x1="75" y1="30" x2="60" y2="50" marker-end="url(#arrowhead-bad)"/>
+                <circle class="tree-node" cx="50" cy="10" r="5"/> <circle class="tree-node" cx="25" cy="30" r="5"/> <circle class="tree-node" cx="75" cy="30" r="5"/> <circle class="tree-node" cx="50" cy="60" r="5"/>
+            </svg>
+        </div>
+        <div class="diagram-container">
+            <h4 class="diagram-title-bad">❌ 不是树 (存在循环)</h4>
+            <svg class="tree-diagram" viewbox="0 0 100 80">
+                <line class="tree-edge" x1="50" y1="20" x2="25" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge" x1="25" y1="50" x2="75" y2="50" marker-end="url(#arrowhead-ok)"/>
+                <line class="tree-edge error-path" x1="75" y1="50" x2="60" y2="30" marker-end="url(#arrowhead-bad)"/>
+                <circle class="tree-node" cx="50" cy="20" r="5"/> <circle class="tree-node" cx="25" cy="50" r="5"/> <circle class="tree-node" cx="75" cy="50" r="5"/>
+            </svg>
+        </div>
+    </div>
+</div>
+    </div>
+</section>		
+
+<section>
+    <h3>表列规则</h3>
+    
+   
+
+ 
+
+        <div class="rules-toolbox">
+            <div class="rules-compact-grid-custom">
+                
+                <div class="tableau-rule">
+                    <span class="rule-name">($[:]_{\wedge}$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}](\phi\wedge\psi)$</div>
+                    <div class="arrow">↓</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}]\phi$</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}]\psi$</div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($[:]_{\vee}$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}](\phi\vee\psi)$</div>
+                    <div class="arrow">↙ ↘</div>
+                    <div class="rule-branch-container">
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}]\phi$</div>
+                        </div>
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}]\psi$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($[:]_{K}$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}][a:\theta]B_{c}\epsilon$</div>
+                    <div class="arrow">↙ ↘</div>
+                    <div class="rule-branch-container">
+                        <div class="rule-branch">
+                            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<div class="rule-conclusion">$[\vec{b:\gamma}] B_{c}\epsilon$</div>
+                        </div>
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}] B_{c}(\theta\rightarrow\epsilon)$</div>
+                            <div class="rule-conclusion">$cFa$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($[:]_{\widetilde{K}}$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}][a:\theta]\neg B_{c}\epsilon$</div>
+                    <div class="arrow">↙ ↘</div>
+                    <div class="rule-branch-container">
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}]\neg B_{c}(\theta\rightarrow\epsilon)$</div>
+                        </div>
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}]\neg B_{c} \epsilon$</div>
+                            <div class="rule-conclusion">$\neg cFa$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($\langle !_{\theta}\rangle$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}]\langle a!\theta\rangle\phi$</div>
+                    <div class="arrow">↓</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}]B_{a}\theta$</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}][ a:\theta]\phi$</div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($[!_{\theta}]$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}][ a!\theta]\phi$</div>
+                    <div class="arrow">↙ ↘</div>
+                    <div class="rule-branch-container">
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}]\neg B_{a}\theta$</div>
+                        </div>
+                        <div class="rule-branch">
+                            <div class="rule-conclusion">$[\vec{b:\gamma}][ a:\theta]\phi$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($\langle !\rangle$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}]\langle a!\rangle\phi$</div>
+                    <div class="arrow">↓</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}]\langle a!p\rangle\phi$</div>
+                </div>
+
+                <div class="tableau-rule">
+                    <span class="rule-name">($[!]$)</span>
+                    <div class="rule-premise">$[\vec{b:\gamma}][ a!]\phi$</div>
+                    <div class="arrow">↓</div>
+                    <div class="rule-conclusion">$[\vec{b:\gamma}][ a!\theta]\phi$</div>
+                </div>
+
+           
+             
+
+            </div>
+            <p class = "tinytext">
+                其中 $[\vec{b:\gamma}]$ 是一个自由宣告算子序列或是空的，并且 $p$ 是一个新的原子消息，它<i>不出现</i>在该节点的任何祖先中。</p>
+            <hr>  
+           <div class = "tinytext"><b>闭合规则</b>
+               一个表列分支 $\mathfrak{B}$ 是<em>矛盾的</em> (contradictory)，如果它满足以下条件之一：
+                <ol >
+                    <li>对于某个主体 $a$，该分支包含一个集合 $\{B_{a}\theta_1, \dots, B_{a}\theta_n, \neg B_{a}\theta\}$ (其中 $n \ge 0$)，使得 $\vdash_0 (\theta_1 \land \dots \land \theta_n) \to \theta$。</li>
+                    <li>对于某些主体 $a, b$，该分支同时包含 $bFa$ 和 $\neg bFa$。</li>
+                </ol></div>
+            </div>
+       
+
+   
+</section>
+
+					
+			
+<section>
+    <h3>表列法定理证明</h3>
+
+
+    <div class="tableau-container-svg">
+        <p class="tinytext">
+            证明 $\langle a!p\rangle \neg B_c r \wedge B_c(p\rightarrow r) \to \neg cFa$。 推演其否命题：$\langle a!p\rangle \neg B_c r \wedge B_c(p\rightarrow r) \wedge cFa$
+        </p>
+        
+        <svg id="demo-tree-svg-static" viewbox="0 0 400 450">
+            <g class="fragment" data-fragment-index="1">
+                <text class="tree2-text" x="200" y="10" text-anchor="middle">1. ⟨a!p⟩¬Bc r</text>
+                <text class="tree2-text" x="200" y="35" text-anchor="middle">2. Bc(p→r)</text>
+                <text class="tree2-text" x="200" y="60" text-anchor="middle">3. cFa</text>
+            </g>
+            
+            <g class="fragment" data-fragment-index="2">
+                <line class="tree-line" x1="200" y1="70" x2="200" y2="90"/>
+                <text class="tree2-text" x="200" y="105" text-anchor="middle">4. Ba p (依据 1)</text>
+                <text class="tree2-text" x="200" y="130" text-anchor="middle">5. [a:p]¬Bc r (依据 1)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="3">
+                <line class="tree-line" x1="200" y1="140" x2="130" y2="170"/>
+                <line class="tree-line" x1="200" y1="140" x2="270" y2="170"/>
+                
+                <text class="tree2-text" x="130" y="185" text-anchor="middle">6. ¬Bc(p→r) (依据 5)</text>
+                
+                <text class="tree2-text" x="270" y="185" text-anchor="middle">7. ¬Bc r (依据 5)</text>
+                <text class="tree2-text" x="270" y="210" text-anchor="middle">8. ¬cFa (依据 5)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="4">
+                <text class="branch2-closed" x="130" y="220" text-anchor="middle">× (矛盾 2, 6)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="5">
+                 <text class="branch2-closed" x="270" y="245" text-anchor="middle">× (矛盾 3, 8)</text>
+            </g>
+        </svg>
+    </div>
+</section>
+
+
+<section>
+    <h3>可靠性</h3>
+
+<div class="rule col-span-2">
+   <p class="maintext"> 表列规则保持可满足性 (Satisfaction Preserving)：</p>
+     <ul class="traits smtext">
+       <li>🏛️<em>非 $\langle!\rangle$ 柱式规则</em>: 若模型 $m$ 满足某分支上的所有公式，则 $m$ 也满足应用这些规则后添加的新公式。</li>
+       <li>🌿 <em>分支规则</em>: 若模型 $m$ 满足某分支上的所有公式，则 $m$ 必然满足应用分支规则后至少一个新分支上的所有公式。</li>
+       <li>💎 <em>规则$\langle !\rangle$</em>: 若模型 $m$ 满足某分支上的所有公式，则可以构造一个新模型 $h_{p,\theta}[m]$。在该新模型中，$p$ 等价于 $\langle a!\rangle$ 的某个见证 $\theta$，并且新模型保持所有不含 $p$ 的公式的可满足性。严格证明参见 (Zhu, 2025)。</li>
+     </ul>
+   </div>
+ <div class="rule">
+       
+     <p class = "maintext"><b>反驳与推导</b> 若从一个公式集合 $H$ 出发构造的表列的所有分支都闭合，则称该表列为 $H$ 的一个<u>反驳表列</u>。我们称前提集合 $H$ 可推导出 $\phi$（记作 $H\vdash \phi$），是说 $H\cup \{\neg\phi\}$ 存在一个反驳表列。</p>
+   </div>
+
+ <div class="rule">
+       
+     <p class = "maintext"><b>引理</b> 如果公式集合 $H$ 存在一个反驳表列，则 $H$ 是<u>不可满足的</u>，即 $H$ 没有模型。</p>
+   </div>
+
+<div class="rule">
+       
+     <p class = "maintext"><b>可靠性定理</b> 该表列系统是<u>可靠的</u>，即对于任意公式集合 $H$ 和公式 $\phi$，若 $H\vdash \phi$，则 $H\vDash \phi$。</p>
+   </div>
+</section>
+
+
+
+
+<section>
+    <h3>开分支</h3>
+    
+    <div class="tableau-container-svg">
+        <p class="tinytext">
+            推演：$\{[a:p]\langle b!q\rangle B_c r, [b!q] \neg B_c r, [a:r]\neg B_c r\}$
+        </p>
+        
+        <svg id="demo-tree-svg-static" viewbox="0 0 400 500">
+            <g class="fragment" data-fragment-index="1">
+                <text class="tree2-text" x="200" y="10" text-anchor="middle">1. [a:p]⟨b!q⟩Bc r</text>
+                <text class="tree2-text" x="200" y="25" text-anchor="middle">2. [b!q]¬Bc r</text>
+                <text class="tree2-text" x="200" y="40" text-anchor="middle">3. [a:r]¬Bc r</text>
+            </g>
+            
+            <g class="fragment" data-fragment-index="2">
+                
+                <line class="tree-line" x1="200" y1="45" x2="100" y2="55"/>
+                <line class="tree-line" x1="200" y1="45" x2="300" y2="55"/>
+                
+                <text class="tree2-text" x="100" y="70" text-anchor="middle">4. ¬Bb q (根据 2)</text>
+                
+                <text class="tree2-text" x="300" y="70" text-anchor="middle">5. [b:q]¬Bc r (根据 2)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="3">
+               
+                <line class="tree-line" x1="100" y1="75" x2="50" y2="85"/>
+                <line class="tree-line" x1="100" y1="75" x2="150" y2="85"/>
+                
+                <text class="tree2-text" x="50" y="100" text-anchor="middle">6. ¬Bc(r→r) (根据 3)</text>
+                
+                <text class="tree2-text" x="150" y="100" text-anchor="middle">7. ¬Bc r (根据 3)</text>
+                <text class="tree2-text" x="150" y="115" text-anchor="middle">8. ¬cFa (根据 3)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="7">
+               
+                <line class="tree-line" x1="150" y1="120" x2="150" y2="130"/>
+                
+                
+                <text class="tree2-text" x="150" y="140" text-anchor="middle">12. [a:p]Bb q (根据 1)</text>
+                <text class="tree2-text" x="150" y="155" text-anchor="middle">13. [a:p][b:q]Bc r (根据 1)</text>
+               
+            </g>
+
+            <g class="fragment" data-fragment-index="8">
+                
+                <line class="tree-line" x1="150" y1="160" x2="100" y2="170"/>
+                <line class="tree-line" x1="150" y1="160" x2="200" y2="170"/>
+                
+                <text class="tree2-text" x="100" y="180" text-anchor="middle">14. Bb q (根据 12)</text>
+                
+                <text class="tree2-text" x="200" y="180" text-anchor="middle">15. Bb (p→q) (根据 12)</text>
+                <text class="tree2-text" x="200" y="192" text-anchor="middle">16. bFa (根据 12)</text>
+            </g>
+            <g class="fragment" data-fragment-index="9">
+                <text class="branch2-closed" x="100" y="195" text-anchor="middle">× (矛盾 4, 14)</text>
+ 
+            </g>
+
+            <g class="fragment" data-fragment-index="10">
+                
+                <line class="tree-line" x1="200" y1="195" x2="150" y2="200"/>
+                <line class="tree-line" x1="200" y1="195" x2="250" y2="200"/>
+                
+                <text class="tree2-text" x="150" y="210" text-anchor="middle">17. [a:p]Bc r (13)</text>
+                
+                <text class="tree2-text" x="250" y="210" text-anchor="middle">18. [a:p]Bc (q→r) (13)</text>
+
+                <text class="tree2-text" x="250" y="220" text-anchor="middle">19. cFb (13)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="11">
+                
+                <line class="tree-line" x1="150" y1="215" x2="70" y2="220"/>
+                <line class="tree-line" x1="150" y1="215" x2="150" y2="220"/>
+                
+                <text class="tree2-text" x="70" y="230" text-anchor="middle">20. Bc r (16)</text>
+                
+                <text class="tree2-text" x="150" y="230" text-anchor="middle">21. cFa (16)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="12">
+                <text class="branch2-closed" x="70" y="245" text-anchor="middle">× (矛盾 20, 7)</text>
+ 				<text class="branch2-closed" x="150" y="245" text-anchor="middle">× (矛盾 21, 8)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="13">
+                
+                <line class="tree-line" x1="250" y1="225" x2="250" y2="230"/>
+                <line class="tree-line" x1="250" y1="225" x2="320" y2="230"/>
+                
+                <text class="tree2-text" x="250" y="238" text-anchor="middle">22. Bc (q→r) (18)</text>
+                
+                <text class="tree2-text" x="350" y="238" text-anchor="middle">23. cFa (18)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="14">
+                <text class="branch2-open" x="250" y="250" text-anchor="middle">✓ 开放</text>
+ 				<text class="branch2-closed" x="350" y="250" text-anchor="middle">× (矛盾 23, 8)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="4">
+                <text class="branch2-closed" x="50" y="115" text-anchor="middle">× (矛盾 6)</text>
+ 
+            </g>
+
+
+            
+            <g class="fragment" data-fragment-index="5">
+                
+                <line class="tree-line" x1="300" y1="75" x2="250" y2="85"/>
+                <line class="tree-line" x1="300" y1="75" x2="350" y2="85"/>
+                
+                <text class="tree2-text" x="250" y="100" text-anchor="middle">9. ¬Bc(r→r) (根据 3)</text>
+                
+                <text class="tree2-text" x="350" y="100" text-anchor="middle">10. ¬Bc r (根据 3)</text>
+                <text class="tree2-text" x="350" y="115" text-anchor="middle">11. ¬cFa (根据 3)</text>
+            </g>
+
+            <g class="fragment" data-fragment-index="6">
+                <text class="branch2-closed" x="250" y="115" text-anchor="middle">× (矛盾 9)</text>
+                
+
+            </g>
+
+            
+
+             
+            
+        </svg>
+    </div>
+</section>
+
+
+<section data-auto-animate>
+                <h3>反模型</h3>
+                
+                <div class="cy" style="float: left; width: 75%; height: 550px;">
+                    <svg class="beliefCanvas" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"></svg>
+                </div>
+                
+                <div style="float: right; width: 23%; height: 550px; padding-left: 10px;">
+                    <button id="construct_countermodel">生成反模型</button>
+                    <p class="smtext" style="font-size: 0.4em; line-height: 1.6; text-align: left; background: #333; padding: 10px; border-radius: 5px;">
+                        <b>开放分支 (模型定义):</b><br>
+                        k(b) ⊆ ⟦p→q⟧ <br>
+                        k(c) ⊆ ⟦q→r⟧ <br>
+                        f(a) = {b} (bFa) <br>
+                        f(b) = {c} (cFb)
+                    </p>
+
+                    <p class="tinytext" style="margin-top: 15px;"><b>社交网络 (固定的):</b></p>
+<div id="network_clone_container_countermodel"
+     style="width: 100%; height: 150px; border: 1px solid #555; background-color: #fff; margin-bottom: 15px;">
+    <svg id="networkCanvas_countermodel"  width="100%" height="100%"></svg>
+</div>
+
+                    
+                    <input type="text" id="formulaInput_countermodel" placeholder="测试此模型的公式" style="margin-top: 15px;">
+                    <button id="checkSatBtn_countermodel">检查</button>
+                    <p id="satisfaction_countermodel" class="smtext" style="font-weight: bold;">(结果)</p>
+                    
+                </div>
+
+            </section>
+
+
+<section>
+    <h3>完全性</h3>
+
+ <div class="rule">
+       
+     <p class = "maintext"><b>完结表列 (Finished Tableau)</b> 不含 $[a!]$ 算子的公式在表列展开过程中复杂度会降低，因而存在有穷表列并且是<u>可判定的</u>。然而，若包含 $[a!]$ 算子且无法构造反驳表列，则存在无限表列<i>完结</i>地展开所有可能性。</p>
+   </div>
+
+ <div class="rule">
+       
+     <p class = "maintext"><b>非紧致性 (Non-compactness)</b> 已知 $\mathsf{SAL}$ 逻辑是<u>非紧致的</u> (Xiong & Ågotnes, 2020)。例如，考虑以下无穷公式集合：
+     <br>
+     \[\{\langle a!\rangle B_{b}p \wedge \neg B_{b} p \}\cup
+        \{\neg B_{a}\theta ~|~ \theta \text{ 不是重言式 (tautology)}\}\]
+     
+     </p>
+   </div>
+
+ <div class="rule">
+       
+     <p class = "maintext"><b>非贪婪集合 (Non-greedy Set)</b> 一个公式集合 $H$ 被称为是<em>贪婪的</em>，如果它所涉及的命题变元集合是<i>余有穷的</i>。否则，$H$ 是<em>非贪婪的</em>。</p>
+   </div>
+<div class="rule">
+       
+     <p class = "maintext"><b>完全性定理</b> 该表列系统对于非贪婪集合是<u>完全的</u>，即对于任意非贪婪公式集合 $H$ 和公式 $\phi$，若 $H\vDash \phi$，则 $H\vdash \phi$。</p>
+   </div>
+</section>
+
+
+
+    <section>
+  <h2>参考文献</h2>
+  <div class="container" style="columns: 2; column-gap: 40px;">
+
+    <ul class="litlist maintext">
+      <li>Keisler, H. J., J. Robbin and A. Miller (1996). Mathematical logic and computability,</li>
+      <li>Balbiani, P. et al. (2008). “Knowable as Known after an Announcement.”</li>
+      <li> Hansen, J. U. (2010). “Terminating tableaux for dynamic epistemic logics.”</li>
+      <li> Balbiani, P. et al. (2010). “Tableaux for public
+announcement logic.”</li>
+      <li>Seligman, J., F. Liu, & P. Girard (2013). “Facebook and the Epistemic Logic of Friendship.”</li>
+      <li>Kuijer, B. (2015). “Unsoundness of R<sub>□</sub>.”</li>
+      <li>Christoff, Z. (2016). “Dynamic Logics of Networks.”</li>
+      <li>Xiong, Z. et al. (2017). “Towards a Logic of Tweeting.”</li>
+      <li>Xiong, Z. & T. Ågotnes (2020). “Arbitrary Propositional Network Announcement Logic.”</li>
+      
+      <li>van Ditmarsch, H. & T. French (2022). “Quantifying over Boolean Announcements.”</li>
+
+      <li>Zhu, R. (2025). “A finitary axiomatization of arbitrary social announcement logic.”</li>
+    </ul>
+  </div>
+
+  <p class="smtext" style="margin-top:2em; text-align:center; font-style:italic;">
+    对完成<b>社交宣告逻辑</b>以及本表列系统较为重要的文献资料。
+  </p>
+</section>
+<section data-id="9a06014caaed52eb8f5244b4e49686f9" data-background-interactive="true" data-preload="" data-background-iframe="../tree/tree_slide.html"></section>
+
+
+				
+	
+				
+
+	
+
+			
+
+
+				
+
+
+		
+
+
+
+
+
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/math/math.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/search/search.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="https://i.upmath.me/latex.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+    <script src="reveal-app.js"></script>
+
+    
+<script>
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  center: true,
+  hash: true,
+  plugins: [ RevealMath.KaTeX, RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ],
+  katex: {
+    version: "0.16.4", 
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$",  right: "$",  display: false},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\[", right: "\\]", display: true}
+    ]
+  }
+});
+
+
+
+</script>
+
+
+
+
+<!-- 
+<a!>(Bcq -> [a!]Bcq)
+[a!](Bcq&<a!>~Bcq)	
+    -->
+
+	</body>
+</html>
