@@ -3,146 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>幻灯片与小程序</title>
+    <title>幻灯片与小程序 | Slides & Mini-Apps</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         body { font-family: 'Segoe UI', system-ui, sans-serif; }
         .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        
+        /* 核心语言切换逻辑 */
+        html[lang="zh-CN"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-zh { display: none !important; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100">
 
-    <!-- 顶部导航 -->
     <nav class="bg-black border-b border-zinc-800 py-6">
         <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <i class="fa-solid fa-presentation-screen text-3xl text-blue-500"></i>
-                <h1 class="text-3xl font-bold tracking-tight">幻灯片</h1>
+                <h1 class="text-3xl font-bold tracking-tight">
+                    <span class="lang-zh">幻灯片</span>
+                    <span class="lang-en">Slides</span>
+                </h1>
             </div>
-            <a href="#" onclick="window.location.reload()" 
-               class="text-zinc-400 hover:text-white flex items-center gap-2">
-                <i class="fa-solid fa-rotate"></i>
-                <span>刷新</span>
-            </a>
+            
+            <div class="flex items-center gap-6">
+                <a href="#" onclick="window.location.reload()" 
+                   class="text-zinc-400 hover:text-white flex items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span class="lang-zh">刷新</span>
+                    <span class="lang-en">Refresh</span>
+                </a>
+                
+                <button onclick="toggleLanguage()" class="text-zinc-400 hover:text-white flex items-center gap-2 transition-colors border-l border-zinc-700 pl-6">
+                    <span class="text-xl lang-zh">🇺🇸</span>
+                    <span class="lang-zh text-sm font-medium">EN</span>
+                    
+                    <span class="text-xl lang-en">🇨🇳</span>
+                    <span class="lang-en text-sm font-medium">中文</span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- 英雄区 + 介绍 -->
     <header class="max-w-6xl mx-auto px-6 py-20 text-center">
         <h2 class="text-6xl font-bold tracking-tighter mb-6">
-            Reveal.js 幻灯片集
+            <span class="lang-zh">Reveal.js 幻灯片集</span>
+            <span class="lang-en">Reveal.js Presentation Collection</span>
         </h2>
         <p class="text-2xl text-zinc-400 mb-8 max-w-2xl mx-auto">
-            这里是我用 reveal.js 制作的各种演示文稿<br>
-            点击下方卡片即可全屏浏览
+            <span class="lang-zh">这里是用 reveal.js 制作的各种关于逻辑学的演示文稿<br>点击下方卡片即可全屏浏览</span>
+            <span class="lang-en">Here are various slides on logics I made using reveal.js.<br>Click the cards below to view in fullscreen.</span>
         </p>
         <div class="flex justify-center gap-6 text-zinc-500">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check"></i>
-                <span>纯静态 · 秒开</span>
+                <span class="lang-zh">纯静态 · 秒开</span>
+                <span class="lang-en">Pure Static · Fast</span>
             </div>
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check"></i>
-                <span>支持移动端</span>
+                <span class="lang-zh">支持移动端</span>
+                <span class="lang-en">Mobile Friendly</span>
             </div>
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check"></i>
-                <span>无须登录</span>
+                <span class="lang-zh">无须登录</span>
+                <span class="lang-en">No Login Required</span>
             </div>
         </div>
     </header>
 
-    <!-- 幻灯片列表 -->
     <main class="max-w-6xl mx-auto px-6 pb-20">
         <h3 class="text-3xl font-semibold mb-8 flex items-center gap-3">
-            <span>📋 所有演示</span>
-            <span class="text-sm font-normal text-zinc-500 bg-zinc-900 px-4 py-1 rounded-full">共 5 个</span>
+            <span class="lang-zh">📋 所有演示</span>
+            <span class="lang-en">📋 All Presentations</span>
+            <span class="text-sm font-normal text-zinc-500 bg-zinc-900 px-4 py-1 rounded-full">
+                <span class="lang-zh">共 5 个</span>
+                <span class="lang-en">5 Total</span>
+            </span>
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <!-- 示例卡片1：复制下面整段改成你的内容 -->
-            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover">
-                <div class="h-52 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-6xl">
-                    🕸️
-                </div>
-                <div class="p-8">
-                    <h4 class="text-2xl font-semibold mb-2">社交宣告逻辑</h4>
-                    <p class="text-zinc-400 mb-6 line-clamp-3">
-                        2025年Universal Logic大会上做报告使用的幻灯片
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-6xl">🕸️</div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h4 class="text-2xl font-semibold mb-2">
+                        <span class="lang-zh">社交宣告逻辑</span>
+                        <span class="lang-en">Social Announcement Logic</span>
+                    </h4>
+                    <p class="text-zinc-400 mb-6 flex-grow">
+                        <span class="lang-zh">2025年Universal Logic大会上做报告使用的幻灯片</span>
+                        <span class="lang-en">Slides used for the presentation at the Universal Logic Conference 2025.</span>
                     </p>
-                    <a href="Unilog_talk_2025.html" 
-                       class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-blue-500 hover:text-white transition-colors">
-                        进入幻灯片 →
+                    <a href="Unilog_talk_2025.html" class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-blue-500 hover:text-white transition-colors">
+                        <span class="lang-zh">进入幻灯片 →</span>
+                        <span class="lang-en">View Slides →</span>
                     </a>
                 </div>
             </div>
 
-            <!-- 示例卡片2 -->
-            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover">
-                <div class="h-52 bg-gradient-to-br from-emerald-600 to-cyan-600 flex items-center justify-center text-6xl">
-                    👴
-                </div>
-                <div class="p-8">
-                    <h4 class="text-2xl font-semibold mb-2">沈有鼎与模态逻辑</h4>
-                    <p class="text-zinc-400 mb-6 line-clamp-3">
-                        2026年AWPL工作会议上做报告使用的幻灯片
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-emerald-600 to-cyan-600 flex items-center justify-center text-6xl">👴</div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h4 class="text-2xl font-semibold mb-2">
+                        <span class="lang-zh">沈有鼎与模态逻辑</span>
+                        <span class="lang-en">Shen Yuting and Modal Logic</span>
+                    </h4>
+                    <p class="text-zinc-400 mb-6 flex-grow">
+                        <span class="lang-zh">2026年AWPL工作会议上做报告使用的幻灯片</span>
+                        <span class="lang-en">Slides used for the presentation at the AWPL Workshop 2026.</span>
                     </p>
-                    <a href="Shen_yuting_awpl.html" 
-                       class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-emerald-500 hover:text-white transition-colors">
-                        进入幻灯片 →
+                    <a href="Shen_yuting_awpl.html" class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-emerald-500 hover:text-white transition-colors">
+                        <span class="lang-zh">进入幻灯片 →</span>
+                        <span class="lang-en">View Slides →</span>
                     </a>
                 </div>
             </div>
 
-            <!-- 示例卡片3 -->
-            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover">
-                <div class="h-52 bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-6xl">
-                    🥦
-                </div>
-                <div class="p-8">
-                    <h4 class="text-2xl font-semibold mb-2">社交宣告逻辑表列式演算</h4>
-                    <p class="text-zinc-400 mb-6 line-clamp-3">
-                        2025年NCML会议上报告所使用幻灯片
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-6xl">🥦</div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h4 class="text-2xl font-semibold mb-2">
+                        <span class="lang-zh">社交宣告逻辑表列式演算</span>
+                        <span class="lang-en">Tableau Calculus for SAL</span>
+                    </h4>
+                    <p class="text-zinc-400 mb-6 flex-grow">
+                        <span class="lang-zh">2025年NCML会议上报告所使用幻灯片</span>
+                        <span class="lang-en">Slides used for the presentation at the NCML Conference 2025.</span>
                     </p>
-                    <a href="SAL_Tableau.html" 
-                       class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-rose-500 hover:text-white transition-colors">
-                        进入幻灯片 →
+                    <a href="SAL_Tableau.html" class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-rose-500 hover:text-white transition-colors">
+                        <span class="lang-zh">进入幻灯片 →</span>
+                        <span class="lang-en">View Slides →</span>
                     </a>
                 </div>
             </div>
 
-            <!-- 示例卡片4 -->
-            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover">
-                <div class="h-52 bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-6xl">
-                    🎋
-                </div>
-                <div class="p-8">
-                    <h4 class="text-2xl font-semibold mb-2">表列式演算教学</h4>
-                    <p class="text-zinc-400 mb-6 line-clamp-3">
-                    入门表列式演算所用</p>
-                    <a href="tableau_method.html" 
-                       class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-violet-500 hover:text-white transition-colors">
-                        进入幻灯片 →
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-6xl">🎋</div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h4 class="text-2xl font-semibold mb-2">
+                        <span class="lang-zh">表列式演算教学</span>
+                        <span class="lang-en">Tableau Calculus Tutorial</span>
+                    </h4>
+                    <p class="text-zinc-400 mb-6 flex-grow">
+                        <span class="lang-zh">入门表列式演算所用</span>
+                        <span class="lang-en">Introductory tutorial material for Tableau Calculus.</span>
+                    </p>
+                    <a href="tableau_method.html" class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-violet-500 hover:text-white transition-colors">
+                        <span class="lang-zh">进入幻灯片 →</span>
+                        <span class="lang-en">View Slides →</span>
                     </a>
                 </div>
             </div>
 
-            <!-- 示例卡片5（你可以继续往下复制） -->
-            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover">
-                <div class="h-52 bg-gradient-to-br from-amber-600 to-yellow-600 flex items-center justify-center text-6xl">
-                    🏁
-                </div>
-                <div class="p-8">
-                    <h4 class="text-2xl font-semibold mb-2">卡诺图教学</h4>
-                    <p class="text-zinc-400 mb-6 line-clamp-3">
-                        卡诺图教学之用
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 card-hover flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-amber-600 to-yellow-600 flex items-center justify-center text-6xl">🏁</div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h4 class="text-2xl font-semibold mb-2">
+                        <span class="lang-zh">卡诺图教学</span>
+                        <span class="lang-en">Karnaugh Map Tutorial</span>
+                    </h4>
+                    <p class="text-zinc-400 mb-6 flex-grow">
+                        <span class="lang-zh">卡诺图教学之用</span>
+                        <span class="lang-en">Teaching material designed for Karnaugh Maps.</span>
                     </p>
-                    <a href="Karnaugh_Map.html" 
-                       class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-amber-500 hover:text-white transition-colors">
-                        进入幻灯片 →
+                    <a href="Karnaugh_Map.html" class="block text-center bg-white text-black font-medium py-4 rounded-2xl hover:bg-amber-500 hover:text-white transition-colors">
+                        <span class="lang-zh">进入幻灯片 →</span>
+                        <span class="lang-en">View Slides →</span>
                     </a>
                 </div>
             </div>
@@ -151,9 +181,26 @@
     </main>
 
     <footer class="text-center text-zinc-500 py-12 border-t border-zinc-800 text-sm">
-        Powered by reveal.js + Gitee Pages • 
+        Powered by reveal.js + GitHub Pages • 
         <span class="text-zinc-400">Made with ❤️ for beautiful slides to illustrate logics by Ray Zhu</span>
     </footer>
 
+    <script>
+        // 初始化语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'zh-CN';
+            document.documentElement.lang = savedLang;
+        });
+
+        // 切换语言功能
+        function toggleLanguage() {
+            const htmlTag = document.documentElement;
+            const currentLang = htmlTag.lang;
+            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+            
+            htmlTag.lang = newLang;
+            localStorage.setItem('preferredLanguage', newLang);
+        }
+    </script>
 </body>
 </html>
