@@ -728,13 +728,58 @@ function renderVizInput(){ if(!vizState) return; const st=vizState, d=st.data; c
  const body=document.querySelector('#viz-candidate-table tbody'); body.innerHTML=''; d.candidates.slice(0,8).forEach(c=>{ const tr=document.createElement('tr'); const isBest=d.best.some(b=>sameSet(b.U,c.U)); const isCan=sameSet(d.Uminus,c.U); tr.innerHTML=`<td>${setName(c.U)}</td><td>${c.del}</td><td>${c.add}</td><td>${c.cap}</td><td>${isCan?'<span class="can">canonical</span>':(isBest?'<span class="best">minimum</span>':'')}</td>`; body.appendChild(tr); });
  document.getElementById('viz-candidate-note').innerHTML=`There are <strong>${d.candidates.length}</strong> legal candidates. Minimum capacity = <strong>${d.best[0].cap}</strong>. The canonical source side is <strong>${setName(d.Uminus)}</strong>.`;
 }
-function renderVizResult(){ if(!vizState) return; const st=vizState, d=st.data, f=st.flow; const c=d.canonical;
- drawViz('viz-result-graph', c.T, c.U, c.C, c.B);
- document.getElementById('viz-result-summary').innerHTML=`<strong>Canonical source side:</strong> ${setName(d.Uminus)}<br><strong>M</strong> = ${d.M}, <strong>K</strong> = ${d.K}<br><strong>Edmonds–Karp source side</strong> = ${setName(f.Uflow)}`;
- const log=`P = Pred_R(X) = ${setName(d.P)}\nS = Succ_R(Y) = ${setName(d.S)}\nH = { ${edges(d.H).map(edgeName).join(', ') || '∅'} }\n\nDeleted old edges C* = { ${edges(c.C).map(edgeName).join(', ') || '∅'} }\nClosure additions B = { ${edges(c.B).map(edgeName).join(', ') || '∅'} }\n\n|A| = ${c.del}, |B| = ${c.add}, capacity = ${c.cap}\nMinimum candidates = ${d.best.length}`;
- document.getElementById('viz-log').textContent=log;
- let alt=d.candidates.find(x=>!sameSet(x.U,d.Uminus));
- document.getElementById('viz-result-note').innerHTML=`The repaired graph shows the canonical output $T$. ${alt?`For comparison, candidate ${setName(alt.U)} is rejected because its capacity is ${alt.cap}, not ${d.best[0].cap}.`:''}`;
+function renderVizResult(){
+  if(!vizState) return;
+
+  const st = vizState;
+  const d = st.data;
+  const f = st.flow;
+  const c = d.canonical;
+
+  drawViz('viz-result-graph', c.T, c.U, c.C, c.B);
+
+  document.getElementById('viz-result-summary').innerHTML =
+    `<strong>Canonical source side:</strong> ${setName(d.Uminus)}<br>
+     <strong>M</strong> = ${d.M}, <strong>K</strong> = ${d.K}<br>
+     <strong>Edmonds–Karp source side</strong> = ${setName(f.Uflow)}`;
+
+  const log =
+`P = Pred_R(X) = ${setName(d.P)}
+S = Succ_R(Y) = ${setName(d.S)}
+H = { ${edges(d.H).map(edgeName).join(', ') || '∅'} }
+
+Deleted old edges C* = { ${edges(c.C).map(edgeName).join(', ') || '∅'} }
+Closure additions B = { ${edges(c.B).map(edgeName).join(', ') || '∅'} }
+
+|A| = ${c.del}, |B| = ${c.add}, capacity = ${c.cap}
+Minimum candidates = ${d.best.length}`;
+
+  document.getElementById('viz-log').textContent = log;
+
+  const minCap = d.best[0].cap;
+
+  // A minimum candidate different from the canonical one
+  const nonCanonicalMinimum = d.best.find(x => !sameSet(x.U, d.Uminus));
+
+  // A genuinely worse candidate, whose capacity is above the minimum
+  const worseCandidate = d.candidates.find(x => x.cap > minCap);
+
+  let explanation = `The repaired graph shows the canonical output $T$. `;
+
+  if (nonCanonicalMinimum) {
+    explanation +=
+      `For comparison, ${setName(nonCanonicalMinimum.U)} is also a minimum-capacity cut ` +
+      `with capacity ${nonCanonicalMinimum.cap}, but it is not selected because the canonical source side is ` +
+      `the intersection of all minimum source sides, namely ${setName(d.Uminus)}. `;
+  }
+
+  if (worseCandidate) {
+    explanation +=
+      `A genuinely non-minimal candidate such as ${setName(worseCandidate.U)} is rejected because its capacity is ` +
+      `${worseCandidate.cap}, which is greater than the minimum capacity ${minCap}.`;
+  }
+
+  document.getElementById('viz-result-note').innerHTML = explanation;
 }
 const btn=document.getElementById('viz-random-btn'); if(btn) btn.addEventListener('click', newViz);
 newViz();
