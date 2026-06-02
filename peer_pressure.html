@@ -496,18 +496,42 @@
 </section>
 
 
+
 <section>
-  <div class="step-head"><div class="step-no">STEP 6</div><h2>Artificial penalty edges</h2></div>
-  <div class="cols-40-60" style="align-items: center; letter-spacing: 0.02em;">
-    <div class="tight">
-      <p>The new closure edge $p\to z$ goes from the outside of $U$ back into $U$, so an ordinary cut does not count it.</p>
-      <p style="margin-top: 12px;">Fix this by adding an <strong>artificial reverse edge</strong> $z\to p$ in the augmented graph.</p>
-      <p class="math" style="margin: 16px 0; font-size: 1.15em; color: #ffb347;">$H = (P \times S) \setminus (R \cup (X \times Y))$</p>
-      <p>For each $(p,z)\in H$, add the penalty edge $z\to p$ with cost $1$.</p>
+  <div class="step-head">
+    <div class="step-no">STEP 6</div>
+    <h2>Artificial penalty edges</h2>
+  </div>
+
+  <div class="cols-40-60" style="grid-template-columns: 0.7fr 1.3fr; align-items: center; letter-spacing: 0.02em;">
+    <div class="tight sm">
+      <p>
+        A closure consequence has the form $p\to z$: after adding $X\to Y$,
+        transitivity may force a new comparison from a predecessor of $X$
+        to a successor of $Y$.
+      </p>
+
+      <p class="math" style="margin: 18px 0; font-size: 1.1em; color: #ffb347;">
+        $H=(Pred_R(X)\times Succ_R(Y))\setminus(R\cup(X\times Y))$
+      </p>
+
+      <p>
+        For each $(p,z)\in H$, add an <strong>artificial reverse edge</strong>
+        $z\to p$ in the augmented graph.
+      </p>
+
+      <div style="background: rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 3px solid #64748b;">
+        <p class="muted" style="font-size: 0.9em; margin: 0 0 8px 0; line-height: 1.4;">
+          <strong>Cost Marker:</strong> This is not a preference edge. If $z$ is on the source side and $p$ is on the sink side, the real repair will add the closure edge $p\to z$.
+        </p>
+        <p class="muted" style="font-size: 0.9em; margin: 0; line-height: 1.4;">
+          If this artificial edge overlaps with an old edge, its cost contribution is summed in Step 7.
+        </p>
+      </div>
     </div>
-    
+
     <div class="center">
-      <svg class="aug-svg" viewBox="0 0 600 360" style="background: #11162b; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%;">
+      <svg class="aug-svg" viewBox="0 0 660 390" style="background: #11162b; border-radius: 12px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <defs>
           <marker id="map1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
@@ -517,58 +541,85 @@
           </marker>
         </defs>
 
-        <rect x="25" y="55" width="240" height="250" rx="18" fill="rgba(100, 240, 178, 0.03)" stroke="#64f0b2" stroke-width="2.5" stroke-dasharray="6 4"></rect>
-        <text x="145" y="90" fill="#64f0b2" font-size="20" font-weight="bold" text-anchor="middle">Inside $U$</text>
-        <text x="455" y="90" fill="#ff7a59" font-size="20" font-weight="bold" text-anchor="middle">Outside $U$ ($W \setminus U$)</text>
+        <rect x="30" y="62" width="270" height="270" rx="18" fill="rgba(100, 240, 178, 0.03)" stroke="#64f0b2" stroke-width="2.5" stroke-dasharray="6 4"></rect>
 
-        <circle cx="145" cy="190" r="22" fill="#1c2145" stroke="#64f0b2" stroke-width="2.5"></circle>
-        <text x="145" y="197" fill="#ffd7b0" font-size="20" font-weight="bold" text-anchor="middle">z</text>
+        <text x="165" y="95" fill="#64f0b2" font-size="20" font-weight="bold" text-anchor="middle">Inside $U$</text>
+        <text x="500" y="95" fill="#ff7a59" font-size="20" font-weight="bold" text-anchor="middle">Outside $U$</text>
+        <text x="500" y="122" fill="#ff7a59" font-size="17" text-anchor="middle">$W\setminus U$</text>
 
-        <circle cx="455" cy="190" r="22" fill="#1c2145" stroke="#ff7a59" stroke-width="2.5"></circle>
-        <text x="455" y="197" fill="#ffd7b0" font-size="20" font-weight="bold" text-anchor="middle">p</text>
+        <circle cx="165" cy="210" r="24" fill="#1c2145" stroke="#64f0b2" stroke-width="2.5"></circle>
+        <text x="165" y="217" fill="#ffd7b0" font-size="22" font-weight="bold" text-anchor="middle">z</text>
 
-        <path fill="none" stroke="#38bdf8" stroke-width="3" marker-end="url(#map1)" d="M 431 180 Q 300 105 169 180"></path>
-        <text x="300" y="120" fill="#38bdf8" font-size="18" font-weight="bold" text-anchor="middle">real closure edge: $p\to z$</text>
+        <circle cx="500" cy="210" r="24" fill="#1c2145" stroke="#ff7a59" stroke-width="2.5"></circle>
+        <text x="500" y="217" fill="#ffd7b0" font-size="22" font-weight="bold" text-anchor="middle">p</text>
 
-        <path fill="none" stroke="#a78bfa" stroke-width="3.5" stroke-dasharray="6 4" marker-end="url(#map2)" d="M 169 200 Q 300 275 431 200"></path>
-        <text x="300" y="270" fill="#a78bfa" font-size="18" font-weight="bold" text-anchor="middle">penalty edge in $G^+$: $z\to p$</text>
+        <path fill="none" stroke="#38bdf8" stroke-width="3" marker-end="url(#map1)" d="M 474 196 Q 333 105 191 196"></path>
+        <text x="333" y="132" fill="#38bdf8" font-size="18" font-weight="bold" text-anchor="middle">real closure edge: $p\to z$</text>
+
+        <path fill="none" stroke="#a78bfa" stroke-width="3.5" stroke-dasharray="6 4" marker-end="url(#map2)" d="M 191 228 Q 333 322 474 228"></path>
+        <text x="333" y="325" fill="#a78bfa" font-size="18" font-weight="bold" text-anchor="middle">artificial penalty edge in $G'$: $z\to p$</text>
       </svg>
     </div>
   </div>
 </section>
 <section>
-  <div class="step-head"><div class="step-no">STEP 7</div><h2>The augmented graph recipe</h2></div>
-  <div class="grid-2">
-    <div class="sm tight">
-      <ol>
-        <li>Add a new source $s$ and sink $t$.</li>
-        <li>Add $s\to y$ for each $y\in Y$ and $x\to t$ for each $x\in X$.</li>
-        <li>Give each old edge of $R$ capacity <b>$M$</b>.</li>
-        <li>Give each artificial penalty edge capacity <b>$1$</b>.</li>
-      </ol>
-      <p class="math">$M=|H|+1,\qquad K=M|R|+|H|+1$.</p>
-      <p class="note">The huge value $K$ forces every minimum cut to keep all of $Y$ on the source side and all of $X$ on the sink side.</p>
-    </div>
-    <div>
-      <svg class="aug-svg" viewBox="0 0 560 300">
-        <defs><marker id="mag" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"/></marker></defs>
-        <circle class="node" cx="48" cy="150" r="18"></circle><text class="ntext" x="48" y="150">s</text>
-        <circle class="node" cx="132" cy="150" r="22"></circle><text class="ntext" x="132" y="150">Y</text>
-        <circle class="node" cx="236" cy="95" r="18"></circle><text class="ntext" x="236" y="95">u</text>
-        <circle class="node" cx="236" cy="205" r="18"></circle><text class="ntext" x="236" y="205">z</text>
-        <circle class="node" cx="380" cy="150" r="18"></circle><text class="ntext" x="380" y="150">p</text>
-        <circle class="node" cx="472" cy="150" r="22"></circle><text class="ntext" x="472" y="150">X</text>
-        <circle class="node" cx="538" cy="150" r="18"></circle><text class="ntext" x="538" y="150">t</text>
-        <path class="edge" marker-end="url(#mag)" d="M66 150 L108 150"></path>
-        <path class="edge" marker-end="url(#mag)" d="M154 145 Q183 126 218 103"></path>
-        <path class="edge-pen" marker-end="url(#mag)" d="M252 206 Q308 243 363 165"></path>
-        <path class="edge" marker-end="url(#mag)" d="M398 150 L449 150"></path>
-        <path class="edge" marker-end="url(#mag)" d="M494 150 L520 150"></path>
-        <text class="tinylabel" x="61" y="132">K</text>
-        <text class="tinylabel" x="173" y="119">M</text>
-        <text class="tinylabel" x="305" y="255">1</text>
-        <text class="tinylabel" x="499" y="132">K</text>
-      </svg>
+  <div class="slidebox">
+    <h2>Step 7 · Construct the augmented graph</h2>
+
+    <div class="two wide-left">
+      <div class="small">
+        <p>We construct the network before the cut is chosen.</p>
+
+
+        <p class="mathline">
+          \(P=Pred_R(X)=\{p\in W\mid \exists x\in X,\ pRx\}\)
+        </p>
+
+        <p class="mathline">
+          \(S=Succ_R(Y)=\{z\in W\mid \exists y\in Y,\ yRz\}\)
+        </p>
+
+        <p class="mathline">
+          \(H=(P\times S)\setminus(R\cup(X\times Y))\)
+        </p>
+
+        <p class="mathline">
+          \(E=R\cup\{(z,p)\mid(p,z)\in H\}
+          \cup(\{s\}\times Y)\cup(X\times\{t\})\)
+        </p>
+        <p class="mathline" style="font-size: 1.02em; color: #ffb347;">
+        \(G'=(W\cup\{s,t\},E,c)\)
+      </p>
+      </div>
+
+      <div class="small">
+        <p><b>Capacity function.</b></p>
+
+       <p class="mathline">
+\[
+c((u,v))=\sum
+\begin{cases}
+M, & \text{if }(u,v)\in R,\\
+1, & \text{if }(v,u)\in H,\\
+K, & \text{if }(u,v)\in(\{s\}\times Y)\cup(X\times\{t\}).
+\end{cases}
+\]
+</p>
+
+        <p class="note">
+          The sum is necessary: the same directed edge may be both an old edge
+          and the reverse of a candidate closure edge.
+        </p>
+
+        <p class="mathline">
+          \(M=|H|+1,\qquad K=M|R|+|H|+1.\)
+        </p>
+
+        <p class="note">
+          \(M\) makes deletion of old edges the first priority.
+          \(K\) forces \(Y\) to stay on the source side and \(X\) on the sink side.
+        </p>
+      </div>
     </div>
   </div>
 </section>
