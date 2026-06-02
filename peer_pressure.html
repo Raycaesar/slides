@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transitivity-Preserving Strong Update</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="peer_pressure_revised.css">
+  <script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+      svg: {fontCache: 'global'}
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+  <div class="title-page">
+    <div>
+      <p class="tagline">Tsinghua Workshop on Social Network Logic</p>
+      <h1>Transitivity-Preserving<br>Strong Update</h1>
+      <p class="sm">A max-flow / min-cut explanation of how to repair strict preference update in the Liang–Seligman peer-pressure model.</p>
+      <div class="title-meta">
+        <p><strong>Xiaochen Chang</strong></p>
+        <p class="sm">Slides redesigned and programmed by <span class="orange">Ray</span></p>
+      </div>
+    </div>
+    <div class="title-side">
+      <svg class="title-motif" viewBox="0 0 360 360">
+        <circle class="orbit" cx="180" cy="180" r="125"></circle>
+        <circle class="orbit" cx="180" cy="180" r="82"></circle>
+        <g transform="translate(180 180)">
+          <line class="burst" x1="0" y1="-122" x2="0" y2="-45"/>
+          <line class="burst" x1="0" y1="122" x2="0" y2="45"/>
+          <line class="burst" x1="-122" y1="0" x2="-45" y2="0"/>
+          <line class="burst" x1="122" y1="0" x2="45" y2="0"/>
+          <line class="burst" x1="86" y1="-86" x2="32" y2="-32"/>
+          <line class="burst" x1="-86" y1="86" x2="-32" y2="32"/>
+          <line class="burst" x1="-86" y1="-86" x2="-32" y2="-32"/>
+          <line class="burst" x1="86" y1="86" x2="32" y2="32"/>
+          <line class="burst" x1="58" y1="-108" x2="20" y2="-38"/>
+          <line class="burst" x1="-58" y1="108" x2="-20" y2="38"/>
+          <line class="burst" x1="108" y1="58" x2="38" y2="20"/>
+          <line class="burst" x1="-108" y1="-58" x2="-38" y2="-20"/>
+          <circle class="node" cx="0" cy="0" r="9"></circle>
+          <circle class="node2" cx="0" cy="-82" r="8"></circle>
+          <circle class="node" cx="82" cy="0" r="8"></circle>
+          <circle class="node2" cx="-82" cy="0" r="8"></circle>
+          <circle class="node" cx="0" cy="82" r="8"></circle>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>One sentence and the road map</h2>
+  <p class="center"><strong>Strong update becomes transparent once we treat it as a <em>path-cutting problem</em>.</strong></p>
+  <div class="flowline">
+    <div class="flow-step">peer-pressure model</div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-step">strict update may break transitivity</div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-step">cut all $Y\leadsto X$ paths</div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-step">choose a <span class="green">minimal</span> and <span class="purple">canonical</span> cut</div>
+  </div>
+  
+  <div class="grid-3" style="margin-top:26px;">
+  <div class="center">
+    <svg class="logic-svg" viewBox="0 0 220 130">
+      <defs><marker id="m1" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker></defs>
+      <circle class="node" cx="45" cy="70" r="18"></circle><text class="ntext" x="45" y="70">Y</text>
+      <circle class="node" cx="112" cy="42" r="16"></circle><text class="ntext" x="112" y="42">a</text>
+      <circle class="node" cx="175" cy="70" r="18"></circle><text class="ntext" x="175" y="70">X</text>
+      <path class="edge-old" marker-end="url(#m1)" d="M62 63 Q82 56 96 49"></path>
+      <path class="edge-old" marker-end="url(#m1)" d="M126 48 Q145 54 159 64"></path>
+      <text class="tinylabel" x="47" y="112">1. old path survives</text>
+    </svg>
+  </div>
+  <div class="center">
+    <svg class="logic-svg" viewBox="0 0 220 130">
+      <defs>
+        <marker id="m2-old" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+        <marker id="m2-new" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+      </defs>
+      <circle class="node" cx="45" cy="70" r="18"></circle><text class="ntext" x="45" y="70">Y</text>
+      <circle class="node" cx="112" cy="42" r="16"></circle><text class="ntext" x="112" y="42">a</text>
+      <circle class="node" cx="175" cy="70" r="18"></circle><text class="ntext" x="175" y="70">X</text>
+      <path class="edge-old" marker-end="url(#m2-old)" d="M62 63 Q82 56 96 49"></path>
+      <path class="edge-old" marker-end="url(#m2-old)" d="M126 48 Q145 54 159 64"></path>
+      <path class="edge" stroke="#34d399" stroke-width="2.5" fill="none" marker-end="url(#m2-new)" d="M162 82 Q110 115 58 82"></path>
+      <text class="tinylabel" x="45" y="118">2. add strict edge $X\to Y$</text>
+    </svg>
+  </div>
+  <div class="center">
+    <svg class="logic-svg" viewBox="0 0 220 130">
+      <defs>
+        <marker id="m3-new" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+        <marker id="m3-cut" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/></marker>
+      </defs>
+      <circle class="node" cx="45" cy="70" r="18"></circle><text class="ntext" x="45" y="70">Y</text>
+      <circle class="node" cx="112" cy="42" r="16"></circle><text class="ntext" x="112" y="42">a</text>
+      <circle class="node" cx="175" cy="70" r="18"></circle><text class="ntext" x="175" y="70">X</text>
+      <path class="edge-cut" marker-end="url(#m3-cut)" d="M62 63 Q82 56 96 49"></path>
+      <path class="edge" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#m3-new)" d="M162 82 Q110 115 58 82"></path>
+      <text class="tinylabel" x="40" y="17">3. must cut the path!</text>
+    </svg>
+  </div>
+</div>
+</section>
+
+<section>
+  <h2>The Liang–Seligman peer-pressure model</h2>
+  <div class="grid-2-compact">
+    <div class="tight sm">
+      <p><strong>Motivation.</strong> Agents are influenced not only by <em>what their friends believe</em>, but also by <em>how their friends rank alternatives</em>.</p>
+      <ul>
+        <li>Worlds encode possible situations.</li>
+        <li>At each world, there is a <span class="green">friendship relation</span> on agents.</li>
+        <li>For each agent, there is a <span class="orange">preference preorder</span> on worlds.</li>
+        <li>Evaluation is two-dimensional: $M,w,a \vDash \varphi$.</li>
+      </ul>
+      <p class="math">Example: $F p$ means “all of agent $a$’s friends satisfy $p$ at the current world”.</p>
+    </div>
+    <div>
+      <svg class="world-svg" viewBox="0 0 540 380">
+  <defs>
+    <marker id="mpref" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb870"/>
+    </marker>
+  </defs>
+  
+  <rect x="20" y="10" width="500" height="145" rx="12" fill="rgba(255, 255, 255, 0.04)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></rect>
+  <text class="label" x="40" y="40">World Layer (W)</text>
+  <text class="tinylabel" x="190" y="40">Orange arrows = preference ≤ₐ</text>
+  
+  <circle class="node" cx="130" cy="100" r="24"></circle><text class="ntext" x="130" y="100">w₁</text>
+  <circle class="node" cx="280" cy="75" r="24"></circle><text class="ntext" x="280" y="75">w₂</text>
+  <circle class="node" cx="430" cy="115" r="24"></circle><text class="ntext" x="430" y="115">w₃</text>
+
+  <path class="pref" marker-end="url(#mpref)" d="M154 96 Q 215 70 252 72"></path>
+  <path class="pref" marker-end="url(#mpref)" d="M304 81 Q 365 90 402 108"></path>
+
+  <path d="M130 124 L130 246" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="4 4" fill="none"></path>
+  <text class="tinylabel" x="140" y="185" fill="rgba(255,255,255,0.5)">Evaluation context (w₁, a)</text>
+
+  <rect x="20" y="210" width="500" height="135" rx="12" fill="rgba(255, 255, 255, 0.04)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></rect>
+  <text class="label" x="40" y="240">Agent Layer (A)</text>
+  <text class="tinylabel" x="190" y="240">Green dashed lines = friendship ∼w₁</text>
+
+  <circle class="node" cx="130" cy="295" r="22"></circle><text class="ntext" x="130" y="295">a</text>
+  <circle class="node" cx="280" cy="295" r="22"></circle><text class="ntext" x="280" y="295">b</text>
+  <circle class="node" cx="430" cy="295" r="22"></circle><text class="ntext" x="430" y="295">c</text>
+
+  <path class="friend" d="M152 295 L 258 295"></path>
+  <path class="friend" d="M302 295 L 408 295"></path>
+
+  <text class="tinylabel" x="20" y="370">Example: If agents b and c satisfy p at w₁, then M, w₁, a ⊨ Fp</text>
+</svg>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Weak vs. Strong Update</h2>
+  
+  <div class="cols-40-60" style="align-items: center; letter-spacing: 0.02em;">
+    <div class="tight">
+      <div style="margin-bottom: 28px;">
+        <h3 style="color: #34d399; margin-bottom: 6px;">Weak Update: $[\phi \le \psi]$</h3>
+        <p>Make $Y$ at least as good as $X$.</p>
+        <p class="math">$R_{new} = R \cup (X \times Y)$</p>
+        <p class="muted" style="font-size: 0.75em; margin-top: 8px;">Operation: <strong>Only add</strong> forward comparisons from $X$ to $Y$.</p>
+      </div>
+
+      <div>
+        <h3 style="color: #fb7185; margin-bottom: 6px;">Strong Update: $[\phi < \psi]$</h3>
+        <p>Make $Y$ strictly better than $X$.</p>
+        <p class="math">$R_{new} = (R \cup (X \times Y)) \setminus (Y \times X)$</p>
+        <p class="muted" style="font-size: 0.75em; margin-top: 8px;">Operation: Add forward comparisons, <strong>and delete</strong> any existing reverse comparisons from $Y$ back to $X$.</p>
+      </div>
+    </div>
+    
+    <div class="center">
+      <svg class="logic-svg" viewBox="0 0 600 460" style="background: #11162b; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%;">
+        <defs>
+          <marker id="mpref-fwd" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"/>
+          </marker>
+          <marker id="mpref-cut" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/>
+          </marker>
+        </defs>
+
+        <text x="120" y="45" fill="#fb7185" font-size="24" font-weight="bold" text-anchor="middle">$\phi \land \neg\psi$ (Set X)</text>
+        <rect x="30" y="60" width="180" height="260" rx="14" fill="rgba(251, 113, 133, 0.04)" stroke="#fb7185" stroke-width="2.5" stroke-dasharray="6 4"></rect>
+        
+        <circle cx="120" cy="130" r="22" fill="#1c2145" stroke="#fb7185" stroke-width="2.5"></circle>
+        <text x="120" y="137" fill="#ffd7b0" font-size="20" text-anchor="middle">w₁</text>
+        <circle cx="120" cy="250" r="22" fill="#1c2145" stroke="#fb7185" stroke-width="2.5"></circle>
+        <text x="120" y="257" fill="#ffd7b0" font-size="20" text-anchor="middle">w₂</text>
+
+        <text x="480" y="45" fill="#34d399" font-size="24" font-weight="bold" text-anchor="middle">$\psi \land \neg\phi$ (Set Y)</text>
+        <rect x="390" y="60" width="180" height="260" rx="14" fill="rgba(52, 211, 153, 0.04)" stroke="#34d399" stroke-width="2.5" stroke-dasharray="6 4"></rect>
+        
+        <circle cx="480" cy="130" r="22" fill="#1c2145" stroke="#34d399" stroke-width="2.5"></circle>
+        <text x="480" y="137" fill="#ffd7b0" font-size="20" text-anchor="middle">w₃</text>
+        <circle cx="480" cy="250" r="22" fill="#1c2145" stroke="#34d399" stroke-width="2.5"></circle>
+        <text x="480" y="257" fill="#ffd7b0" font-size="20" text-anchor="middle">w₄</text>
+
+        <rect x="230" y="10" width="140" height="70" rx="10" fill="rgba(203, 213, 225, 0.02)" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+        <text x="300" y="32" fill="#cdb8a5" font-size="18" font-weight="500" text-anchor="middle">$\phi \land \psi$</text>
+        <circle cx="300" cy="58" r="14" fill="#11162b" stroke="#64748b" stroke-width="1.5" opacity="0.6"></circle>
+        
+        <rect x="230" y="380" width="140" height="70" rx="10" fill="rgba(203, 213, 225, 0.02)" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+        <text x="300" y="402" fill="#cdb8a5" font-size="18" text-anchor="middle" opacity="0.7">irrelevant</text>
+        <circle cx="300" cy="428" r="14" fill="#11162b" stroke="#64748b" stroke-width="1.5" opacity="0.6"></circle>
+
+        <path fill="none" stroke="#ff8a2a" stroke-width="3" opacity="0.9" marker-end="url(#mpref-fwd)" d="M 148 130 L 452 130"></path>
+        <path fill="none" stroke="#ff8a2a" stroke-width="3" opacity="0.9" marker-end="url(#mpref-fwd)" d="M 148 130 L 452 250"></path>
+        <path fill="none" stroke="#ff8a2a" stroke-width="3" opacity="0.9" marker-end="url(#mpref-fwd)" d="M 148 250 L 452 130"></path>
+        <path fill="none" stroke="#ff8a2a" stroke-width="3" opacity="0.9" marker-end="url(#mpref-fwd)" d="M 148 250 L 452 250"></path>
+        <text x="300" y="115" fill="#ffb347" font-size="18" font-weight="bold" text-anchor="middle">Add: $X \times Y$</text>
+
+        <path fill="none" stroke="#fb7185" stroke-width="3.5" stroke-dasharray="8 5" marker-end="url(#mpref-cut)" d="M 452 270 Q 300 350 148 270"></path>
+        <text x="300" y="365" fill="#fb7185" font-size="18" font-weight="bold" text-anchor="middle">Delete: $Y \times X$ (Strong only)</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Arc versus path: what exactly must be cut?</h2>
+  <div class="cols-40-60">
+    <div class="sm tight">
+      <p><strong>Arc</strong>: a single edge, written $u\to v$.</p>
+      <p><strong>Path</strong>: a directed route, written $u\leadsto v$.</p>
+      <div class="subtle-line"></div>
+      <p>If we add the strict edge $X\to Y$ while some old path $Y\leadsto X$ survives, then transitive closure recreates a forbidden comparison from $Y$ back to $X$.</p>
+      <p class="factline"><span>So the real target is not one arc.</span> We must destroy <b>every</b> old path from $Y$ to $X$.</p>
+    </div>
+    
+    <div>
+      <svg class="cut-svg" viewBox="0 0 560 300">
+        <defs>
+          <marker id="mc1" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+          <marker id="mc2" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+        </defs>
+        <circle class="node" cx="78" cy="150" r="24"></circle><text class="ntext" x="78" y="150">Y</text>
+        <circle class="node" cx="190" cy="85" r="20"></circle><text class="ntext" x="190" y="85">a</text>
+        <circle class="node" cx="190" cy="220" r="20"></circle><text class="ntext" x="190" y="220">b</text>
+        <circle class="node" cx="328" cy="150" r="20"></circle><text class="ntext" x="328" y="150">c</text>
+        <circle class="node" cx="486" cy="150" r="24"></circle><text class="ntext" x="486" y="150">X</text>
+        
+        <path class="edge-old" fill="none" stroke="rgba(203, 213, 225, 0.6)" stroke-width="2.5" marker-end="url(#mc1)" d="M100 137 Q138 112 169 95"></path>
+        <path class="edge-old" fill="none" stroke="rgba(203, 213, 225, 0.6)" stroke-width="2.5" marker-end="url(#mc1)" d="M100 163 Q138 190 169 210"></path>
+        <path class="edge-old" fill="none" stroke="rgba(203, 213, 225, 0.6)" stroke-width="2.5" marker-end="url(#mc1)" d="M208 94 Q255 123 309 144"></path>
+        <path class="edge-old" fill="none" stroke="rgba(203, 213, 225, 0.6)" stroke-width="2.5" marker-end="url(#mc1)" d="M208 212 Q255 183 309 157"></path>
+        <path class="edge-old" fill="none" stroke="rgba(203, 213, 225, 0.6)" stroke-width="2.5" marker-end="url(#mc1)" d="M347 150 Q404 150 463 150"></path>
+        
+        <path class="edge-new" fill="none" stroke="#34d399" stroke-width="3.5" stroke-dasharray="6 6" marker-end="url(#mc2)" d="M 470 170 Q 302 420 95 170"></path>
+        
+        <text class="label" x="58" y="44">many possible old paths: $Y\leadsto X$</text>
+        <text class="tinylabel" x="282" y="275" text-anchor="middle">new strict edge $X\to Y$</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>A key preservation fact</h2>
+  <div class="cols-60-40">
+    <div>
+  <svg class="repair-svg" viewBox="0 0 560 300">
+    <defs>
+      <marker id="mcut" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/></marker>
+      <marker id="m-old" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+    </defs>
+    <rect class="shade" x="35" y="35" width="250" height="230" rx="18"></rect>
+    <circle class="node" cx="90" cy="145" r="22"></circle><text class="ntext" x="90" y="145">Y</text>
+    <circle class="node" cx="205" cy="90" r="18"></circle><text class="ntext" x="205" y="90">u</text>
+    <circle class="node" cx="205" cy="200" r="18"></circle><text class="ntext" x="205" y="200">v</text>
+    <circle class="node" cx="360" cy="145" r="18"></circle><text class="ntext" x="360" y="145">z</text>
+    <circle class="node" cx="490" cy="145" r="22"></circle><text class="ntext" x="490" y="145">X</text>
+    <path class="edge-old" marker-end="url(#m-old)" d="M110 136 Q145 117 187 98"></path>
+    <path class="edge-old" marker-end="url(#m-old)" d="M110 154 Q145 175 187 191"></path>
+    <path class="edge-cut" marker-end="url(#mcut)" d="M222 95 Q286 115 342 138"></path>
+    <path class="edge-cut" marker-end="url(#mcut)" d="M222 198 Q286 178 342 152"></path>
+    <path class="edge-old" marker-end="url(#m-old)" d="M378 145 Q425 145 468 145"></path>
+    <text class="tinylabel" x="58" y="65">source side U</text>
+  </svg>
+</div>
+    <div class="sm tight">
+      <p><strong>Fact / Lemma.</strong></p>
+      <p>If $R$ is a <b>preorder</b> and we delete the <i>boundary cut</i></p>
+      <p class="math">$C_U=R\cap (U\times(W\setminus U)),$</p>
+      <p>then</p>
+      <p class="math"><b>$D_U=R\setminus C_U$ is still a preorder.</b></p>
+      <ul>
+        <li>reflexive: self-loops are never boundary edges;</li>
+        <li>transitive: if $aD_Ub$ and $bD_Uc$, then $aD_Uc$ cannot be the deleted boundary edge.</li>
+      </ul>
+      <p class="note">This is why deleting a whole boundary cut is such a good move: it disconnects paths without destroying order-theoretic structure.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="step-head"><div class="step-no">STEP 1</div><h2>Admissible repairs and minimal change</h2></div>
+  <div class="grid-2">
+    <div class="sm tight">
+      <p>A candidate repair $T$ must satisfy three hard constraints:</p>
+      <ol>
+        <li>$T$ is a preorder;</li>
+        <li>$X\times Y\subseteq T$;</li>
+        <li>$T\cap (Y\times X)=\varnothing$.</li>
+      </ol>
+      <p>We compare candidate repairs by the pair</p>
+      <p class="math">$(|A_T|,|B_T|)$</p>
+      <p>where $A_T=R\setminus T$ are deleted old edges and $B_T=T\setminus(R\cup(X\times Y))$ are non-intended closure additions.</p>
+    </div>
+    <div>
+  <svg class="logic-svg" viewBox="0 0 520 280">
+    <text class="label" x="18" y="34">compare two repairs</text>
+    <rect class="shade" x="22" y="52" width="208" height="168" rx="16"></rect>
+    <rect class="shade" x="292" y="52" width="208" height="168" rx="16"></rect>
+    
+    <text class="label" x="95" y="90">repair T₀</text>
+    <text class="label" x="365" y="90">repair T₁</text>
+    
+    <text class="tinylabel" x="56" y="135">deleted old edges: 2</text>
+    <text class="tinylabel" x="56" y="165">closure additions: 1</text>
+    
+    <text class="tinylabel" x="325" y="135">deleted old edges: 2</text>
+    <text class="tinylabel" x="325" y="165">closure additions: 3</text>
+    
+    <text x="260" y="122" fill="#34d399" font-size="38" font-weight="700" text-anchor="middle" dominant-baseline="central">≺</text>
+    
+    <text class="tinylabel" x="140" y="248">same first cost, smaller second cost wins</text>
+  </svg>
+</div>
+  </div>
+</section>
+
+<section>
+  <div class="step-head"><div class="step-no">STEP 2</div><h2>The path criterion</h2></div>
+  <div class="cols-40-60">
+    <div class="sm tight">
+      <p><strong>Claim.</strong></p>
+      <p class="math">$Y\not\leadsto_D X \iff TC(D\cup(X\times Y))\cap(Y\times X)=\varnothing.$</p>
+      <p>So preserving strictness after closure is exactly the same as blocking every old path from $Y$ to $X$ before we add $X\to Y$.</p>
+    </div>
+    <div>
+  <svg class="logic-svg" viewBox="0 0 560 290">
+    <defs>
+      <marker id="mpc1" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+      <marker id="mpc2" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+    </defs>
+    <circle class="node" cx="70" cy="145" r="22"></circle><text class="ntext" x="70" y="145">Y</text>
+    <circle class="node" cx="180" cy="90" r="18"></circle><text class="ntext" x="180" y="90">a</text>
+    <circle class="node" cx="300" cy="145" r="18"></circle><text class="ntext" x="300" y="145">b</text>
+    <circle class="node" cx="420" cy="145" r="22"></circle><text class="ntext" x="420" y="145">X</text>
+    <path class="edge-old" marker-end="url(#mpc1)" d="M90 135 Q128 110 162 98"></path>
+    <path class="edge-old" marker-end="url(#mpc1)" d="M197 96 Q247 112 282 137"></path>
+    <path class="edge-old" marker-end="url(#mpc1)" d="M318 145 Q368 145 399 145"></path>
+    
+    <path class="edge-new" marker-end="url(#mpc2)" d="M400 160 Q244 260 88 160"></path>
+    
+    <text class="tinylabel" x="108" y="270">if the old path survives, closure gives $Y\to X$ again</text>
+  </svg>
+</div>
+  </div>
+</section>
+<section>
+  <div class="step-head"><div class="step-no">STEP 3</div><h2 style="letter-spacing: 0.05em;">Legal split $U$ and the boundary cut</h2></div>
+  <div class="grid-2" style="letter-spacing: 0.02em; line-height: 1.6;">
+    <div class="sm tight">
+      <p>A legal split is any set $U\subseteq W$ with</p>
+      <p class="math">$Y\subseteq U,\qquad X\cap U=\varnothing$.</p>
+      <p>Its boundary cut is</p>
+      <p class="math">$C_U=R\cap(U\times(W\setminus U))$.</p>
+      <p>Then the repaired old relation is $D_U=R\setminus C_U$, and the full repair is</p>
+      <p class="math">$T_U=TC(D_U\cup(X\times Y))$.</p>
+      <p class="note">Every legal $U$ gives an admissible repair. Different $U$ can yield different repairs.</p>
+    </div>
+    
+    <div>
+      <svg class="cut-svg" viewBox="0 0 560 300">
+        <defs>
+          <marker id="mcut-step3" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/></marker>
+          <marker id="m-old-step3" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+        </defs>
+        <rect class="shade" x="32" y="35" width="265" height="226" rx="18"></rect>
+        <circle class="node" cx="85" cy="150" r="22"></circle><text class="ntext" x="85" y="150">Y</text>
+        <circle class="node" cx="205" cy="92" r="18"></circle><text class="ntext" x="205" y="92">a</text>
+        <circle class="node" cx="205" cy="208" r="18"></circle><text class="ntext" x="205" y="208">b</text>
+        <circle class="node" cx="355" cy="150" r="18"></circle><text class="ntext" x="355" y="150">c</text>
+        <circle class="node" cx="485" cy="150" r="22"></circle><text class="ntext" x="485" y="150">X</text>
+        
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step3)" d="M106 138 Q144 115 188 100"></path>
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step3)" d="M106 160 Q143 182 188 200"></path>
+        <path class="edge-cut" fill="none" marker-end="url(#mcut-step3)" d="M221 98 Q287 115 337 142"></path>
+        <path class="edge-cut" fill="none" marker-end="url(#mcut-step3)" d="M221 202 Q287 184 337 158"></path>
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step3)" d="M373 150 Q430 150 462 150"></path>
+        
+        <text class="tinylabel" x="64" y="65" letter-spacing="1">U</text>
+        <text class="tinylabel" x="354" y="65" letter-spacing="1">W \ U</text>
+      </svg>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="step-head"><div class="step-no">STEP 4</div><h2 style="letter-spacing: 0.05em;">Boundaryization lemma</h2></div>
+  <div class="cols-60-40" style="letter-spacing: 0.02em; line-height: 1.6;">
+    <div>
+      <div style="margin-bottom: 28px; padding-left: 12px; border-left: 3px solid rgba(255, 138, 42, 0.4);">
+        <p style="margin: 0 0 8px 0; font-size: 0.68em; color: #cdb8a5; letter-spacing: 0.03em;">
+          <span style="color: #ff8a2a; margin-right: 6px;">1.</span>Start from any admissible repair $T$.
+        </p>
+        <p style="margin: 0 0 8px 0; font-size: 0.68em; color: #cdb8a5; letter-spacing: 0.03em;">
+          <span style="color: #ff8a2a; margin-right: 6px;">2.</span>Take $U$ = all nodes reachable from $Y$ inside the old part $R \cap T$.
+        </p>
+        <p style="margin: 0; font-size: 0.68em; color: #cdb8a5; letter-spacing: 0.03em;">
+          <span style="color: #ff8a2a; margin-right: 6px;">3.</span>Then its boundary cut $C_{U}$ is never worse than $T$.
+        </p>
+      </div>
+
+      <svg class="logic-svg" viewBox="0 0 590 250">
+        <defs>
+          <marker id="mcut-step4" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/></marker>
+          <marker id="m-old-step4" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+        </defs>
+        <circle class="node" cx="75" cy="145" r="22"></circle><text class="ntext" x="75" y="145">Y</text>
+        <circle class="node" cx="200" cy="88" r="18"></circle><text class="ntext" x="200" y="88">u</text>
+        <circle class="node" cx="200" cy="206" r="18"></circle><text class="ntext" x="200" y="206">v</text>
+        <circle class="node" cx="336" cy="145" r="18"></circle><text class="ntext" x="336" y="145">z</text>
+        <circle class="node" cx="485" cy="145" r="22"></circle><text class="ntext" x="485" y="145">X</text>
+        
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step4)" d="M95 136 Q138 111 182 97"></path>
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step4)" d="M95 158 Q138 182 182 198"></path>
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step4)" d="M217 96 Q268 116 317 140"></path>
+        <path class="edge-old" fill="none" marker-end="url(#m-old-step4)" d="M217 198 Q269 181 317 154"></path>
+        <path class="edge-cut" fill="none" marker-end="url(#mcut-step4)" d="M354 145 Q412 145 463 145"></path>
+      </svg>
+    </div>
+    
+    <div class="tight">
+      <p><strong>Lemma.</strong> For every admissible repair $T$, there exists a legal split $U$ such that</p>
+      <p class="math">$T_U \preceq_R T$.</p>
+      <p>So we lose nothing by searching only among boundary-cut repairs.</p>
+      <p class="note">This is the bridge from “all possible repairs” to “repairs indexed by U”. Without it, min-cut would solve the wrong problem.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="step-head"><div class="step-no">STEP 5</div><h2>Closure additions: Pred and Succ</h2></div>
+  <div class="grid-2">
+    <div class="sm tight">
+      <p>Let</p>
+      <p class="math">$P=Pred_R(X)=\{p\mid \exists x\in X,\ pRx\}$,</p>
+      <p class="math">$S=Succ_R(Y)=\{z\mid \exists y\in Y,\ yRz\}$.</p>
+      <p>If $pD_Ux$, $x\in X$, $y\in Y$, and $yD_Uz$, then adding $x\to y$ forces a new closure edge $p\to z$.</p>
+      <p class="math">$D_U\langle X,Y\rangle=\{(p,z)\mid \exists x\in X\,\exists y\in Y\, (pD_Ux \land yD_Uz)\}$.</p>
+    </div>
+   <div>
+  <svg class="logic-svg" viewBox="0 0 560 300">
+    <defs>
+      <marker id="mps1" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(203, 213, 225, 0.6)"/></marker>
+      <marker id="mps2" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+    </defs>
+    <circle class="node" cx="80" cy="145" r="20"></circle><text class="ntext" x="80" y="145">p</text>
+    <circle class="node" cx="185" cy="145" r="20"></circle><text class="ntext" x="185" y="145">x∈X</text>
+    <circle class="node" cx="375" cy="145" r="20"></circle><text class="ntext" x="375" y="145">y∈Y</text>
+    <circle class="node" cx="480" cy="145" r="20"></circle><text class="ntext" x="480" y="145">z</text>
+    <path class="edge-old" marker-end="url(#mps1)" d="M100 145 L162 145"></path>
+    <path class="edge-new" marker-end="url(#mps2)" d="M206 145 L352 145"></path>
+    <path class="edge-old" marker-end="url(#mps1)" d="M396 145 L458 145"></path>
+    <path class="edge-new" marker-end="url(#mps2)" d="M100 123 Q282 34 460 123"></path>
+    
+    <text class="tinylabel" x="204" y="115">strict edge $x\to y$</text>
+    <text class="tinylabel" x="154" y="24">closure consequence: $p\to z$</text>
+  </svg>
+</div>
+  </div>
+</section>
+
+
+<section>
+  <div class="step-head"><div class="step-no">STEP 6</div><h2>Artificial penalty edges</h2></div>
+  <div class="cols-40-60" style="align-items: center; letter-spacing: 0.02em;">
+    <div class="tight">
+      <p>The new closure edge $p\to z$ goes from the outside of $U$ back into $U$, so an ordinary cut does not count it.</p>
+      <p style="margin-top: 12px;">Fix this by adding an <strong>artificial reverse edge</strong> $z\to p$ in the augmented graph.</p>
+      <p class="math" style="margin: 16px 0; font-size: 1.15em; color: #ffb347;">$H = (P \times S) \setminus (R \cup (X \times Y))$</p>
+      <p>For each $(p,z)\in H$, add the penalty edge $z\to p$ with cost $1$.</p>
+    </div>
+    
+    <div class="center">
+      <svg class="aug-svg" viewBox="0 0 600 360" style="background: #11162b; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%;">
+        <defs>
+          <marker id="map1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+          </marker>
+          <marker id="map2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+
+        <rect x="25" y="55" width="240" height="250" rx="18" fill="rgba(100, 240, 178, 0.03)" stroke="#64f0b2" stroke-width="2.5" stroke-dasharray="6 4"></rect>
+        <text x="145" y="90" fill="#64f0b2" font-size="20" font-weight="bold" text-anchor="middle">Inside $U$</text>
+        <text x="455" y="90" fill="#ff7a59" font-size="20" font-weight="bold" text-anchor="middle">Outside $U$ ($W \setminus U$)</text>
+
+        <circle cx="145" cy="190" r="22" fill="#1c2145" stroke="#64f0b2" stroke-width="2.5"></circle>
+        <text x="145" y="197" fill="#ffd7b0" font-size="20" font-weight="bold" text-anchor="middle">z</text>
+
+        <circle cx="455" cy="190" r="22" fill="#1c2145" stroke="#ff7a59" stroke-width="2.5"></circle>
+        <text x="455" y="197" fill="#ffd7b0" font-size="20" font-weight="bold" text-anchor="middle">p</text>
+
+        <path fill="none" stroke="#38bdf8" stroke-width="3" marker-end="url(#map1)" d="M 431 180 Q 300 105 169 180"></path>
+        <text x="300" y="120" fill="#38bdf8" font-size="18" font-weight="bold" text-anchor="middle">real closure edge: $p\to z$</text>
+
+        <path fill="none" stroke="#a78bfa" stroke-width="3.5" stroke-dasharray="6 4" marker-end="url(#map2)" d="M 169 200 Q 300 275 431 200"></path>
+        <text x="300" y="270" fill="#a78bfa" font-size="18" font-weight="bold" text-anchor="middle">penalty edge in $G^+$: $z\to p$</text>
+      </svg>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="step-head"><div class="step-no">STEP 7</div><h2>The augmented graph recipe</h2></div>
+  <div class="grid-2">
+    <div class="sm tight">
+      <ol>
+        <li>Add a new source $s$ and sink $t$.</li>
+        <li>Add $s\to y$ for each $y\in Y$ and $x\to t$ for each $x\in X$.</li>
+        <li>Give each old edge of $R$ capacity <b>$M$</b>.</li>
+        <li>Give each artificial penalty edge capacity <b>$1$</b>.</li>
+      </ol>
+      <p class="math">$M=|H|+1,\qquad K=M|R|+|H|+1$.</p>
+      <p class="note">The huge value $K$ forces every minimum cut to keep all of $Y$ on the source side and all of $X$ on the sink side.</p>
+    </div>
+    <div>
+      <svg class="aug-svg" viewBox="0 0 560 300">
+        <defs><marker id="mag" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"/></marker></defs>
+        <circle class="node" cx="48" cy="150" r="18"></circle><text class="ntext" x="48" y="150">s</text>
+        <circle class="node" cx="132" cy="150" r="22"></circle><text class="ntext" x="132" y="150">Y</text>
+        <circle class="node" cx="236" cy="95" r="18"></circle><text class="ntext" x="236" y="95">u</text>
+        <circle class="node" cx="236" cy="205" r="18"></circle><text class="ntext" x="236" y="205">z</text>
+        <circle class="node" cx="380" cy="150" r="18"></circle><text class="ntext" x="380" y="150">p</text>
+        <circle class="node" cx="472" cy="150" r="22"></circle><text class="ntext" x="472" y="150">X</text>
+        <circle class="node" cx="538" cy="150" r="18"></circle><text class="ntext" x="538" y="150">t</text>
+        <path class="edge" marker-end="url(#mag)" d="M66 150 L108 150"></path>
+        <path class="edge" marker-end="url(#mag)" d="M154 145 Q183 126 218 103"></path>
+        <path class="edge-pen" marker-end="url(#mag)" d="M252 206 Q308 243 363 165"></path>
+        <path class="edge" marker-end="url(#mag)" d="M398 150 L449 150"></path>
+        <path class="edge" marker-end="url(#mag)" d="M494 150 L520 150"></path>
+        <text class="tinylabel" x="61" y="132">K</text>
+        <text class="tinylabel" x="173" y="119">M</text>
+        <text class="tinylabel" x="305" y="255">1</text>
+        <text class="tinylabel" x="499" y="132">K</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="step-head"><div class="step-no">STEP 8</div><h2>Capacity, canonical min-cut, and algorithm</h2></div>
+  <div class="cols-40-60">
+    <div class="sm tight">
+      <p>For each legal split $U$, the cut capacity is</p>
+      <p class="math">$cap(U)=M\cdot |R\setminus T_U| + |T_U\setminus(R\cup(X\times Y))|$.</p>
+      <p>So minimizing cut capacity is exactly minimizing our lexicographic repair cost.</p>
+      <p>When several minimum cuts exist, choose the <strong>canonical source-side minimum cut</strong>: the intersection of all minimum source sides.</p>
+      <p class="note">By submodularity of the cut function, the intersection of minimum cuts is again a minimum cut.</p>
+    </div>
+    <div>
+      <div class="algobox">Algorithm CanonicalStrongRepair(W, R, X, Y)
+1. compute P = Pred_R(X), S = Succ_R(Y),
+   H = (P × S) \ (R ∪ (X × Y))
+2. set M = |H| + 1 and K = M|R| + |H| + 1
+3. build the augmented network G+
+4. run Edmonds–Karp max-flow from s to t
+5. let U^- be the vertices reachable from s
+   in the final residual graph
+6. set C* = R ∩ (U^- × (W \ U^-))
+7. output T = TC((R \ C*) ∪ (X × Y))</div>
+    </div>
+  </div>
+</section>
+
+<section id="viz-input-slide">
+  <h2>Program slide I: generate an input and list candidate U</h2>
+  <div class="viz-wrap">
+    <div class="viz-block">
+      <button class="viz-btn" id="viz-random-btn">Random preorder</button>
+      <div class="viz-meta">This slide generates a random finite preorder $R$ and two disjoint sets $X,Y$.</div>
+      <div id="viz-sets" class="viz-sets"></div>
+      <svg id="viz-input-graph" class="viz-svg" viewBox="0 0 560 340"></svg>
+    </div>
+    <div class="viz-block">
+      <div class="viz-mini">Legal candidates satisfy <span class="orange">$Y\subseteq U$</span> and <span class="orange">$X\cap U=\varnothing$</span>. The table shows only the first few candidates, ordered by cost.</div>
+      <table class="viz-table" id="viz-candidate-table">
+        <thead><tr><th>U</th><th>|A|</th><th>|B|</th><th>cap</th><th>status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="viz-mini" id="viz-candidate-note" style="margin-top:8px;"></div>
+    </div>
+  </div>
+</section>
+
+<section id="viz-result-slide">
+  <h2>Program slide II: canonical min-cut and repaired relation</h2>
+  <div class="viz-wrap">
+    <div class="viz-block">
+      <div class="viz-mini" id="viz-result-summary"></div>
+      <div class="viz-log" id="viz-log"></div>
+    </div>
+    <div class="viz-block">
+      <svg id="viz-result-graph" class="viz-svg" viewBox="0 0 560 340"></svg>
+      <div class="viz-mini" id="viz-result-note"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What the proof gives us</h2>
+  <ul class="summary-list">
+    <li><strong>Conceptual clarity:</strong> strong update is a path-cutting problem.</li>
+    <li><strong>Structural clarity:</strong> every optimal repair can be represented by a legal split $U$.</li>
+    <li><strong>Algorithmic clarity:</strong> min-cut computes the minimal-change repair.</li>
+    <li><strong>Determinacy:</strong> canonical min-cut removes the need for an arbitrary numbering of worlds.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Current work and possible extensions</h2>
+  <ul class="future-list">
+    <li>Relate the repaired strong update to the stability analysis of the original peer-pressure dynamics.</li>
+    <li>Study the abstract state machine induced by transitivity-preserving repair.</li>
+    <li>Ask how the repair behaves when several agents update simultaneously.</li>
+    <li>Generalize the method beyond preorders: partial orders, weighted preferences, or ranked plausibility models.</li>
+    <li>Investigate whether similar min-cut constructions work for richer social-update operators.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>References</h2>
+  <ul class="ref-list">
+    <li>Liang, X. &amp; Seligman, J. — logical models of peer pressure and preference update.</li>
+    <li>Van Benthem, J. — dynamic logic and public/social update traditions.</li>
+    <li>Cormen, T. et al. — max-flow / min-cut and the Edmonds–Karp algorithm.</li>
+    <li>Schrijver, A. — combinatorial optimization and cut submodularity.</li>
+    <li>Alchourrón, C., Gärdenfors, P., Makinson, D. — the minimal-change spirit in belief revision.</li>
+  </ul>
+  <p class="center" style="margin-top:28px;"><strong>Thank you.</strong></p>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/math/math.js"></script>
+<script>
+const deck = new Reveal({ hash: true, slideNumber: 'c/t', transition: 'fade', center: true, width: 1440, height: 900, margin: 0.03 });
+deck.initialize({ plugins: [ RevealMath.MathJax3 ] });
+
+function rngInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function range(n){ return [...Array(n).keys()]; }
+function ek(i,j){ return `${i},${j}`; }
+function eadd(S,i,j){ S.add(ek(i,j)); }
+function ehas(S,i,j){ return S.has(ek(i,j)); }
+function edges(S){ return [...S].map(k => k.split(',').map(Number)); }
+function setName(A){ return `{${[...A].sort((a,b)=>a-b).map(i=>'w'+i).join(', ')}}`; }
+function edgeName(e){ return `w${e[0]}→w${e[1]}`; }
+function union(...sets){ const U=new Set(); for(const S of sets) for(const x of S) U.add(x); return U; }
+function minus(A,B){ const C=new Set(); for(const x of A) if(!B.has(x)) C.add(x); return C; }
+function cart(A,B){ const C=new Set(); for(const a of A) for(const b of B) eadd(C,a,b); return C; }
+function sameSet(A,B){ if(A.size!==B.size) return false; for(const x of A) if(!B.has(x)) return false; return true; }
+function closure(n,S){ const M=Array.from({length:n},()=>Array(n).fill(false)); for(const [i,j] of edges(S)) M[i][j]=true; for(let i=0;i<n;i++) M[i][i]=true; for(let k=0;k<n;k++) for(let i=0;i<n;i++) if(M[i][k]) for(let j=0;j<n;j++) if(M[k][j]) M[i][j]=true; const T=new Set(); for(let i=0;i<n;i++) for(let j=0;j<n;j++) if(M[i][j]) eadd(T,i,j); return T; }
+function randomPreorder(n,p=0.32){ let S=new Set(); for(let i=0;i<n;i++) eadd(S,i,i); for(let i=0;i<n;i++) for(let j=i+1;j<n;j++) if(Math.random()<p) eadd(S,i,j); return closure(n,S); }
+function pickXY(n,R){ for(let t=0;t<120;t++){
+  const x=rngInt(1,n-1); const ys=range(n).filter(y=>y!==x && ehas(R,y,x));
+  if(ys.length){ const y=ys[rngInt(0,ys.length-1)]; return {X:new Set([x]), Y:new Set([y])}; }
+}
+return {X:new Set([n-1]), Y:new Set([0])}; }
+function predSet(n,R,X){ const P=new Set(); for(let p=0;p<n;p++) for(const x of X) if(ehas(R,p,x)) P.add(p); return P; }
+function succSet(n,R,Y){ const S=new Set(); for(const y of Y) for(let z=0;z<n;z++) if(ehas(R,y,z)) S.add(z); return S; }
+function subset(n,mask){ const U=new Set(); for(let i=0;i<n;i++) if(mask&(1<<i)) U.add(i); return U; }
+function legalU(U,X,Y){ for(const y of Y) if(!U.has(y)) return false; for(const x of X) if(U.has(x)) return false; return true; }
+function cutU(n,R,U){ const C=new Set(); for(const [i,j] of edges(R)) if(U.has(i)&&!U.has(j)) eadd(C,i,j); return C; }
+function closureAdds(n,D,X,Y){ const E=new Set(); for(let p=0;p<n;p++) for(let z=0;z<n;z++){ let ok=false; for(const x of X){ if(!ehas(D,p,x)) continue; for(const y of Y){ if(ehas(D,y,z)){ ok=true; break; } } if(ok) break; } if(ok) eadd(E,p,z); } return E; }
+function computeCandidate(st,U){ const C=cutU(st.n,st.R,U); const D=minus(st.R,C); const T=union(D,closureAdds(st.n,D,st.X,st.Y)); const B=minus(T, union(st.R,cart(st.X,st.Y))); return {U,C,D,T,B,del:C.size,add:B.size}; }
+function enumerate(st){ const P=predSet(st.n,st.R,st.X), S=succSet(st.n,st.R,st.Y); const H=minus(cart(P,S), union(st.R,cart(st.X,st.Y))); const M=H.size+1, K=M*st.R.size+H.size+1; const cand=[]; for(let mask=0; mask<(1<<st.n); mask++){ const U=subset(st.n,mask); if(!legalU(U,st.X,st.Y)) continue; const c=computeCandidate(st,U); c.cap=M*c.del+c.add; cand.push(c); } cand.sort((a,b)=>a.cap-b.cap || a.del-b.del || a.add-b.add || a.U.size-b.U.size);
+ const minCap=cand[0].cap; const best=cand.filter(c=>c.cap===minCap); const Uminus=new Set(range(st.n).filter(i=>best.every(c=>c.U.has(i)))); const canonical=computeCandidate(st,Uminus); canonical.cap=M*canonical.del+canonical.add; return {P,S,H,M,K,candidates:cand,best,Uminus,canonical}; }
+function maxflowSourceSide(st,data){ const n=st.n, N=n+2, s=n, t=n+1; const cap=Array.from({length:N},()=>Array(N).fill(0));
+ for(const y of st.Y) cap[s][y]+=data.K;
+ for(const x of st.X) cap[x][t]+=data.K;
+ for(const [u,v] of edges(st.R)) cap[u][v]+=data.M;
+ for(const [p,z] of edges(data.H)) cap[z][p]+=1;
+ const flow=Array.from({length:N},()=>Array(N).fill(0));
+ let maxf=0;
+ while(true){ const par=Array(N).fill(-1); par[s]=s; const q=[s]; while(q.length&&par[t]===-1){ const u=q.shift(); for(let v=0;v<N;v++){ if(par[v]===-1 && cap[u][v]-flow[u][v]>0){ par[v]=u; q.push(v);} } } if(par[t]===-1) break; let aug=1e18,v=t; while(v!==s){ const u=par[v]; aug=Math.min(aug, cap[u][v]-flow[u][v]); v=u; } v=t; while(v!==s){ const u=par[v]; flow[u][v]+=aug; flow[v][u]-=aug; v=u; } maxf+=aug; }
+ const reach=new Set([s]); const q=[s]; while(q.length){ const u=q.shift(); for(let v=0;v<N;v++){ if(!reach.has(v) && cap[u][v]-flow[u][v]>0){ reach.add(v); q.push(v);} } }
+ return {maxflow:maxf, Uflow:new Set([...reach].filter(v=>v<n))}; }
+let vizState=null;
+function newViz(){
+  const n=6; let R,X,Y; for(let tries=0; tries<60; tries++){ R=randomPreorder(n,0.34); ({X,Y}=pickXY(n,R)); if(X.size&&Y.size) break; }
+  vizState={n,R,X,Y}; vizState.data=enumerate(vizState); vizState.flow=maxflowSourceSide(vizState,vizState.data); renderVizInput(); renderVizResult();
+}
+function nodePos(n){ const cx=280, cy=170, rad=120; return range(n).map(i=>{ const ang=-Math.PI/2 + 2*Math.PI*i/n; return {x:cx+rad*Math.cos(ang), y:cy+rad*Math.sin(ang)}; }); }
+function drawViz(svgId, edgesSet, U=null, cut=null, addset=null){ const svg=document.getElementById(svgId); if(!svg) return; const n=vizState.n, pos=nodePos(n);
+ svg.innerHTML=`<defs><marker id="${svgId}-a" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"></path></marker></defs>`;
+ function pathEl(d,cls){ const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d); p.setAttribute('class',cls); p.setAttribute('marker-end',`url(#${svgId}-a)`); return p; }
+ if(U){ const left=document.createElementNS('http://www.w3.org/2000/svg','rect'); left.setAttribute('x','18'); left.setAttribute('y','18'); left.setAttribute('width','250'); left.setAttribute('height','304'); left.setAttribute('rx','18'); left.setAttribute('class','shade'); svg.appendChild(left); }
+ for(const [i,j] of edges(edgesSet)){ if(i===j) continue; const a=pos[i], b=pos[j]; const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1, off=23; const x1=a.x+dx/len*off, y1=a.y+dy/len*off, x2=b.x-dx/len*off, y2=b.y-dy/len*off; const curve=(i<j?1:-1)*15; const mx=(x1+x2)/2 - dy/len*curve, my=(y1+y2)/2 + dx/len*curve; let cls='edge edge-old'; if(cut && cut.has(ek(i,j))) cls='edge edge-cut'; if(addset && addset.has(ek(i,j))) cls='edge edge-new'; svg.appendChild(pathEl(`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`, cls)); }
+ for(let i=0;i<n;i++){ const g=document.createElementNS('http://www.w3.org/2000/svg','g'); const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('cx',pos[i].x); c.setAttribute('cy',pos[i].y); c.setAttribute('r','20'); c.setAttribute('class','node'); if(vizState.X.has(i)) c.setAttribute('stroke','#ff6ea8'); if(vizState.Y.has(i)) c.setAttribute('stroke','#64f0b2'); if(U && U.has(i)){ c.setAttribute('fill','rgba(255,138,42,0.14)'); c.setAttribute('stroke','#ff8a2a'); }
+ const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('x',pos[i].x); t.setAttribute('y',pos[i].y+1); t.setAttribute('class','ntext'); t.textContent='w'+i; g.appendChild(c); g.appendChild(t); svg.appendChild(g); }
+ }
+function renderVizInput(){ if(!vizState) return; const st=vizState, d=st.data; const sets=document.getElementById('viz-sets');
+ sets.innerHTML=`<div><strong>W</strong> = {${range(st.n).map(i=>'w'+i).join(', ')}}</div><div><strong>X</strong> = ${setName(st.X)}</div><div><strong>Y</strong> = ${setName(st.Y)}</div><div><strong>|R|</strong> = ${st.R.size}</div>`;
+ drawViz('viz-input-graph', st.R, null, null, null);
+ const body=document.querySelector('#viz-candidate-table tbody'); body.innerHTML=''; d.candidates.slice(0,8).forEach(c=>{ const tr=document.createElement('tr'); const isBest=d.best.some(b=>sameSet(b.U,c.U)); const isCan=sameSet(d.Uminus,c.U); tr.innerHTML=`<td>${setName(c.U)}</td><td>${c.del}</td><td>${c.add}</td><td>${c.cap}</td><td>${isCan?'<span class="can">canonical</span>':(isBest?'<span class="best">minimum</span>':'')}</td>`; body.appendChild(tr); });
+ document.getElementById('viz-candidate-note').innerHTML=`There are <strong>${d.candidates.length}</strong> legal candidates. Minimum capacity = <strong>${d.best[0].cap}</strong>. The canonical source side is <strong>${setName(d.Uminus)}</strong>.`;
+}
+function renderVizResult(){ if(!vizState) return; const st=vizState, d=st.data, f=st.flow; const c=d.canonical;
+ drawViz('viz-result-graph', c.T, c.U, c.C, c.B);
+ document.getElementById('viz-result-summary').innerHTML=`<strong>Canonical source side:</strong> ${setName(d.Uminus)}<br><strong>M</strong> = ${d.M}, <strong>K</strong> = ${d.K}<br><strong>Edmonds–Karp source side</strong> = ${setName(f.Uflow)}`;
+ const log=`P = Pred_R(X) = ${setName(d.P)}\nS = Succ_R(Y) = ${setName(d.S)}\nH = { ${edges(d.H).map(edgeName).join(', ') || '∅'} }\n\nDeleted old edges C* = { ${edges(c.C).map(edgeName).join(', ') || '∅'} }\nClosure additions B = { ${edges(c.B).map(edgeName).join(', ') || '∅'} }\n\n|A| = ${c.del}, |B| = ${c.add}, capacity = ${c.cap}\nMinimum candidates = ${d.best.length}`;
+ document.getElementById('viz-log').textContent=log;
+ let alt=d.candidates.find(x=>!sameSet(x.U,d.Uminus));
+ document.getElementById('viz-result-note').innerHTML=`The repaired graph shows the canonical output $T$. ${alt?`For comparison, candidate ${setName(alt.U)} is rejected because its capacity is ${alt.cap}, not ${d.best[0].cap}.`:''}`;
+}
+const btn=document.getElementById('viz-random-btn'); if(btn) btn.addEventListener('click', newViz);
+newViz();
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+:root {
+  /* 现代化的深色“霓虹学术”背景 */
+  --pp-bg-main: #0d111d;
+  --pp-bg-grad: radial-gradient(circle at 15% 20%, rgba(144, 124, 255, 0.12), transparent 25%),
+                radial-gradient(circle at 85% 80%, rgba(255, 138, 42, 0.08), transparent 25%),
+                linear-gradient(135deg, #0b0f19 0%, #161b33 50%, #0b0f19 100%);
+  
+  /* 提亮的高对比度强调色 */
+  --pp-orange: #ff914d;
+  --pp-orange2: #ffb870;
+  --pp-text: #f1f5f9;
+  --pp-soft: #cbd5e1;
+  --pp-faint: #64748b;
+  --pp-green: #34d399;
+  --pp-pink: #fb7185;
+  --pp-purple: #a78bfa;
+  --pp-line: rgba(255, 145, 77, 0.25);
+  --pp-white: #ffffff;
+}
+
+/* 1. 修复背景铺满问题：将背景绑定到最外层 */
+.reveal {
+  font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+  color: var(--pp-text);
+  font-size: 30px;
+  background: var(--pp-bg-grad) !important;
+  background-size: cover;
+}
+
+/* 释放 Section 容器，让 Reveal.js 自行管理缩放 */
+.reveal .slides section {
+  padding: 20px 40px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* 2. 标题与文字排版升级 */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  color: var(--pp-white);
+  text-transform: none;
+  letter-spacing: 0.03em;
+  margin: 0 0 15px 0;
+  text-shadow: none;
+  font-weight: 700;
+}
+.reveal h1 { font-size: 2.2em; line-height: 1.15; color: var(--pp-orange); }
+.reveal h2 { 
+  font-size: 1.45em; 
+  border-bottom: 2px solid var(--pp-line); 
+  padding-bottom: 10px; 
+  color: var(--pp-orange2); 
+}
+.reveal h3 { font-size: 1.1em; color: var(--pp-green); }
+
+.reveal p, .reveal div, .reveal span { color: var(--pp-soft); line-height: 1.5; }
+.reveal strong, .reveal b { color: var(--pp-orange); font-weight: 600; }
+.reveal em, .reveal i { color: var(--pp-green); font-style: italic; }
+.reveal small { color: var(--pp-faint); }
+.reveal a { color: var(--pp-orange2); text-decoration: none; transition: color 0.2s; }
+.reveal a:hover { color: var(--pp-orange); }
+
+/* 列表美化 */
+.reveal ul { list-style: none; padding-left: 0; margin-left: 0; }
+.reveal ul li { position: relative; padding-left: 1.4em; margin: 0.5em 0; color: var(--pp-soft); }
+.reveal ul li::before {
+  content: "▶";
+  position: absolute;
+  left: 0; 
+  top: 0.1em;
+  color: var(--pp-purple);
+  font-size: 0.75em;
+}
+.reveal ol { margin-left: 1.2em; color: var(--pp-soft); }
+.reveal ol li { margin: 0.5em 0; }
+
+/* 辅助类 */
+.reveal .sm { font-size: 0.75em; }
+.reveal .xs { font-size: 0.65em; }
+.reveal .note { 
+  font-size: 0.65em; 
+  line-height: 1.5; 
+  color: var(--pp-faint); 
+  background: rgba(255,255,255,0.03); 
+  padding: 10px 15px; 
+  border-left: 3px solid var(--pp-faint); 
+  border-radius: 4px;
+}
+.reveal .tagline { font-size: 0.75em; color: var(--pp-green); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600;}
+.reveal .orange { color: var(--pp-orange); }
+.reveal .green { color: var(--pp-green); }
+.reveal .pink { color: var(--pp-pink); }
+.reveal .purple { color: var(--pp-purple); }
+.reveal .center { text-align: center; }
+.reveal .right { text-align: right; }
+.reveal .tight p { margin: 0.3em 0; }
+.reveal .muted { color: var(--pp-faint); }
+.reveal .math { font-size: 0.9em; color: var(--pp-white); }
+.reveal .tiny-math { font-size: 0.75em; color: var(--pp-white); }
+
+/* 3. 网格布局优化 */
+.title-page { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center; min-height: 70vh; }
+.title-meta { align-self: start; margin-top: 25px; border-top: 1px solid var(--pp-line); padding-top: 15px; }
+.title-meta p { margin: 8px 0; }
+.title-side { display: flex; align-items: center; justify-content: center; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; margin-top: 20px;}
+.grid-2-compact { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: center; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+.cols-40-60 { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 32px; align-items: center; }
+.cols-60-40 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: center; }
+
+/* 步骤流线设计 */
+.flowline {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 30px 0; flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.flow-step {
+  flex: 1; min-width: 150px; text-align: center; padding: 10px;
+  font-weight: 600; color: var(--pp-white);
+  border-bottom: 2px solid var(--pp-line);
+}
+.flow-arrow { color: var(--pp-orange); font-size: 1.4em; }
+
+/* 4. 彻底修复 SVG "黑影" 问题 */
+svg { filter: none !important; box-shadow: none !important; }
+
+.world-svg, .logic-svg, .cut-svg, .repair-svg, .aug-svg {
+  width: 100%; max-width: 100%; height: auto; display: block;
+}
+
+/* 提亮节点颜色，取代原本发黑的 #1a213b */
+.logic-svg .node, .world-svg .node, .cut-svg .node, .repair-svg .node, .aug-svg .node {
+  fill: #1e293b; 
+  stroke: var(--pp-orange2); 
+  stroke-width: 2.5;
+}
+.title-motif { width: 100%; max-width: 400px; height: 400px; }
+.title-motif .burst { stroke: var(--pp-orange); stroke-width: 6; stroke-linecap: round; }
+.title-motif .orbit { fill: none; stroke: rgba(255, 145, 77, 0.2); stroke-width: 2; }
+.title-motif .node { fill: var(--pp-orange); }
+.title-motif .node2 { fill: var(--pp-green); }
+
+/* 连线提亮与虚线优化 */
+.logic-svg .edge, .world-svg .edge, .cut-svg .edge, .repair-svg .edge, .aug-svg .edge {
+  stroke: rgba(241, 245, 249, 0.85); stroke-width: 2.5; fill: none; stroke-linecap: round;
+}
+.logic-svg .edge-old, .world-svg .edge-old, .cut-svg .edge-old, .repair-svg .edge-old { stroke: rgba(203, 213, 225, 0.6); stroke-width: 2.5; fill: none;}
+.logic-svg .edge-new, .repair-svg .edge-new { stroke: var(--pp-green); stroke-width: 3.5; stroke-dasharray: 6 6; fill: none;}
+.logic-svg .edge-cut, .cut-svg .edge-cut, .repair-svg .edge-cut { stroke: var(--pp-pink); stroke-width: 3.5; stroke-dasharray: 8 5; fill: none;}
+.logic-svg .edge-pen, .aug-svg .edge-pen { stroke: var(--pp-purple); stroke-width: 3; stroke-dasharray: 4 6; fill: none;}
+
+/* 阴影区域改成高级的玻璃态背景 */
+.logic-svg .shade, .cut-svg .shade, .repair-svg .shade, .aug-svg .shade { 
+  fill: rgba(255, 255, 255, 0.04); 
+  stroke: rgba(255, 255, 255, 0.15); 
+  stroke-width: 1.5; 
+}
+.world-svg .friend, .logic-svg .friend { stroke: var(--pp-green); stroke-width: 2.5; stroke-dasharray: 4 5; fill: none; }
+.world-svg .pref, .logic-svg .pref { stroke: var(--pp-orange2); stroke-width: 2.5; fill: none; }
+
+.world-svg .label, .logic-svg .label, .cut-svg .label, .repair-svg .label, .aug-svg .label {
+  fill: var(--pp-soft); font-size: 18px; font-weight: 500;
+}
+.world-svg .tinylabel, .logic-svg .tinylabel, .cut-svg .tinylabel, .repair-svg .tinylabel, .aug-svg .tinylabel {
+  fill: var(--pp-faint); font-size: 15px; font-weight: 500;
+}
+.world-svg .ntext, .logic-svg .ntext, .cut-svg .ntext, .repair-svg .ntext, .aug-svg .ntext {
+  fill: var(--pp-white); font-size: 19px; text-anchor: middle; dominant-baseline: central; font-weight: 700;
+}
+
+/* 局部组件优化 */
+.factline { margin-top: 15px; font-size: 0.85em; line-height: 1.5; background: rgba(255,145,77,0.1); padding: 10px 15px; border-radius: 6px;}
+.factline span { color: var(--pp-orange); font-weight: 700; }
+
+.step-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 15px; }
+.step-no { color: var(--pp-bg-main); background: var(--pp-green); padding: 4px 10px; border-radius: 4px; font-size: 0.65em; font-weight: 800; letter-spacing: 0.1em; }
+
+.mini-diagram-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 20px;}
+.mini-title { color: var(--pp-white); font-size: 0.85em; text-align: center; margin-bottom: 15px; font-weight: 600; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px;}
+.subtle-line { height: 1px; background: var(--pp-line); margin: 15px 0; border: none; }
+
+/* 算法块：做成现代化终端样式 */
+.algobox {
+  font-size: 0.55em; line-height: 1.6; color: var(--pp-green);
+  background: #090b14;
+  white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-left: 4px solid var(--pp-orange); 
+  padding: 15px 20px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.ref-list li { font-size: 0.7em; line-height: 1.5; color: var(--pp-faint); margin-bottom: 8px;}
+.summary-list li, .future-list li { font-size: 0.8em; margin-bottom: 12px; }
+
+/* 5. 动态可视化组件UI升级 */
+.viz-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; background: rgba(0,0,0,0.15); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);}
+.viz-block { min-height: 100px; }
+.viz-btn {
+  background: var(--pp-orange); border: none; color: var(--pp-bg-main); font-size: 0.75em; font-weight: 700;
+  cursor: pointer; padding: 10px 20px; margin-bottom: 15px; border-radius: 6px; transition: all 0.2s ease;
+}
+.viz-btn:hover { background: var(--pp-orange2); transform: translateY(-2px); }
+.viz-btn::before { content: "⚡ "; }
+.viz-meta { font-size: 0.65em; color: var(--pp-soft); margin-bottom: 15px; font-style: italic; }
+.viz-sets { font-size: 0.7em; line-height: 1.6; margin-bottom: 15px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 6px;}
+.viz-svg { width: 100%; height: 340px; display: block; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+
+/* 数据表格升级 */
+.viz-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.55em; margin-bottom: 15px; }
+.viz-table th, .viz-table td { border-bottom: 1px solid rgba(255, 145, 77, 0.15); padding: 10px 8px; text-align: left; }
+.viz-table th { color: var(--pp-orange2); font-weight: 700; background: rgba(255,255,255,0.02); }
+.viz-table tr:hover td { background: rgba(255,255,255,0.04); }
+.viz-table .best { color: var(--pp-green); font-weight: 600; }
+.viz-table .can { color: var(--pp-purple); font-weight: 700; }
+
+.viz-log { font-size: 0.55em; line-height: 1.5; white-space: pre-wrap; color: var(--pp-soft); background: #090b14; padding: 15px; border-radius: 6px; border-left: 3px solid var(--pp-purple); font-family: 'Consolas', monospace;}
+.viz-mini { font-size: 0.65em; line-height: 1.5; color: var(--pp-soft); margin-top: 10px;}
+
+.reveal table { margin: auto; border-collapse: collapse; width: 90%; }
+.reveal table th, .reveal table td { padding: 0.4em 0.6em; border-bottom: 1px solid rgba(255, 145, 77, 0.25); }
+
+.fragment.current-visible.fade-soft { opacity: 0.2; }
+.fragment.visible.fade-soft { opacity: 1; }
+
+/* 修复动态生成的 viz-svg 样式丢失问题 */
+.viz-svg .node {
+  fill: #1e293b; 
+  stroke: var(--pp-orange2); 
+  stroke-width: 2.5;
+}
+.viz-svg .ntext {
+  fill: var(--pp-white); font-size: 19px; text-anchor: middle; dominant-baseline: central; font-weight: 700;
+}
+.viz-svg .edge { stroke: rgba(241, 245, 249, 0.85); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.viz-svg .edge-old { stroke: rgba(203, 213, 225, 0.6); stroke-width: 2.5; fill: none; }
+.viz-svg .edge-new { stroke: var(--pp-green); stroke-width: 3.5; stroke-dasharray: 6 6; fill: none; }
+.viz-svg .edge-cut { stroke: var(--pp-pink); stroke-width: 3.5; stroke-dasharray: 8 5; fill: none; }
+.viz-svg .edge-pen { stroke: var(--pp-purple); stroke-width: 3; stroke-dasharray: 4 6; fill: none; }
+.viz-svg .shade { fill: rgba(255, 255, 255, 0.04); stroke: rgba(255, 255, 255, 0.15); stroke-width: 1.5; }
+
+/* 放大字体的关键：直接修改根字号，Reveal.js 会根据这个基础按比例放大所有元素 */
+.reveal {
+  font-size: 36px; /* 原来是 30px，调大到 36px 或 40px 可以显著提升阅读体验 */
+}
