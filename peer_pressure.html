@@ -714,14 +714,127 @@ function newViz(){
   vizState={n,R,X,Y}; vizState.data=enumerate(vizState); vizState.flow=maxflowSourceSide(vizState,vizState.data); renderVizInput(); renderVizResult();
 }
 function nodePos(n){ const cx=280, cy=170, rad=120; return range(n).map(i=>{ const ang=-Math.PI/2 + 2*Math.PI*i/n; return {x:cx+rad*Math.cos(ang), y:cy+rad*Math.sin(ang)}; }); }
-function drawViz(svgId, edgesSet, U=null, cut=null, addset=null){ const svg=document.getElementById(svgId); if(!svg) return; const n=vizState.n, pos=nodePos(n);
- svg.innerHTML=`<defs><marker id="${svgId}-a" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"></path></marker></defs>`;
- function pathEl(d,cls){ const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d); p.setAttribute('class',cls); p.setAttribute('marker-end',`url(#${svgId}-a)`); return p; }
- if(U){ const left=document.createElementNS('http://www.w3.org/2000/svg','rect'); left.setAttribute('x','18'); left.setAttribute('y','18'); left.setAttribute('width','250'); left.setAttribute('height','304'); left.setAttribute('rx','18'); left.setAttribute('class','shade'); svg.appendChild(left); }
- for(const [i,j] of edges(edgesSet)){ if(i===j) continue; const a=pos[i], b=pos[j]; const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1, off=23; const x1=a.x+dx/len*off, y1=a.y+dy/len*off, x2=b.x-dx/len*off, y2=b.y-dy/len*off; const curve=(i<j?1:-1)*15; const mx=(x1+x2)/2 - dy/len*curve, my=(y1+y2)/2 + dx/len*curve; let cls='edge edge-old'; if(cut && cut.has(ek(i,j))) cls='edge edge-cut'; if(addset && addset.has(ek(i,j))) cls='edge edge-new'; svg.appendChild(pathEl(`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`, cls)); }
- for(let i=0;i<n;i++){ const g=document.createElementNS('http://www.w3.org/2000/svg','g'); const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('cx',pos[i].x); c.setAttribute('cy',pos[i].y); c.setAttribute('r','20'); c.setAttribute('class','node'); if(vizState.X.has(i)) c.setAttribute('stroke','#ff6ea8'); if(vizState.Y.has(i)) c.setAttribute('stroke','#64f0b2'); if(U && U.has(i)){ c.setAttribute('fill','rgba(255,138,42,0.14)'); c.setAttribute('stroke','#ff8a2a'); }
- const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('x',pos[i].x); t.setAttribute('y',pos[i].y+1); t.setAttribute('class','ntext'); t.textContent='w'+i; g.appendChild(c); g.appendChild(t); svg.appendChild(g); }
- }
+function drawViz(svgId, edgesSet, U = null, cut = null, addset = null, showZone = true) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+
+  const n = vizState.n;
+  const pos = nodePos(n);
+
+  svg.innerHTML = `
+    <defs>
+      <marker id="${svgId}-a"
+              viewBox="0 0 10 10"
+              refX="8.2"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb347"></path>
+      </marker>
+    </defs>
+  `;
+
+  // Draw the U-background zone only when showZone is true.
+  // Result slide can pass showZone = false.
+  if (U && showZone) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', '18');
+    rect.setAttribute('y', '18');
+    rect.setAttribute('width', '250');
+    rect.setAttribute('height', '304');
+    rect.setAttribute('rx', '18');
+    rect.setAttribute('class', 'shade');
+    svg.appendChild(rect);
+  }
+
+  function pathEl(d, cls) {
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('class', cls);
+    p.setAttribute('marker-end', `url(#${svgId}-a)`);
+    return p;
+  }
+
+  for (const [i, j] of edges(edgesSet)) {
+    if (i === j) continue;
+
+    const a = pos[i];
+    const b = pos[j];
+
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+
+    const off = 23;
+    const x1 = a.x + dx / len * off;
+    const y1 = a.y + dy / len * off;
+    const x2 = b.x - dx / len * off;
+    const y2 = b.y - dy / len * off;
+
+    const curve = (i < j ? 1 : -1) * 15;
+    const mx = (x1 + x2) / 2 - dy / len * curve;
+    const my = (y1 + y2) / 2 + dx / len * curve;
+
+    let cls = 'edge edge-old';
+    if (cut && cut.has(ek(i, j))) cls = 'edge edge-cut';
+    if (addset && addset.has(ek(i, j))) cls = 'edge edge-new';
+
+    svg.appendChild(pathEl(`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`, cls));
+  }
+
+  for (let i = 0; i < n; i++) {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', pos[i].x);
+    c.setAttribute('cy', pos[i].y);
+    c.setAttribute('r', '20');
+    c.setAttribute('class', 'node');
+
+    // Base highlighting for X and Y
+    if (vizState.X.has(i)) {
+      c.setAttribute('stroke', '#ff6ea8');
+      c.setAttribute('stroke-width', '4');
+    }
+
+    if (vizState.Y.has(i)) {
+      c.setAttribute('stroke', '#64f0b2');
+      c.setAttribute('stroke-width', '4');
+    }
+
+    // Highlight nodes in U, without drawing the large U-background box
+    if (U && U.has(i)) {
+      c.setAttribute('fill', 'rgba(255,138,42,0.22)');
+      c.setAttribute('stroke', '#ff8a2a');
+      c.setAttribute('stroke-width', '4');
+    }
+
+    // If a node is both in U and X/Y, keep X/Y visually recognizable
+    if (U && U.has(i) && vizState.Y.has(i)) {
+      c.setAttribute('fill', 'rgba(100,242,178,0.18)');
+      c.setAttribute('stroke', '#64f0b2');
+      c.setAttribute('stroke-width', '4');
+    }
+
+    if (U && U.has(i) && vizState.X.has(i)) {
+      c.setAttribute('fill', 'rgba(255,111,168,0.18)');
+      c.setAttribute('stroke', '#ff6ea8');
+      c.setAttribute('stroke-width', '4');
+    }
+
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', pos[i].x);
+    t.setAttribute('y', pos[i].y + 1);
+    t.setAttribute('class', 'ntext');
+    t.textContent = 'w' + i;
+
+    g.appendChild(c);
+    g.appendChild(t);
+    svg.appendChild(g);
+  }
+}
+
 function renderVizInput(){ if(!vizState) return; const st=vizState, d=st.data; const sets=document.getElementById('viz-sets');
  sets.innerHTML=`<div><strong>W</strong> = {${range(st.n).map(i=>'w'+i).join(', ')}}</div><div><strong>X</strong> = ${setName(st.X)}</div><div><strong>Y</strong> = ${setName(st.Y)}</div><div><strong>|R|</strong> = ${st.R.size}</div>`;
  drawViz('viz-input-graph', st.R, null, null, null);
@@ -736,7 +849,7 @@ function renderVizResult(){
   const f = st.flow;
   const c = d.canonical;
 
-  drawViz('viz-result-graph', c.T, c.U, c.C, c.B);
+drawViz('viz-result-graph', c.T, c.U, c.C, c.B, false);
 
   document.getElementById('viz-result-summary').innerHTML =
     `<strong>Canonical source side:</strong> ${setName(d.Uminus)}<br>
