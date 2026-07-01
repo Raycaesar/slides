@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>卡罗尔悖论与逻辑规范性：金岳霖在一个战场上的两场战争</title>
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/moon.css" id="theme">
+  <link rel="stylesheet" href="chin_carroll_normativity.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 第1页 -->
+      <section data-background-image="Carroll/jin_5.png" data-background-size="100% 99.5%" data-background-position="center 65%" data-background-repeat="no-repeat">
+      </section>
+
+      <!-- 第2页：修复边框过长 -->
+      <section data-background-image="Carroll/river.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <div class="two-col">
+          <div class="claim-box maintext">
+            <h3>不主张</h3>
+            <ul>
+              <li>金岳霖“解决”了卡罗尔悖论。</li>
+              <li>金岳霖预示了后来证明论语义学。</li>
+              <li>金岳霖属于现代推理主义传统。</li>
+            </ul>
+          </div>
+          <div class="claim-box maintext">
+            <h3>主张</h3>
+            <ul>
+              <li>金岳霖借规范性问题捍卫自己的实在论立场。
+</li>
+              <li>他对卡罗尔悖论的回应在来源上是罗素式的。</li>
+              <li>但更进一步，他又批评罗素后期的构造论倾向。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col14" style="margin-top: 1rem;">
+          <img src="Carroll/jin_stand.png" alt="Jin Yuelin" class="portrait-img jin-stand" height="80%">
+          <!-- 应用 fit-content-card 修复过长的边框 -->
+          <div class="thesis-card fragment fit-content-card">
+            <h2>报告目标</h2>
+            <p>
+这不是要把金岳霖改写为当代逻辑规范性理论的先驱，而是要重构他在六十年代如何围绕“推论何以客观有效”这一问题，展开自己的逻辑实在论。</p>
+          </div>
+        </div>
+      </section>
+     
+     <section class="carroll-slide"
+     data-background-image="Carroll/countryside.png"
+         data-background-size="100% 99.5%"
+         data-background-position="center 55%"
+         data-background-repeat="no-repeat">
+
+  <div class="scene-container">
+    <div class="dialog-container">
+
+      <!-- 阿基里斯：上方固定对话框 -->
+      <div class="dialog-box">
+        <div class="dialog-turn achilles-line fragment" data-fragment-index="0">
+          <p><span class="speaker">阿基里斯</span></p>
+          <p>你已经接受：$\varphi,\quad \varphi \rightarrow \psi$ 那么由 modus ponens，<b>所以</b>：$\psi$</p>
+        </div>
+
+        <div class="dialog-turn achilles-line fragment" data-fragment-index="2">
+          <p><span class="speaker">阿基里斯</span></p>
+          <p>好，那我们把这条推理原则也写成前提：
+            $R_0:\bigl(\varphi \wedge (\varphi \rightarrow \psi)\bigr)
+            \rightarrow \psi$
+          </p>
+          <p>现在你总该接受 $\psi$ 了吧？</p>
+        </div>
+
+        <div class="dialog-turn achilles-line fragment" data-fragment-index="4">
+          <p><span class="speaker">阿基里斯</span></p>
+          <p>那就再加入一条原则：
+            $R_1:\bigl(\varphi \wedge (\varphi \rightarrow \psi) \wedge R_0\bigr)
+            \rightarrow \psi$
+          </p>
+          <p>这样总可以推出 $\psi$ 了吧？</p>
+        </div>
+      </div>
+
+      <!-- 乌龟：下方固定对话框 -->
+      <div class="dialog-box">
+        <div class="dialog-turn turtle-line fragment" data-fragment-index="1">
+          <p><span class="speaker">乌龟</span></p>
+          <p>我可以接受 $\varphi$，也可以接受 $\varphi \rightarrow \psi$。</p>
+          <p>但我为什么必须接受 $\psi$？</p>
+        </div>
+
+        <div class="dialog-turn turtle-line fragment" data-fragment-index="3">
+          <p><span class="speaker">乌龟</span></p>
+          <p>我也可以再多接受一个前提 $R_0$。</p>
+          <p>但我为什么必须从$\varphi,\quad \varphi \rightarrow \psi,\quad R_0$ 推进到 $\psi$？</p>
+        </div>
+
+        <div class="dialog-turn turtle-line fragment" data-fragment-index="5">
+          <p><span class="speaker">乌龟</span></p>
+          <p>我也可以再多接受一个前提 $R_1$。</p>
+          <p>但我为什么必须从这些前提出发，实际走到 $\psi$？</p>
+        </div>
+      </div>
+
+    </div>
+
+    <img src="Carroll/achilles.png" alt="Achilles" class="achilles-img">
+    <img src="Carroll/turtor_2.png" alt="Tortoise" class="turtle-img">
+  </div>
+</section>
+
+
+
+
+      <!-- 第4页：链条与三人布局，默认不动 -->
+      <section data-background-image="Carroll/battlefield.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <div class="document-chain">
+          <div class="document-card fragment"><div class="year">1960《论“所以”》</i></div> <p>把“所以”问题放在推论、断定和实际思想活动中讨论。</p></div>
+          <div class="chain-arrow fragment">→</div>
+          <div class="document-card fragment"><div class="year">1961 周礼全的批评</div><p>周礼全担心“阶级性”等表述危及形式逻辑的普遍性。</p></div>
+          <div class="chain-arrow fragment">→</div>
+          <div class="document-card fragment"><div class="year">1962《论推论形式的阶级性和必然性》</div><p>回应周礼全：区分逻辑蕴涵和实际推论</p></div>
+          <div class="chain-arrow fragment">→</div>
+          <div class="document-card fragment"><div class="year">60年代中后期《罗素哲学》及英文手稿</div><p>系统地批评罗素，提出并捍卫自身的实在论立场</p></div>
+        </div>
+        <div class="col-1-2-1 jin-context">
+          <div class="portrait-panel fragment"><img src="Carroll/jin_portrait.jpg" alt="Jin Yuelin" class="portrait-img"></div>
+          <div class="claim-box fragment">
+            <h3>金岳霖的观点</h3>
+            <ul>
+              <li>现实中的推论行为受到历史条件的限制。</li>
+              <li>承认<em>《论“所以”》</em>里的说法不成熟，形式有效性不随阶级或环境而变化。但不存在普遍的断定形式。</li>
+              <li> <b>关键区分</b>：蕴涵是命题之间的客观形式关系；
+“所以”则涉及主体对前提的断定以及从前提到结论的实际过渡。</li>
+
+              <li>实际推论活动是处于一定情境中的认知行为，既对客观逻辑形式负责，也要对推理发生其中的事实状况负责。</li>
+              
+              
+            </ul>
+          </div>
+          <div class="portrait-panel fragment"><img src="Carroll/zhou_portrait.jpg" alt="Zhou Liquan" class="portrait-img"></div>
+        </div>
+      </section>
+
+      <!-- 第5页：修复标题下的三栏重叠，按 3:3:2 拆分 -->
+      <section data-background-image="Carroll/campus.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <div class="thesis-card" style="margin-bottom: 1rem;">
+          <h2>金岳霖的回答来自弗雷格—罗素传统中的一个区分</h2>
+        </div>
+        <!-- 使用新的 col-3-3-2 类 -->
+        <div class="col-3-3-2">
+          
+            <div class="node-card concept-card">
+  <p><b>命题</b>：可真可假的内容，不等同于断定行为。</p>
+  <p><b>断定</b>：主体承认某命题为真；具有认知维度。</p>
+  <p><b>蕴涵</b>：命题之间的客观形式关系，不靠再次断定而成立。</p>
+  <p><b>推论 / “所以”</b>：主体以已断定的命题为前提，向结论实际过渡的认知活动；它以蕴涵为形式根据，但不是蕴涵本身。</p>
+  <p class="mini-note">
+    乌龟的错误在于把使推论成立的蕴涵关系不断前提化，仿佛每一次推论都还需要一个新的断定前提。
+  </p>
+</div>
+         
+          <div class="node-card">
+            <p class="small">Russell, <em>The Principles of Mathematics, §38:
+            <br><br>
+           When we say therefore, we state a relation which can only hold between asserted propositions, and which thus differs from implication. Wherever therefore occurs, the hypothesis may be dropped, and the conclusion asserted by itself. This seems to be the first step in answering Lewis Carroll's puzzle.</em></p>
+          </div>
+          <div class="portrait-panel ">
+            <img src="Carroll/russell.png" class="russell-img">
+          </div>
+        </div>
+      </section>
+
+      <!-- 第6页：修复两栏叠在一起，现在CSS中已移除绝对定位，对半分开 1:1 -->
+      <section data-background-image="Carroll/city.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <div class="thesis-card" style="margin-bottom: 1rem;">
+          <h2>罗素的构造转向:金岳霖面对的罗素不止一个</h2>
+        </div>
+        <div class="two-col">
+          <div class="node-card">
+            <img src="Carroll/russell_young.jpg" class="portrait-img" height="40%">
+  
+            <p> <b>早期罗素</b>：逻辑关系有实在性。
+命题可以不被断定而仍然为真或为假；蕴涵是命题之间的客观关系；推理则是主体在已断定前提的基础上向结论过渡。这一框架使罗素能够回应卡罗尔式的无穷后退：推理不能当作蕴涵关系作为一个前提被加入。</p>
+          </div>
+          <div class="node-card fragment">
+            <img src="Carroll/russell_old.png" class="portrait-img" height="30%">
+            
+            <p> 
+             <b>后期罗素</b>：在认识论和逻辑构造纲领中，罗素强调用已知材料的逻辑构造来替代对未知实体的推论。物理对象、外部世界和常识对象不再首先作为被推论到的实在对象，而被理解为由感觉或中性材料构成的逻辑结构。 <em> “Wherever possible, substitute constructions out of known entities for inferences to unknown entities” </em></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第7页：修复三栏叠在一起，按 3:2:3 分开 -->
+      <section data-background-image="Carroll/main_battle.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <div class="thesis-card" style="margin-bottom: 1rem;">
+          <p><b>金岳霖思想中的两个方向</b>：他先借早期罗素的区分回应卡罗尔式后退。当问题由“推理如何受规范”转向“对象是否被构造消解”时，金岳霖用同一个实在论关切反过来批评罗素后期哲学。但因此，金岳霖实际的论证需要同时应对两个方向的压力</p> 
+        </div>
+        <!-- 使用新的 col-3-2-3 类 -->
+        <div class="three-col">
+          <div class="node-card">
+            <p><b>反对乌龟式怀疑论</b>:
+如果蕴涵关系只有在被进一步断定为前提之后才有规范力，那么推理永远不能真正开始。金岳霖必须维护蕴涵关系对推论的客观约束。如果 $A \wedge B$ 确实蕴涵 $Z$，那么这个关系独立于阿基里斯或乌龟是否把它表述为另一个命题而成立。</p>
+          </div>
+          <div class="portrait-panel">
+            <img src="Carroll/jin_vigil.png" class="jin-vigil-img">
+          </div>
+          <div class="node-card">
+            <p>
+            <b>反对罗素式构造论</b>：
+如果对客观对象的推论被感觉材料的逻辑构造所替代，那么认识与对象之间的实在论联系就会被削弱。推理会被看成抽象个体认识的行为，而不考虑其所处的现实历史条件和认知的客观处境。推理和认识都是主体活动，不能封闭在主体心理或主观材料之中。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第8页 (视频页) -->
+      <section data-background-video="Carroll/jin_animation.mp4" data-background-video-loop data-background-video-muted></section>
+
+      <!-- 第9页：对话框变窄 -->
+      <section data-background-image="Carroll/jin_won.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <!-- 应用 narrow-container -->
+        <div class="narrow-container">
+          <div class="claim-box fragment" style="margin-bottom: 1rem;">
+            <h3>金岳霖的补充：合取引入一样会产生倒退</h3>
+            <p>金岳霖注意到，在前提本身这一侧也可以产生类似倒退。如果乌龟不仅拒绝从A和B过渡到Z，甚至可以拒绝承认A且B（$A \wedge B $）为真，那么阿基里斯必须再加上一个命题进入前提: $A, B \therefore A \wedge B $,而乌龟一样可以拒绝这个命题。</p>
+          </div>
+          <div class="claim-box fragment">
+            <h3>金岳霖回应卡罗尔式后退</h3>
+<p>
+  卡罗尔式后退的关键，是误导读者认为前提不充分，实际问题则是把规则的规范力不断改写为表示蕴涵的额外前提。金岳霖接受一个罗素式区分：蕴涵关系与实际推论不同。蕴涵关系不因为被断定才成立；实际推论则是主体在承认前提后向结论过渡的认知活动。因此，推论的正当性不能靠无限增加前提来保证。它依赖于前提与结论之间已有的客观逻辑关系，也依赖于主体实际执行推论时对这种关系的把握。
+</p>
+           
+          </div>
+          <div class="thesis-card fragment" style="margin-top: 1rem;">
+            <p class="lead"><b>推理是主体的认知活动；但推理的正当性受客观逻辑关系约束。</b></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第10页：对话框变窄 -->
+      <section data-background-image="Carroll/jin_r1.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <!-- 应用 narrow-container -->
+        <div class="narrow-container">
+          <div class="thesis-card fragment">
+            <h2>回应罗素构造主义：推理不能被构造取代</h2>
+            <p class="lead"><em>《罗素哲学》</em>指出：罗素没有具体说明其构造论针对地是演绎与非演绎推理；金岳霖意识到两种可能性，因此分别进行回应。</p>
+            <p><b>演绎推理（推演）无须构造</b>: 前提与结论之间受到客观的蕴含形式关系保障，结论总是被前提所包含。而且，即使结论通过前提的材料构造得出，也不见得比推演本身可靠。</p>
+            <p><b>非演绎推理（推论）如果通过逻辑构造则前提的材料不足</b>：小孩看到闪电捂耳朵，小孩的动作说明小孩做了推理，但如何通过闪电构造雷声？这就需要在认识论中加入新的内容来处理现实对象（雷声）。</p>
+            <p>
+  按金岳霖的诊断，罗素“想把认识论做成演绎系统”。问题在于：为了弥补构造能力的不足，罗素引入“感觉材料”，并用类似演绎的方法来构造客观对象。这样一来，认知与客观实体之间的关系便被主观材料的构造所中介，推论与科学认识的客观性也随之受到削弱。
+</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第11页：对话框变窄 -->
+      <section data-background-image="Carroll/jin_r2.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <!-- 应用 narrow-container -->
+        <div class="narrow-container">
+          <div class="thesis-card fragment">
+            <h2>中性一元论手稿：感觉材料不能替代客观对象</h2>
+            <p class="lead">英文短文 <em>On the Essence of Russell's Neutral Monism</em> 提出：如果心灵和物质都被还原为中性材料的构造，客观对象的独立实在性就会被削弱。</p>
+            <p ><b>金岳霖反对的还原</b>:
+              <ul>
+<li>苹果不只是颜色、形状、气味和触觉印象的集合；</li>
+<li>桌子不只是事件或感觉材料的排列；</li>
+<li>物理对象也不能穷尽于我们认识它时所经由的材料。</li></ul></p>
+
+          <p ><b>层级不能互相取消</b>:
+微观物理描述可以改变我们说明对象的方式，但不能取消宏观对象在经验实践和科学实验中的实在地位。如果用桌子的微观描述，比如用粒子、场或波来否认普通桌子的实在性，或者用由感觉材料构成的物理对象构造来否认那些对象的独立存在，那么科学抽象就被转化为形而上学还原。</p>
+
+            <p ><b>物理学依据</b>:
+
+            金岳霖引用爱因斯坦为自己的实在论辩护：科学认识依赖于一个独立于心灵的世界，尽管这种认识始终由历史地处于一定情境中的理论、仪器和实践所中介。物理理论可以改变我们对那个世界的说明，但不能在不破坏自身实验基础的情况下取消那个世界的独立实在性。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第12页：修复两栏没分开，留出中间距离 -->
+      <section data-background-image="Carroll/campus.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <!-- 使用 new two-col-spaced 类 -->
+        <div class="two-col-spaced">
+          <div class="node-card">
+            <img src="Carroll/sheffer.jpg" class="portrait-img" height="30%">
+            <h3>H. M. Shefferr：逻辑中心困境</h3>
+            <ul>
+              <li>金岳霖早年已经在<em>《导论》</em>中关心逻辑如何说明自身的起点的问题。</li>
+<li>访问哈佛期间，他接触到 H. M. Sheffer 关于“逻辑中心困境”的表述。</li>
+             
+              <li><em>《知识论》</em>：“逻辑观念不是从逻辑系统中得到的。假定一个人完全没有逻辑观念，那么即使他钻研逻辑系统，也得不到逻辑观念。这就是所谓‘逻辑假定逻辑’”。</li>
+            </ul>
+          </div>
+          <div class="node-card fragment">
+            <img src="Carroll/gila.jpg" class="portrait-img" height="30%">
+            <h3>与Gila Sher的基础整体论的比较</h3>
+            <p><em>As a theory of the formal structure of "real" objects (configurations of objects), logic is anchored in reality; as a theory of the formal structure of our thought of objects, logic is anchored in the mind.</em></p>
+            <p>金岳霖和Sher都拒绝把逻辑单独奠基于心灵或单独奠基于世界，而必须兼而有之。不同在于，Sher 依赖 Tarski 传统和模型论工具；
+金岳霖则提出一种更厚重但也更纲领性的逻辑实在论。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第13页：修复三栏叠在一起，现在会按照严格 1:1:1 分开 -->
+      <section data-background-image="Carroll/battlefield.png" data-background-size="100% 99.5%" data-background-position="center 55%" data-background-repeat="no-repeat">
+        <!-- 直接使用 three-col -->
+        <div class="three-col">
+          <div class="node-card fragment">
+            <img src="Carroll/wanghao.jpg" alt="Wang Hao" class="portrait-img">
+            <p>王浩在 <em>Memories related to Professor Jin Yuelin</em> 中评论道：金岳霖思想中存在“两种理想”的张力：一方面是前期新实在论系统，另一方面是后期处于辩证唯物主义语汇中的哲学写作。</p>
+          </div>
+          <div class="node-card fragment">
+            <p>周礼全在<em>《罗素哲学》</em>序言对金岳霖的罗素研究评价具有双重性</p>
+            <img src="Carroll/zhou_xu.jpg" alt="Zhou Xu" class="portrait-img">
+          </div>
+          <div class="node-card fragment">
+            <p>近期英文的金岳霖研究中，也出现了对金岳霖哲学<b>不成熟</b>的评价。</p>
+            <h3>本报告的回应</h3>
+            <p >
+金岳霖的形式、语汇和时代处境确有变化；但他对逻辑、推论和知识对象客观性的关切并未简单断裂。他其实是在不同语境中持续地为自己的逻辑实在论寻找合适的表达方式。</p>
+          </div>
+        </div>
+      </section>
+<!-- 最后一页：参考文献 / 文献地图 -->
+<section data-background-image="Carroll/city.png"
+         data-background-size="100% 99.5%"
+         data-background-position="center 55%"
+         data-background-repeat="no-repeat">
+<section>
+
+ <h2>部分参考文献</h2>
+
+  <div class="ref-map">
+
+  
+      <p><b>Carroll, Lewis.</b> 1895. “What the Tortoise Said to Achilles.” <em>Mind</em>, New Series 4(14): 278–280.</p>
+      <p><b>Marion, Mathieu.</b> 2016. “Lessons from Lewis Carroll's Paradox of Inference.” <em>The Carrollian</em> 28: 48–75.</p>
+      <p><b>Engel, Pascal.</b> 2016. “The Philosophical Significance of Carroll’s Regress.” <em>The Carrollian</em> 28: 84–110.</p>
+      <p><b>Imholtz, Clare and Amirouche Moktefi.</b> 2016. “What the Tortoise Said to Achilles: A Selective Bibliography.” <em>The Carrollian</em> 28: 125–136.</p>
+
+      <p><b>Russell, Bertrand.</b> 1903. <em>The Principles of Mathematics</em>. Cambridge: Cambridge University Press.</p>
+      <p><b>Russell, Bertrand.</b> 1914. <em>Our Knowledge of the External World</em>. Chicago: Open Court.</p>
+      <p><b>Russell, Bertrand.</b> 1921. <em>The Analysis of Mind</em>. London: George Allen &amp; Unwin.</p>
+      <p><b>Linsky, Bernard.</b> 2012. “Logical Constructions.” In <em>The Stanford Encyclopedia of Philosophy</em>, Fall 2012 ed.</p>
+      <p><b>Chin, Yueh-Lin.</b> 1927. “Prolegomena.” <em>The Philosophical Review</em> 36(1): 27–59.</p>
+      
+    
+  </div>
+
+
+</section>
+
+<section>
+        <p><b>Jin, Yuelin.</b> 1960. <em>《论“所以”》</em>. 收入<em>《金岳霖文集》</em>相关卷册。</p>
+      <p><b>Zhou, Liquan.</b> 1961. “Some of the Main Problems in ‘On Therefore’.” <em>Zhexue Yanjiu</em> 1961: 12–31.</p>
+      <p><b>Jin, Yuelin.</b> 1962. “On the Class Characteristics and Necessity of the Inference Form.” <em>Zhexue Yanjiu</em> 1962: 69–83.</p>
+      <p><b>Jin, Yuelin.</b> 1988. <em>《罗素哲学》</em>. Shanghai: Shanghai People's Publishing House. Completed 1965.</p>
+      <p><b>Jin, Yuelin.</b> 1995. “On the Essence of Russell's Neutral Monism.” In <em>Jin Yuelin Wenji</em>, vol. 4, 431–447. Lanzhou: Gansu People's Publishing House.</p>
+    
+      <p><b>Sher, Gila.</b> 2011. “Is Logic in the Mind or in the World?” <em>Synthese</em> 181: 353–365.</p>
+      <p><b>Sher, Gila.</b> 2013. “The Foundational Problem of Logic.” <em>Bulletin of Symbolic Logic</em> 19: 145–198.</p>
+      <p><b>Wang, Hao.</b> 2011. “Memories Related to Professor Jin Yuelin.” In <em>Hao Wang, Logician and Philosopher</em>, 27–38. London: College Publications. Originally published 1984.</p>
+      <p><b>Jiang, Xinyan.</b> 2025. “Jin Yuelin.” In <em>A History of Modern Chinese Philosophy</em>, 277–302. Cham: Springer Nature Switzerland.</p>
+        
+      </section>
+      </section>
+      <!-- 第14页：参考文献去边框，加粗，斜体异色杂志名 -->
+      
+
+    
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/math/math.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: true,
+    slideNumber: true,
+    transition: 'fade',
+    backgroundTransition: 'fade',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    plugins: [ RevealNotes, RevealMath.KaTeX, RevealZoom ]
+  });
+</script>
+</body>
+</html>

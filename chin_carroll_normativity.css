@@ -1,0 +1,246 @@
+/* Revised deck stylesheet for chin_carroll_normativity_revised.html
+   Focused layout only: no CSS animations. */
+/* Deck-specific stylesheet for chin_carroll_normativity.html */
+:root {
+  --bg: #070a12;
+  --line: rgba(148, 163, 184, 0.28);
+  --text: #eef2ff;
+  --muted: #a8b3cf;
+  --gold: #f6c45f;
+  --gold-2: #f59e0b;
+  --cyan: #38bdf8;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.reveal {
+  color: var(--text);
+  font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", "Heiti SC", "Segoe UI", system-ui, sans-serif;
+  background: linear-gradient(135deg, #050816 0%, #0a1021 45%, #0b0f1f 100%);
+}
+
+.reveal .slides { text-align: left; }
+.reveal section {
+  box-sizing: border-box;
+  padding: 30px 44px;
+}
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", "Microsoft YaHei", serif;
+  color: var(--text);
+  text-transform: none;
+}
+.reveal h1 { font-size: 1.38em; margin-bottom: .35em; }
+.reveal h2 { font-size: 1.0em; margin-bottom: .55em; }
+.reveal h3 { font-size: 0.8em; margin-bottom: .35em; }
+.reveal p, .reveal li { font-size: .63em; line-height: 1.22; }
+.reveal ul { margin-left: 1.05em; }
+.reveal strong, .accent { color: var(--gold); font-weight: 700; }
+.reveal em { color: #20e6c1; }
+.reveal b {color: #bee620;}
+.reveal .small { font-size: .55em; color: var(--muted); }
+
+/* 通用卡片底框与白字样式 */
+.thesis-card,
+.document-card,
+.node-card,
+.claim-box {
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, rgba(15,23,42,.90), rgba(15,23,42,.58));
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  padding: 1.05rem 1.2rem;
+  color: var(--text);
+}
+
+/* 布局网格 */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: stretch; }
+.two-col-spaced { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: stretch; } /* 第12页，中间留空 */
+.col14 { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; align-items: stretch; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; } /* 1:1:1 第13页 */
+.col-3-3-2 { display: grid; grid-template-columns: 3fr 3fr 2fr; gap: 1rem; align-items: stretch; } /* 第5页 */
+.col-3-2-3 { display: grid; grid-template-columns: 3fr 2fr 3fr; gap: 1.5rem; align-items: center; } /* 第7页 */
+.col-1-2-1 { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem; align-items: stretch; }
+/* 修复第2页边框太长 */
+.fit-content-card {
+  align-self: center;
+  max-width: fit-content;
+  justify-self: start;
+}
+
+/* 修复第3页阿基里斯和乌龟的对话场景 */
+/* 第3页：Carroll 对话场景
+   关键：scene-container 必须留在正常文档流里，不能 absolute；
+   否则 section 高度可能塌掉，overflow hidden 后整页被裁没。 */
+
+.reveal section.carroll-slide {
+  position: relative;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+/* 用正常文档流撑开页面高度 */
+.carroll-slide .scene-container {
+  position: relative;
+  width: 100%;
+  height: 720px;
+  overflow: hidden;
+}
+
+/* 对话框：固定在画面上方，不再放到 54% 那么低 */
+.carroll-slide .dialog-container {
+  position: absolute;
+  left: 380px;
+  top: 190px;
+  width: 840px;
+  height: 345px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 5;
+}
+
+.carroll-slide .dialog-box {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  min-height: 0;
+  background: transparent;
+  border: none;
+}
+
+/* 阿基里斯：用 px，不用百分比，避免 Chrome 全屏时变形 */
+.carroll-slide .achilles-img {
+  position: absolute;
+  left: 60px;
+  bottom: 0;
+  height: 400px;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  z-index: 2;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.42));
+}
+
+/* 乌龟：抬高一点，避免全屏时贴到底部消失 */
+.carroll-slide .turtle-img {
+  position: absolute;
+  right: 90px;
+  bottom: 2px;
+  height: 175px;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  z-index: 3;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.38));
+}
+
+.russell-img
+{
+  position: absolute;
+  bottom: -10%;
+  right:-10%;
+  height: 80%;
+}
+.jin-vigil-img
+{
+  height: 100%;
+}
+
+
+
+.dialog-turn {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 0.65rem 0.9rem;
+  border-radius: 16px;
+  border: 2px solid var(--gold);
+  background: rgba(15, 23, 42, 0.88);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.42);
+  color: var(--text);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+/* 阿基里斯与乌龟使用不同色调 */
+.dialog-turn.achilles-line {
+  border-color: rgba(246, 196, 95, 0.95);
+  background: linear-gradient(135deg, rgba(44, 31, 12, 0.92), rgba(15, 23, 42, 0.9));
+}
+
+.dialog-turn.turtle-line {
+  border-color: rgba(56, 189, 248, 0.9);
+  background: linear-gradient(135deg, rgba(8, 47, 73, 0.9), rgba(15, 23, 42, 0.9));
+}
+
+.dialog-turn p {
+  margin: 0.12rem 0;
+  font-size: 0.54em;
+  line-height: 1.22;
+}
+
+.dialog-turn .speaker {
+  display: inline-block;
+  margin-bottom: 0.16rem;
+  padding: 0.08rem 0.48rem;
+  border-radius: 999px;
+  font-size: 0.48em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.achilles-line .speaker {
+  color: #1b1305;
+  background: var(--gold);
+}
+
+.turtle-line .speaker {
+  color: #04151d;
+  background: var(--cyan);
+}
+
+.dialog-turn .formula {
+  text-align: center;
+  font-size: 0.72em;
+  color: #ffffff;
+  margin: 0.16rem 0;
+}
+
+/* 文档链样式保留 */
+.document-chain {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: .65rem;
+  margin: .8rem 0 1.1rem;
+}
+.document-card .year { color: var(--gold); font-size: .44em; }
+.chain-arrow { color: var(--gold); font-size: 1.05em; text-align: center; }
+
+/* 图片面板 */
+.portrait-panel { text-align: center; }
+
+
+/* 9, 10, 11页 宽度变窄的容器 */
+.narrow-container {
+  max-width: 75%;
+  margin: 0 auto;
+}
+
+/* 第14页：参考文献专属样式 */
+.ref-list-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.ref-list-container li {
+  font-weight: 700; /* 加粗 */
+  color: #f8fafc;  /* 白色字体 */
+  margin-bottom: 0.8rem;
+  font-size: 0.75em;
+}
+.ref-list-container em {
+  color: var(--cyan); /* 杂志名换颜色 */
+  font-style: italic; /* 杂志名斜体 */
+}
