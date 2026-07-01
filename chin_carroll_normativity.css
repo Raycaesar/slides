@@ -244,3 +244,75 @@
   color: var(--cyan); /* 杂志名换颜色 */
   font-style: italic; /* 杂志名斜体 */
 }
+
+/* 手机竖屏时禁止播放，只显示横屏提示 */
+.rotate-warning {
+  display: none;
+}
+
+/* 只在手机/窄屏设备竖屏时触发 */
+@media screen and (max-width: 900px) and (orientation: portrait) {
+  body {
+    margin: 0;
+    background: #070a12;
+    overflow: hidden;
+  }
+
+  .reveal {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .rotate-warning {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #111827 0%, #020617 100%);
+    color: #eef2ff;
+    font-family: "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+    text-align: center;
+  }
+
+  .rotate-card {
+    width: 78vw;
+    max-width: 420px;
+    padding: 2rem 1.6rem;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.88);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  }
+
+  .rotate-icon {
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+    color: #f6c45f;
+  }
+
+  .rotate-card p {
+    margin: 0.4rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .rotate-card .rotate-small {
+    font-size: 0.85rem;
+    color: #a8b3cf;
+    font-weight: 400;
+  }
+}
+
+/* 手机横屏时正常播放 */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+  .rotate-warning {
+    display: none;
+  }
+
+  .reveal {
+    visibility: visible;
+  }
+}
