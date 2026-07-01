@@ -10,15 +10,12 @@
   <link rel="stylesheet" href="chin_carroll_normativity.css">
 </head>
 <body>
-  <div class="rotate-warning">
-  <div class="rotate-card">
-    <div class="rotate-icon">↻</div>
-    <p>请将手机横屏观看</p>
-    <p class="rotate-small">This presentation is designed for landscape mode.</p>
-  </div>
+  <div id="start-screen" class="start-screen">
+  <button id="start-presentation" class="start-button">
+    点击开始横屏全屏播放
+  </button>
+  <p class="start-tip">建议先把手机转为横屏，然后点击开始</p>
 </div>
-  <div class="reveal">
-    <div class="slides">
 
       <!-- 第1页 -->
       <section data-background-image="Carroll/jin_5.png" data-background-size="100% 99.5%" data-background-position="center 65%" data-background-repeat="no-repeat">
@@ -400,6 +397,54 @@
     margin: 0.04,
     plugins: [ RevealNotes, RevealMath.KaTeX, RevealZoom ]
   });
+</script>
+<script>
+  async function enterPresentationMode() {
+    const deck = document.querySelector(".reveal");
+    const startScreen = document.getElementById("start-screen");
+
+    try {
+      if (deck.requestFullscreen) {
+        await deck.requestFullscreen();
+      } else if (deck.webkitRequestFullscreen) {
+        await deck.webkitRequestFullscreen();
+      }
+    } catch (e) {
+      console.log("Fullscreen request failed:", e);
+    }
+
+    try {
+      if (screen.orientation && screen.orientation.lock) {
+        await screen.orientation.lock("landscape");
+      }
+    } catch (e) {
+      console.log("Landscape lock failed:", e);
+    }
+
+    startScreen.classList.add("hidden");
+
+    setTimeout(() => {
+      Reveal.layout();
+      Reveal.sync();
+    }, 300);
+  }
+
+  document
+    .getElementById("start-presentation")
+    .addEventListener("click", enterPresentationMode);
+
+document.addEventListener("fullscreenchange", () => {
+  const startScreen = document.getElementById("start-screen");
+
+  if (!document.fullscreenElement) {
+    startScreen.classList.remove("hidden");
+  } else {
+    setTimeout(() => {
+      Reveal.layout();
+      Reveal.sync();
+    }, 200);
+  }
+});
 </script>
 </body>
 </html>
